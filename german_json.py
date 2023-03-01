@@ -127,10 +127,6 @@ def lesson_json():
         "type": "multiChoice",
         },
         ]
-    
-
-# Legen Sie bitte den Ball auf den Tisch
-# Er hat den Hund
 
 if __name__ == "__main__":
     main()
