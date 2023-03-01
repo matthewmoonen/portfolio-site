@@ -1,0 +1,29 @@
+{% extends '/base/base.html' %}
+
+{% block title %}Matthew Moonen{% endblock %}
+
+{% block content %}
+
+<style>
+    main {
+        margin-left: 70px;
+        margin-top: 30px;
+    }
+
+</style>
+
+<script>
+    setTimeout(function(){
+        window.location.href = '{{"/"}}';
+    }, 10000);
+</script>
+
+<main>
+<p>Thank you, {{first_name}}. I will be in touch soon.</p>
+
+<br>
+
+<p><a href="/">Click Here</a> to return home if not redirected.</p>
+</main>
+
+{% endblock %}
