@@ -5,6 +5,8 @@
 
     --backgroundcolour: hsl(197, 59%, 12%);
     --lessonbackground: hsl(199, 41%, 17%);
+    /* --backgroundcolour: hsl(199, 58%, 22%);
+    --lessonbackground: hsl(199, 40%, 28%); */
     --wincolour: hsl(171, 100%, 30%);
     --losecolour: hsl(0, 97%, 63%, 80%);
     --losecolourfaded: hsl(0, 97%, 63%, 60%);
@@ -18,6 +20,8 @@
     --text20: hsl(180, 0%, 100%, 20%);
     --app-height: 100%;
     --app-height-notch-phones: 100%;
+    --pink-highlight: hsl(271, 100%, 77%);
+    --yellow-highlight: yellow;
 }
 *, *::before, *::after {
     box-sizing: border-box;
@@ -25,7 +29,7 @@
 }
 
 .question-highlight {
-    color: blueviolet;
+    color: var(--pink-highlight);
 }
 
 body {
@@ -45,6 +49,13 @@ body {
     padding: 10px 12px 45px 12px;
     min-height: var(--app-height);
 
+}
+
+.highlight1 {
+    color: var(--pink-highlight);
+}
+.highlight2 {
+    color: var(--yellow-highlight);
 }
 
 .lesson-instructions {
@@ -90,6 +101,13 @@ h3 {
 #exit {
     text-align: right;
 }
+#exit-link:visited {
+    color: var(--text80);
+}
+#exit-link:hover {
+    color: var(--text60);
+}
+
 .lesson-title {
     font-size: 16px;
     font-weight: normal;
