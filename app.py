@@ -88,6 +88,10 @@ def german():
 def get_lesson():
     return lesson_json()
 
+@app.route("/icons")
+def show_icons():
+    return render_template("icons.html")
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

@@ -1,0 +1,67 @@
+body {
+    background-color: grey;
+}
+
+.icon-container{
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+  
+.icon-container::before{
+    transition: opacity 200ms;
+    transition-delay: 1000ms;
+}
+
+.icon-container {
+    fill: darkslategray;
+}
+.icon-container:hover {
+    fill: darkgrey;
+}
+
+.icon-container:hover::before{
+    opacity: 0;
+    transition-delay: 0;
+}
+  
+.text-wrapper1{
+    display: block;
+    align-items: center;
+}
+  
+.text-wrapper1 span {
+    transition-delay: 0;
+}
+  
+.text-wrapper1 span {
+    opacity: 0;
+    transition: transform 400ms, opacity 400ms;
+}
+  
+.text-wrapper1 span {
+    transform: translateZ(0) translateY(-3rem);
+}
+  
+.icon-container:hover .text-wrapper1 span,
+.icon-container:hover {
+    opacity: 1;
+    transform: translateZ(0) translateY(0);
+
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i}) { 
+        @include transition-delay(0.1s * $i); 
+      }
+    }
+  }
+
+.text-wrapper2 {
+    position: absolute;
+    top: calc(50% - 0.5em);
+    left: 0;
+    right: 0;
+}
+
+.text-wrapper1 {
+    text-align: center;
+}
