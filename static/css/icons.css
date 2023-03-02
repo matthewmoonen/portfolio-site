@@ -1,7 +1,3 @@
-body {
-    background-color: grey;
-}
-
 .icon-container{
     width: 60px;
     height: 60px;
@@ -16,10 +12,10 @@ body {
 }
 
 .icon-container {
-    fill: darkslategray;
+    fill: rgb(215, 215, 215);
 }
 .icon-container:hover {
-    fill: darkgrey;
+    fill: rgb(238, 238, 238);
 }
 
 .icon-container:hover::before{
@@ -62,6 +58,8 @@ body {
     top: calc(50% - 0.5em);
     left: 0;
     right: 0;
+    letter-spacing: 0.05rem;
+    color: rgb(196, 127, 0);
 }
 
 .text-wrapper1 {
