@@ -11,3 +11,6 @@ body {
     font-size: .9rem;
 }
 
+main {
+    margin: 0 10px 0 1.5rem;
+}
