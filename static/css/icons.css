@@ -14,7 +14,7 @@
 .icon-container {
     fill: rgb(215, 215, 215);
 }
-.icon-container:hover {
+.icon-container:hover .icon-container:active {
     fill: rgb(238, 238, 238);
 }
 
