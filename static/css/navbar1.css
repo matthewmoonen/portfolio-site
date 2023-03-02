@@ -1,0 +1,303 @@
+.navbar {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0; /* Delete this and the navbar no longer "sticks" to the top */
+    padding-left: 6%;
+    padding-right: 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #38383b;
+    color: white;
+}
+
+.matthew-moonen {
+    font-size: .83rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.matthew-moonen a {
+    text-decoration: none;
+    color: white;
+}
+.matthew-moonen a:hover {
+    color: darkgrey;
+}
+
+.navbar-links {
+    height: 100%;
+}
+
+.navbar-links ul {
+    margin: 0;
+    padding-top: .5rem;
+    padding-bottom: .7rem;
+    display: flex; 
+}
+
+.navbar-links li {
+    list-style: none;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: white;
+    padding: 1rem;
+    display: block;
+}
+
+.navbar-links a:hover {
+    color: darkgrey;
+}
+
+.navbar-right {
+    display: flex;
+    font-size: .9rem;
+    transform: translateX(1rem);
+}
+
+.navbar-icon-links {
+    height: 100%;
+    padding-top: .7rem;
+}
+
+.navbar-icon-links ul {
+    margin: 0;
+    padding: 0;
+    display: flex; 
+}
+
+.navbar-icon-links li {
+    list-style: none;
+}
+
+.navbar-icon-links li a {
+    text-decoration: none;
+    color: white;
+    padding: 1rem;
+    display: block;
+}
+
+.navicons:hover {
+    fill: darkgrey;
+}
+
+
+.toggle-button {
+    position: absolute;
+    top: .95rem;
+    right: 5%;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+}
+
+@media (min-width: 992px) {
+    .navbar-links a::before {
+        content: '';
+        display: block;
+        height: 2.5px;
+        background-color: darkgrey;
+        transform: translateY(-1px);
+        width: 0%;
+        transition: all ease-in-out 250ms;
+    }
+    
+    .navbar-links a:hover::before {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 991px) {
+
+    .navbar-links {
+        position: static;
+        padding-left: 195%;
+    }
+
+    .matthew-moonen {
+        position: static;
+        padding-left: 38.5%
+    }
+
+
+    .toggle-button {
+        display: flex;
+        top: 1.45rem;
+    }
+
+    .matthew-moonen {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .navbar-links {
+        display: none;
+        width: 100%;
+    }
+
+    .navbar-icon-links {
+        display: none;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+
+    }
+    .navbar-links ul {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .navbar-links li {
+        text-align: center;
+    }
+    .navbar-links li a {
+        padding: .5rem 1rem;
+    }
+    .navbar-links.active {
+        display: flex;
+    }
+}
+
+@media (max-width: 955px) {
+
+    .navbar-links {
+        padding-left: 185%;
+    }
+
+    .matthew-moonen {
+        padding-left: 38.45%;
+    }
+}
+
+@media (max-width: 920px) {
+
+    .navbar-links {
+        padding-left: 170%;
+    }
+
+    .matthew-moonen {
+        padding-left: 38.40%;
+    }
+}
+
+@media (max-width: 850px) {
+
+    .navbar-links {
+        padding-left: 160%;
+    }
+
+    .matthew-moonen {
+        padding-left: 38.15%;
+    }
+}
+
+
+@media (max-width: 810px) {
+
+    .navbar-links {
+        padding-left: 150%;
+    }
+
+    .matthew-moonen {
+        padding-left: 38%
+    }
+}
+
+
+
+@media (max-width: 767px) {
+
+    .navbar-links {
+        padding-left: 135%;
+    }
+
+    .toggle-button {
+        top: .95rem;
+    }
+
+    .matthew-moonen {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-left: 37%;
+    }
+
+}
+
+@media (max-width: 705px) {
+    .navbar-links {
+        padding-left: 125%;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .navbar-links {
+        padding-left: 115%;
+    }
+
+    .matthew-moonen {
+        padding-left: 36%;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar-links {
+        padding-left: 110%;
+    }
+}
+
+@media (max-width: 550px) {
+    .navbar-links {
+        padding-left: 95%;
+    }
+
+    .matthew-moonen {
+        padding-left: 33%;
+    }
+}
+
+@media (max-width: 500px) {
+    .navbar-links {
+        padding-left: 85%;
+    }
+}
+
+@media (max-width: 450px) {
+    .navbar-links {
+        padding-left: 70%;
+    }
+    .matthew-moonen {
+        padding-left: 30%;
+    }
+}
+@media (max-width: 420px) {
+    .navbar-links {
+        padding-left: 55%;
+    }
+    .matthew-moonen {
+        padding-left: 28%;
+    }
+}
+@media (max-width: 350px) {
+    .navbar-links {
+        padding-left: 45%;
+    }
+    .matthew-moonen {
+        padding-left: 25%;
+    }
+}

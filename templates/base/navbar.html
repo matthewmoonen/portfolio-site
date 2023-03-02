@@ -1,15 +1,14 @@
 <link rel="stylesheet" href="/static/css/navbar.css">
-<script src="/static/scripts/navbar.js" defer></script>
 <nav class="navbar">
 
     <div class="matthew-moonen"><a href="/">Matthew Moonen</a></div>
-    <a href="#" class="toggle-button">
+    <a href="#" class="toggle-button" onclick="document.getElementById('navbar-links').classList.toggle('active')">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
     </a>
     <div class="navbar-right">
-        <div class="navbar-links">
+        <div class="navbar-links" id="navbar-links">
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/german">German Learning Game</a></li>
