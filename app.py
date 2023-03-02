@@ -92,6 +92,10 @@ def get_lesson():
 def show_icons():
     return render_template("icons.html")
 
+@app.route("/index2")
+def index_2():
+    return render_template("index2.html")
+
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0')

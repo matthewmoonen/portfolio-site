@@ -59,7 +59,9 @@
     left: 0;
     right: 0;
     letter-spacing: 0.05rem;
-    color: rgb(196, 127, 0);
+    /* color: rgb(196, 127, 0); */
+    color: hsl(212, 100%, 50%);
+    
 }
 
 .text-wrapper1 {
