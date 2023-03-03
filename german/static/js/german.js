@@ -75,7 +75,7 @@ const appHeight = () => {
 // Declare lesson content as global variable and request as JSON
 let lessonContent;
 async function fetchlessonContentJSON() {
-    const response = await fetch('/lesson');
+    const response = await fetch('/german/lesson');
     const lesson = await response.json();
     return lesson;
 }

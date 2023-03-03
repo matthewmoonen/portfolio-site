@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, request, session, url_for
-from german_json import lesson_json
+from german.german import german_app
+
 from forms import ContactForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -8,6 +9,7 @@ import secrets
 
 
 app = Flask(__name__)
+app.register_blueprint(german_app, url_prefix="/german")
 
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
@@ -78,15 +80,6 @@ def contact():
         else:
             return render_template('thanks.html', first_name=first_name)
     return render_template("contact.html")
-
-
-@app.route("/german")
-def german():
-    return render_template("german.html")
-
-@app.route("/lesson")
-def get_lesson():
-    return lesson_json()
 
 @app.route("/icons")
 def show_icons():
