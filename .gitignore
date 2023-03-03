@@ -3,3 +3,4 @@ notes/
 __pycache__/
 secret-files/
 wsgi.py
+instance/
