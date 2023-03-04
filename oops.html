@@ -23,19 +23,40 @@
     color: var(--mainColour)
 }
 
+
 .navbar-links {
     /* display: none; */
     position: absolute;
     right: 0;
+    /* background-color: blue; */
+    text-align: right;
+    padding-right: 4rem;
+    /* transform: translateY(30vh); */
 }
 
 
 /* Keep these here */
 .navbar-items {
     margin: 0;
-    padding: 0;
+    padding-top: 3rem;
     list-style-type: none;
 }
+
+@media (max-width: 991px) {
+
+    .navbar-links {
+        /* display: none; */
+        position: absolute;
+        right: 0;
+        background-color: blue;
+        text-align: right;
+        padding-right: 4rem;
+        /* transform: translateY(30vh); */
+    }
+
+
+}
+
 
 @media (min-width: 992px) {
     .navbar {

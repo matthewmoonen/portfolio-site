@@ -93,7 +93,10 @@ def index_2():
 def blog():
     return render_template("blog.html")
 
+@app.route("/navbar")
+def navbar():
+    return render_template("base/navbar1.html")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-    # app.run(debug=True)    # app.run(host='0.0.0.0')
+    # app.run(host='0.0.0.0')
+    app.run(debug=True)
