@@ -1,316 +1,190 @@
+:root{
+    --mainColour: hsl(0, 0%, 100%);
+    --hoverColour: hsl(0, 0%, 100%, 50%);
+}
 .navbar {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0; /* Delete this and the navbar no longer "sticks" to the top */
-    padding-left: 6%;
-    padding-right: 6%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: hsl(240, 3%, 23%);
-    color: white;
-}
-
-.matthew-moonen {
-    font-size: .83rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
-.matthew-moonen a {
-    text-decoration: none;
-    color: white;
-}
-.matthew-moonen a:hover {
-    color: darkgrey;
-}
-
-.navbar-links {
-    height: 100%;
-}
-
-.navbar-links ul {
-    margin: 0;
-    padding-top: .5rem;
-    padding-bottom: .7rem;
-    display: flex; 
-}
-
-.navbar-links li {
-    list-style: none;
-}
-
-.navbar-links li a {
-    text-decoration: none;
-    color: white;
-    padding: 1rem;
     display: block;
-}
-
-.navbar-links a:hover {
-    color: darkgrey;
-}
-
-.navbar-right {
-    display: flex;
-    font-size: .9rem;
-    transform: translateX(1rem);
-}
-
-.navbar-icon-links {
-    height: 100%;
-    padding-top: .7rem;
-}
-
-.navbar-icon-links ul {
     margin: 0;
     padding: 0;
-    display: flex; 
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: hsl(240, 3%, 23%);
+    z-index: 1100;
 }
-
-.navbar-icon-links li {
-    list-style: none;
+.home {
+    text-transform: uppercase;
+    letter-spacing: 0.07rem;
+    font-size: 0.85rem;
 }
-
-.navbar-icon-links li a {
+.navbar a {
     text-decoration: none;
-    color: white;
-    padding: 1rem;
+    color: var(--mainColour);
+    fill: var(--mainColour)
+}
+.navbar a:visited {
+    color: var(--mainColour)
+}
+.navbar-links {
     display: block;
-}
-
-.navicons:hover {
-    fill: darkgrey;
-}
-
-
-.toggle-button {
     position: absolute;
-    top: .95rem;
-    right: 5%;
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
+    right: 0;
 }
-
-.toggle-button .bar {
-    height: 3px;
-    width: 100%;
-    background-color: white;
-    border-radius: 10px;
+.navbar-items {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
-
-@media (min-width: 992px) {
-    .navbar-links a::before {
-        content: '';
-        display: block;
-        height: 2.5px;
-        background-color: darkgrey;
-        transform: translateY(-1px);
-        width: 0%;
-        transition: all ease-in-out 250ms;
-    }
-    
-    .navbar-links a:hover::before {
-        width: 100%;
-    }
+.toggle-buttons {
+    position: absolute;
+    display: grid;
+    right: 1.3rem;
+    transform: translateY(-18px);
 }
-
+.toggle-on, .toggle-off {
+    grid-row: 1;
+    grid-column: 1;
+}
+.centre-navbar-mobile {
+    color: transparent;
+}
+.text-links {
+    padding-top: 2.5vh;
+    padding-bottom: 2.5vh;
+}
 
 @media (max-width: 991px) {
 
-    /* .navbar-links {
-        position: static;
-        padding-left: 195%;
-    } */
-
-    .matthew-moonen {
-        position: static;
-        padding-left: 38.5%
+    .navbar a {
+        color: black;
+    }
+    
+    .navbar a:visited {
+        color: black;
     }
 
 
-    .toggle-button {
-        display: flex;
-        top: 1.45rem;
+    .navbar {
+        padding: 1.6rem 0 1.6rem 0;
     }
 
-    .matthew-moonen {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
+    .home a {
+        color: var(--mainColour);
+    }
+    .home a:visited {
+        color: var(--mainColour);
     }
 
+    .mobile-icon-links {
+        display: inline-block;
+        padding-left: 0.5rem;
+    }
+
+    .hide-me {
+        display: none;
+    }
+    .toggle-off {
+        display: none;
+    }
+    .toggle-on {
+        fill: var(--mainColour);
+    }
     .navbar-links {
         display: none;
-        /* width: 100vw; */
+    }
+    .navbar-links {
+        position: absolute;
+        margin: 0;
+        top: 50vh;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        text-align: right;
+        padding-right: 10vw;
+        font-size: 0.7rem;
+        letter-spacing: 0.3rem;
+        text-transform: uppercase;
     }
 
-    .navbar-icon-links {
+    .hide-me {
+        height: 100vh;
+        width: 100vw;
+    }
+
+
+    .home {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+
+    .icon-links {
+        display: none;
+    }
+
+
+
+    .icon-links-mobile {
+        position: absolute;
+        bottom: 80px;
+        right: 10vw;
+    }
+
+    .svg-toggle-off {
+        fill: black;
+    }
+
+}
+
+@media (max-height: 500px) {
+    .icon-links-mobile {
+        position: absolute;
+        bottom: 10px;
+        /* right: 65px; */
+    }
+}
+
+
+@media (min-width: 992px) {
+
+    .centre-navbar-mobile {
+        display: none;
+    }
+
+    .toggle-buttons {
+        display: none;
+    }
+
+    .icon-links-mobile {
         display: none;
     }
 
     .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-
+        display: flex;
+        padding: 1.4rem 0 1.4rem 4rem;
     }
-    .navbar-links ul {
-        position: relative;
-        /* width: 100vw; */
-        flex-direction: column;
-        
-    }
-
-    .navbar-links li {
-        text-align: right;
-        /* width: 100vw; */
-        /* transform: translateX(); */
-
-        /* padding-left: 50%; */
-    }
-    .navbar-links li a {
-        padding: .5rem 0 .5rem 0;
-        /* text-align: center; */
-        /* width: 100vw;  */
-    }
-    .navbar-links.active {
-        display: block;
-        /* transform: translateX(100%); */
-        /* position: absolute; */
-        /* left: 0; */
-        /* right: 0; */
-    }
-    
-}
-
-@media (max-width: 955px) {
-
-    /* .navbar-links {
-        padding-left: 185%;
-    } */
-
-    .matthew-moonen {
-        padding-left: 38.45%;
-    }
-}
-
-@media (max-width: 920px) {
-
-    /* .navbar-links {
-        padding-left: 170%;
-    } */
-
-    .matthew-moonen {
-        padding-left: 38.40%;
-    }
-}
-
-@media (max-width: 850px) {
-/* 
     .navbar-links {
-        padding-left: 160%;
-    } */
-
-    .matthew-moonen {
-        padding-left: 38.15%;
+        margin-right: 4rem;
     }
-}
-
-
-@media (max-width: 810px) {
-
-    /* .navbar-links {
-        padding-left: 150%;
-    } */
-
-    .matthew-moonen {
-        padding-left: 38%
+    .navbar-items {
+        display: inline-block;
+        padding-left: 0.8rem;
     }
-}
-
-
-
-@media (max-width: 767px) {
-
-    /* .navbar-links {
-        padding-left: 135%;
-    } */
-
-    .toggle-button {
-        top: .95rem;
+    .home {
+        float: left;
+        letter-spacing: 0.15rem;
+        text-transform: uppercase;
     }
-
-    .matthew-moonen {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        padding-left: 37%;
-    }
-
-}
-
-/* @media (max-width: 705px) {
     .navbar-links {
-        padding-left: 125%;
+        position: absolute;
+        float: right;
+        right: 0;
     }
-} */
-
-@media (max-width: 650px) {
-
-    /* .navbar-links {
-        padding-left: 115%;
-    } */
-
-    .matthew-moonen {
-        padding-left: 36%;
+    .text-links {
+        transform: translateY(-2.35rem);
+        letter-spacing: 0.05rem;
     }
-}
-
-/* @media (max-width: 600px) {
-    .navbar-links {
-        padding-left: 110%;
-    }
-} */
-
-@media (max-width: 550px) {
-    /* .navbar-links {
-        padding-left: 95%;
-    } */
-
-    .matthew-moonen {
-        padding-left: 33%;
-    }
-}
-
-/* @media (max-width: 500px) { */
-    /* .navbar-links {
-        padding-left: 85%;
-    }
-} */
-
-@media (max-width: 450px) {
-    /* .navbar-links {
-        padding-left: 70%;
-    } */
-    .matthew-moonen {
-        padding-left: 30%;
-    }
-}
-@media (max-width: 420px) {
-    /* .navbar-links {
-        padding-left: 55%;
-    } */
-    .matthew-moonen {
-        padding-left: 28%;
-    }
-}
-@media (max-width: 350px) {
-    /* .navbar-links {
-        padding-left: 45%;
-    } */
-    .matthew-moonen {
-        padding-left: 25%;
+    .icon-links {
+        transform: translateY(-1.95rem);
     }
 }
