@@ -48,10 +48,6 @@
 .centre-navbar-mobile {
     color: transparent;
 }
-.text-links {
-    padding-top: 2.5vh;
-    padding-bottom: 2.5vh;
-}
 
 @media (max-width: 991px) {
 
@@ -79,7 +75,10 @@
         display: inline-block;
         padding-left: 0.5rem;
     }
-
+    .text-links {
+        padding-top: 2.5vh;
+        padding-bottom: 2.5vh;
+    }
     .hide-me {
         display: none;
     }
@@ -181,10 +180,10 @@
         right: 0;
     }
     .text-links {
-        transform: translateY(-2.35rem);
+        transform: translateY(-1.4rem);
         letter-spacing: 0.05rem;
     }
     .icon-links {
-        transform: translateY(-1.95rem);
+        transform: translateY(-1rem);
     }
 }
