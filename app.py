@@ -6,8 +6,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import secrets
 
-
-
 app = Flask(__name__)
 app.register_blueprint(german_app, url_prefix="/german")
 
@@ -17,9 +15,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///messages.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)
-
-
-
 
 class messages(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
@@ -41,7 +36,6 @@ class messages(db.Model):
         self.date_created = date_created
         self.ip_address = ip_address
         self.is_forwarded = is_forwarded
-
 
 with app.app_context():
     """Create DB for contact form if not already exists"""
@@ -85,10 +79,6 @@ def contact():
 def show_icons():
     return render_template("icons.html")
 
-@app.route("/index2")
-def index_2():
-    return render_template("index2.html")
-
 @app.route("/blog")
 def blog():
     return render_template("blog.html")
@@ -98,5 +88,5 @@ def navbar():
     return render_template("base/navbar1.html")
 
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0')
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
+    # app.run(debug=True)
