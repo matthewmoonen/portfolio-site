@@ -87,6 +87,10 @@ def blog():
 def navbar():
     return render_template("base/navbar1.html")
 
+@app.route("/code")
+def code():
+    return render_template("code.html")
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
     # app.run(debug=True)
