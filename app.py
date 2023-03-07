@@ -47,11 +47,11 @@ def login_required(f):
     return wrap
 
 
-@app.route("/admin-blog")
+@app.route("/admin")
 @login_required
-def blog_admin():
+def admin():
     posts = db.session.query(BlogPost).all()
-    return render_template("blog-admin.html", posts=posts)
+    return render_template("admin.html", posts=posts)
 
 @app.route("/welcome")
 def welcome():
@@ -61,12 +61,12 @@ def welcome():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        if request.form['username'] != 'admin' or request.form['password'] != 'password':
             error = 'invalid credentials; please try again'
         else:
             session['logged_in'] = True
             flash('You were just logged in!')
-            return redirect(url_for('blog_admin'))
+            return redirect(url_for('admin'))
     return render_template("login.html", error=error)
 
 @app.route("/logout")
