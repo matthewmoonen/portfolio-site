@@ -160,11 +160,11 @@ def navbar():
 def code():
     return render_template("code.html")
 
-@app.route('/delete_post/<post_id>', methods=['GET', 'POST'])
+@app.route('/delete_post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
-def delete_post():
+def delete_post(post_id):
     post_id = str(post_id)
-    return post_id
+    return f"<h1>{page_id}</h1>"
 
     # post = BlogPost.query.filter_by(id=post_id).first_or_404()
     # try:
