@@ -63,13 +63,16 @@ def admin():
     return render_template("admin.html", posts=posts)
 
 
-@app.route('/blog/<int:post_id>/')
-def show_blog_post(post_id):
-    # posts = db.session.query(BlogPost).all()
-    # post_id = 1
-    post = db.session.query(BlogPost).filter_by(_id=post_id).first()
+@app.route('/blog/<slug>/')
+def show_blog_post(slug):
+    post = db.session.query(BlogPost).filter_by(slug=slug).first()
     return render_template("blog-post.html", post=post)
 
+
+@app.route('/blogbyint/<int:post_id>/')
+def show_blog_post_by_int(post_id):
+    post = db.session.query(BlogPost).filter_by(_id=post_id).first()
+    return render_template("blog-post.html", post=post)
 
 
 # route for rendering the form
@@ -87,6 +90,7 @@ def add_entry():
         title = request.form['title']
         body = request.form['body']
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
+        slug = request.form['slug']
 
     blogdata = BlogPost(title=title, body=body, date_created=date_created)
 

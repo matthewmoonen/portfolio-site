@@ -12,3 +12,4 @@ class BlogSubmitForm(FlaskForm):
     title = StringField('title')
     body = StringField('body')
     submit = SubmitField('submit')
+    slug = SubmitField('submit').strip()

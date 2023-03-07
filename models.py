@@ -30,12 +30,11 @@ class BlogPost(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     body = db.Column(db.String, nullable=False)
+    slug = db.Column(db.String(), nullable=False)
     date_created = db.Column(db.String(30))
 
-    def __init__(self, title, body, date_created):
+    def __init__(self, title, body, slug, date_created):
         self.title = title
         self.body = body
+        self.slug = slug
         self.date_created = date_created
-
-    # def __repr__(self):
-    #     return '<title {}'.format(self.title)
