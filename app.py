@@ -145,6 +145,14 @@ def contact():
             return render_template('thanks.html', first_name=first_name)
     return render_template("contact.html")
 
+
+@app.route('/blog/<int:post_id>')
+def show_blog_post(post_id):
+    post = BlogPost.query.get_or_404(post_id)
+    # posts = db.session.query(BlogPost).all()
+    return render_template('blog-post.html', post=post)
+
+
 @app.route("/icons")
 def show_icons():
     return render_template("icons.html")
