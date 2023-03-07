@@ -85,8 +85,7 @@ def add_entry():
         db.session.add(formdata)
         db.session.commit()
     except:
-        print('error 400')
-        return render_template("an error occurred")
+        return "an error occurred"
     else:
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
