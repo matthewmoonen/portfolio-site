@@ -30,8 +30,7 @@ app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_TYPE'] = 'redis'
-app.config["SESSION_REDIS"] = redis.Redis(
-    host=redis_host, port=redis_port, password=redis_password)
+app.config["SESSION_REDIS"] = redis.Redis(host=redis_host, port=redis_port, password=redis_password)
 Session(app)
 db.init_app(app)
 
