@@ -75,6 +75,36 @@ def admin():
     posts = db.session.query(BlogPost).all()
     return render_template("admin.html", posts=posts)
 
+
+
+# route for rendering the form
+@app.route('/add_entry', methods=['GET'])
+@login_required
+def render_add_entry():
+    return render_template('add_entry.html')
+
+# route for handling the form submission
+@app.route('/add_entry', methods=['POST'])
+@login_required
+def add_entry():
+    title = request.form.get('title')
+    body = request.form.get('body')
+
+    # TODO: insert the new blog entry into the SQLite database
+
+    flash('New entry was successfully added')
+    return redirect(url_for('admin'))
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/welcome")
 def welcome():
     return render_template("welcome.html")
@@ -93,11 +123,6 @@ def login():
             flash('You were just logged in!')
             return redirect(url_for('admin'))
     return render_template("login.html", error=error)
-
-
-
-
-
 
 @app.route("/logout")
 @login_required
