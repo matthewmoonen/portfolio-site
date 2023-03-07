@@ -92,7 +92,7 @@ def add_entry():
         return redirect(url_for('admin'))
     
 
-@app.route('/delete_post/<int:post_id>', methods=['POST'])
+@app.route('/delete_post/', methods=['POST'])
 @login_required
 def delete_post(post_id):
     post = BlogPost.query.get_or_404(post_id)
