@@ -63,10 +63,10 @@ def admin():
     return render_template("admin.html", posts=posts)
 
 
-@app.route('/blog/')
-def show_blog_post():
+@app.route('/blog/<int:post_id>/')
+def show_blog_post(post_id):
     # posts = db.session.query(BlogPost).all()
-    post_id = 1
+    # post_id = 1
     post = db.session.query(BlogPost).filter_by(_id=post_id).first()
     return render_template("blog-post.html", post=post)
 
