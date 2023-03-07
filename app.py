@@ -69,10 +69,10 @@ def show_blog_post(slug):
     return render_template("blog-post.html", post=post)
 
 
-@app.route('/blogbyint/<int:post_id>/')
-def show_blog_post_by_int(post_id):
-    post = db.session.query(BlogPost).filter_by(_id=post_id).first()
-    return render_template("blog-post.html", post=post)
+# @app.route('/blogbyint/<int:post_id>/')
+# def show_blog_post_by_int(post_id):
+#     post = db.session.query(BlogPost).filter_by(_id=post_id).first()
+#     return render_template("blog-post.html", post=post)
 
 
 # route for rendering the form
