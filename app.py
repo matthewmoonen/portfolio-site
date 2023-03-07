@@ -164,15 +164,17 @@ def code():
 @login_required
 def delete_post():
     post_id = request.args.get('post_id')
-    post = BlogPost.query.filter_by(id=post_id).first_or_404()
-    try:
-        db.session.delete(post)
-        db.session.commit()
-        flash('The post was successfully deleted')
-    except:
-        return "an error occurred"
-    else:
-        return redirect(url_for('admin'))
+    return post_id
+
+    # post = BlogPost.query.filter_by(id=post_id).first_or_404()
+    # try:
+    #     db.session.delete(post)
+    #     db.session.commit()
+    #     flash('The post was successfully deleted')
+    # except:
+    #     return "an error occurred"
+    # else:
+    #     return redirect(url_for('admin'))
 
 
 if __name__ == "__main__":
