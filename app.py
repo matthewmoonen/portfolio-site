@@ -20,8 +20,9 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 # Set Redis connection details
 redis_host = "localhost"
 redis_port = 6379
-redis_password = "banana"
 
+# TODO: Update this 
+redis_password = "banana"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 
@@ -50,7 +51,6 @@ with app.app_context():
 
 with open('secret-files/admin_password_hash.txt', 'r') as file:
     ADMIN_PASSWORD_HASH = file.read().strip()
-
 
 @app.route("/")
 def index():
@@ -98,20 +98,6 @@ def login():
 
 
 
-
-# @app.route("/login", methods=['GET', 'POST'])
-# def login():
-#     if 'logged_in' in session and session['logged_in']:
-#         return redirect(url_for('admin'))
-#     error = None
-#     if request.method == 'POST':
-#         if request.form['username'] != 'admin' or request.form['password'] != 'password':
-#             error = 'invalid credentials; please try again'
-#         else:
-#             session['logged_in'] = True
-#             flash('You were just logged in!')
-#             return redirect(url_for('admin'))
-#     return render_template("login.html", error=error)
 
 @app.route("/logout")
 @login_required
