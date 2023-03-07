@@ -160,7 +160,7 @@ def navbar():
 def code():
     return render_template("code.html")
 
-@app.route('/delete_post/<int:post_id>', methods=['POST'])
+@app.route('/delete_post', methods=['POST'])
 @login_required
 def delete_post():
     post_id = request.args.get('post_id')
