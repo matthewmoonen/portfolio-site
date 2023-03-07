@@ -3,7 +3,7 @@ from german.german import german_app
 from forms import ContactForm
 from datetime import datetime
 import secrets
-from models import messages
+# from models import messages
 from extensions import db
 
 app = Flask(__name__)
@@ -74,3 +74,5 @@ def code():
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
     # app.run(debug=True)
+
+from models import *
