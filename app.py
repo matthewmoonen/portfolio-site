@@ -6,6 +6,7 @@ import secrets
 from models import messages, BlogPost
 from extensions import db
 from functools import wraps
+from flask_session import Session
 
 
 
@@ -21,8 +22,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
 app.config['SESSION_COOKIE_SECURE'] = True
-# app.config['SESSION_COOKIE_HTTPONLY'] = False
 
+app.config['SESSION_TYPE'] = 'redis'
+Session(app)
 
 
 db.init_app(app)
