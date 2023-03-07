@@ -8,6 +8,7 @@ from extensions import db
 from functools import wraps
 from flask_session import Session
 import redis
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -47,6 +48,9 @@ with app.app_context():
     """Create DB for contact form if not already exists"""
     db.create_all()
 
+with open('secret-files/admin_password_hash.txt', 'r') as file:
+    ADMIN_PASSWORD_HASH = file.read().strip()
+
 
 @app.route("/")
 def index():
@@ -76,20 +80,38 @@ def welcome():
     return render_template("welcome.html")
 
 
-
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if 'logged_in' in session and session['logged_in']:
         return redirect(url_for('admin'))
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'password':
+        if request.form['username'] != 'admin' or not check_password_hash(ADMIN_PASSWORD_HASH, request.form['password']):
             error = 'invalid credentials; please try again'
         else:
             session['logged_in'] = True
             flash('You were just logged in!')
             return redirect(url_for('admin'))
     return render_template("login.html", error=error)
+
+
+
+
+
+
+# @app.route("/login", methods=['GET', 'POST'])
+# def login():
+#     if 'logged_in' in session and session['logged_in']:
+#         return redirect(url_for('admin'))
+#     error = None
+#     if request.method == 'POST':
+#         if request.form['username'] != 'admin' or request.form['password'] != 'password':
+#             error = 'invalid credentials; please try again'
+#         else:
+#             session['logged_in'] = True
+#             flash('You were just logged in!')
+#             return redirect(url_for('admin'))
+#     return render_template("login.html", error=error)
 
 @app.route("/logout")
 @login_required
