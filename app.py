@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, session, url_for, flash
 from german.german import german_app
-from forms import ContactForm
+from forms import ContactForm, BlogSubmitForm
 from datetime import datetime
 import secrets
 from models import messages, BlogPost
@@ -84,21 +84,28 @@ def render_add_entry():
     return render_template('add_entry.html')
 
 # route for handling the form submission
-@app.route('/add_entry', methods=['POST'])
+@app.route('/add_entry', methods=['GET', 'POST'])
 @login_required
 def add_entry():
-    title = request.form['title']
-    body = request.form['body']
+    form = BlogSubmitForm()
+    if form.is_submitted():
+        title = request.form['title']
+        body = request.form['body']
+        date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-    # create a new BlogPost instance
-    post = BlogPost(title=title, body=body)
 
-    # add the new post to the database
-    db.session.add(post)
-    db.session.commit()
+    formdata = BlogPost(id=id, title=title, body=body, date_created=date_created)
 
-    flash('New entry was successfully added')
-    return redirect(url_for('admin'))
+    try:
+        db.session.add(formdata)
+        db.session.commit()
+    except:
+        print('error 400')
+        return render_template("an error occurred")
+    else:
+        flash('New entry was successfully added')
+        return redirect(url_for('admin'))
+    
 
 @app.route("/welcome")
 def welcome():

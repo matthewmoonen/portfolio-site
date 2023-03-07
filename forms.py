@@ -7,3 +7,8 @@ class ContactForm(FlaskForm):
     email = EmailField('email')
     message = StringField('message')
     submit = SubmitField('submit')
+
+class BlogSubmitForm(FlaskForm):
+    title = StringField('title')
+    body = StringField('body')
+    submit = SubmitField('submit')
