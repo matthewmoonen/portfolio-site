@@ -11,5 +11,5 @@ class ContactForm(FlaskForm):
 class BlogSubmitForm(FlaskForm):
     title = StringField('title')
     body = StringField('body')
+    slug = SubmitField('slug')
     submit = SubmitField('submit')
-    slug = SubmitField('submit')
