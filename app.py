@@ -75,20 +75,21 @@ def admin():
 def welcome():
     return render_template("welcome.html")
 
+
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    error = None
-    if session['logged_in'] == True:
+    if 'logged_in' in session and session['logged_in']:
         return redirect(url_for('admin'))
-    else:
-        if request.method == 'POST':
-            if request.form['username'] != 'admin' or request.form['password'] != 'password':
-                error = 'invalid credentials; please try again'
-            else:
-                session['logged_in'] = True
-                flash('You were just logged in!')
-                return redirect(url_for('admin'))
-        return render_template("login.html", error=error)
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'password':
+            error = 'invalid credentials; please try again'
+        else:
+            session['logged_in'] = True
+            flash('You were just logged in!')
+            return redirect(url_for('admin'))
+    return render_template("login.html", error=error)
 
 @app.route("/logout")
 @login_required
