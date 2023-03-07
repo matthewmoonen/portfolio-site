@@ -78,6 +78,8 @@ def welcome():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     error = None
+    if session['logged_in'] == True:
+        return redirect(url_for('admin'))
     if request.method == 'POST':
         if request.form['username'] != 'admin' or request.form['password'] != 'password':
             error = 'invalid credentials; please try again'
