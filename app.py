@@ -92,19 +92,19 @@ def add_entry():
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
     
-@app.route('/delete_post/<int:post_id>', methods=['DELETE'])
-@login_required
-def delete_post(post_id):
-    post = BlogPost.query.filter_by(id=post_id).first_or_404()
-    try:
-        db.session.delete(post)
-        db.session.commit()
-        flash('The post was successfully deleted')
-    except:
-        return "an error occurred"
-    else:
-        flash('Entry was successfully deleted')
-        return redirect(url_for('admin'))
+# @app.route('/delete_post/<int:post_id>', methods=['DELETE'])
+# @login_required
+# def delete_post(post_id):
+#     post = BlogPost.query.filter_by(id=post_id).first_or_404()
+#     try:
+#         db.session.delete(post)
+#         db.session.commit()
+#         flash('The post was successfully deleted')
+#     except:
+#         return "an error occurred"
+#     else:
+#         flash('Entry was successfully deleted')
+#         return redirect(url_for('admin'))
 
 @app.route("/welcome")
 def welcome():
