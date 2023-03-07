@@ -63,13 +63,6 @@ def admin():
     return render_template("admin.html", posts=posts)
 
 
-
-# >>> peter = User.query.filter_by(username='peter').first()
-# >>> peter.id
-# 2
-# >>> peter.email
-# u'peter@example.org'
-
 @app.route('/blog/')
 def show_blog_post():
     posts = db.session.query(BlogPost).all()
