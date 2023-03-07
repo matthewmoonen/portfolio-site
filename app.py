@@ -25,24 +25,14 @@ redis_port = 6379
 redis_password = "banana"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
 app.config['SESSION_COOKIE_SECURE'] = True
-
-
-
 app.config['SESSION_TYPE'] = 'redis'
-app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = redis.Redis(
-    host=redis_host, port=redis_port, password=redis_password
-)
-
+    host=redis_host, port=redis_port, password=redis_password)
 Session(app)
-
-
 db.init_app(app)
 
 with app.app_context():
@@ -56,7 +46,6 @@ with open('secret-files/admin_password_hash.txt', 'r') as file:
 def index():
     return render_template("index.html")
 
-
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -67,15 +56,12 @@ def login_required(f):
             return redirect(url_for("login"))
     return wrap
 
-
 @app.route("/admin")
 @login_required
 def admin():
     session["mykey"] = "myvalue"
     posts = db.session.query(BlogPost).all()
     return render_template("admin.html", posts=posts)
-
-
 
 # route for rendering the form
 @app.route('/add_entry', methods=['GET'])
@@ -84,7 +70,7 @@ def render_add_entry():
     return render_template('add_entry.html')
 
 # route for handling the form submission
-@app.route('/add_entry', methods=['GET', 'POST'])
+@app.route('/add_entry', methods=['POST'])
 @login_required
 def add_entry():
     form = BlogSubmitForm()
@@ -105,12 +91,10 @@ def add_entry():
     else:
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
-    
 
 @app.route("/welcome")
 def welcome():
     return render_template("welcome.html")
-
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -133,7 +117,6 @@ def logout():
     session.pop("logged_in", None)
     flash("You were just logged out!")
     return redirect(url_for('welcome'))
-
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
