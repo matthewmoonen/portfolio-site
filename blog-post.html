@@ -2,6 +2,12 @@
 
 {% block title %}{% endblock %}
 
-<strong>Title: </strong> {{ post_id }} <br>
+{% post_id %}
+
+{% for post in posts %}
+    <strong>Title: </strong> {{ post.title }} <br>
+    <strong>Posts: </strong> {{ post.body }} <br>
+    <strong>ID: </strong> {{ post._id }} <br>
+{% endfor %}
 
 {% block content %}

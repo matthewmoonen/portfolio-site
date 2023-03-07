@@ -72,8 +72,13 @@ def admin():
 
 @app.route('/blog/<int:post_id>')
 def show_blog_post(post_id):
-    post = db.query.filter_by(_id=post_id).first()
-    return f"{post._id} is the id {post.title} is the title {post.body} is the body."
+    posts = db.session.query(BlogPost).all()
+    post_id = post_id
+    # post = db.query.filter_by(_id=post_id).first()
+    # return f"{post._id} is the id {post.title} is the title {post.body} is the body."
+
+    return render_template("blog-post.html", posts=posts, post_id=post_id)
+
 
     # post = BlogPost.query.get_or_404(post_id)
     # # posts = db.session.query(BlogPost).all()
