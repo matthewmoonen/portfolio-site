@@ -91,21 +91,22 @@ def add_entry():
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
     
-# route for deleting a blog post
-@app.route('/delete_post/<int:post_id>', methods=['POST'])
+
+@app.route('/delete_post', methods=['POST'])
 @login_required
-def delete_post(post_id):
+def delete_post():
+    post_id = request.args.get('post_id')
     post = BlogPost.query.filter_by(id=post_id).first_or_404()
     try:
         db.session.delete(post)
         db.session.commit()
         flash('The post was successfully deleted')
     except:
-        print('error 400')
         return "an error occurred"
     else:
         flash('Entry was successfully deleted')
         return redirect(url_for('admin'))
+
 
 
 @app.route("/login", methods=['GET', 'POST'])
