@@ -55,7 +55,7 @@ def login_required(f):
             return redirect(url_for("login"))
     return wrap
 
-@app.route("/admin")
+@app.route("/admin/")
 @login_required
 def admin():
     session["mykey"] = "myvalue"
@@ -63,7 +63,7 @@ def admin():
     return render_template("admin.html", posts=posts)
 
 
-@app.route('/blog')
+@app.route('/blog/')
 @login_required
 def show_blog_post():
     session["mykey"] = "myvalue"
@@ -73,13 +73,13 @@ def show_blog_post():
 
 
 # route for rendering the form
-@app.route('/add_entry', methods=['GET'])
+@app.route('/add_entry/', methods=['GET'])
 @login_required
 def render_add_entry():
     return render_template('add_entry.html')
 
 # route for handling the form submission
-@app.route('/add_entry', methods=['POST'])
+@app.route('/add_entry/', methods=['POST'])
 @login_required
 def add_entry():
     form = BlogSubmitForm()
@@ -99,11 +99,11 @@ def add_entry():
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
 
-@app.route("/welcome")
+@app.route("/welcome/")
 def welcome():
     return render_template("welcome.html")
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login/", methods=['GET', 'POST'])
 def login():
     if 'logged_in' in session and session['logged_in']:
         return redirect(url_for('admin'))
@@ -117,7 +117,7 @@ def login():
             return redirect(url_for('admin'))
     return render_template("login.html", error=error)
 
-@app.route("/logout")
+@app.route("/logout/")
 @login_required
 def logout():
     session["mykey"] = "myvalue"
@@ -125,7 +125,7 @@ def logout():
     flash("You were just logged out!")
     return redirect(url_for('welcome'))
 
-@app.route("/contact", methods=['GET', 'POST'])
+@app.route("/contact/", methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
     if form.is_submitted():
@@ -156,11 +156,11 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/icons")
+@app.route("/icons/")
 def show_icons():
     return render_template("icons.html")
 
-@app.route("/navbar")
+@app.route("/navbar/")
 def navbar():
     return render_template("base/navbar1.html")
 
@@ -168,7 +168,7 @@ def navbar():
 def code():
     return render_template("code.html")
 
-@app.route('/delete_post/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete_post/<int:post_id>/', methods=['GET', 'POST'])
 @login_required
 def delete_post(post_id):
 
