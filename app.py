@@ -165,7 +165,7 @@ def code():
 def delete_post(post_id):
     # return f"<h1>{post_id}</h1>"
 
-    post = BlogPost.query.filter_by(id=post_id).first_or_404()
+    post = BlogPost.query.get_or_404(post_id)
     try:
         db.session.delete(post)
         db.session.commit()
