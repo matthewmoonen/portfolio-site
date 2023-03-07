@@ -79,10 +79,12 @@ def add_entry():
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
 
-    formdata = BlogPost(id=id, title=title, body=body, date_created=date_created)
+    # blogdata = BlogPost(id=id, title=title, body=body, date_created=date_created)
+    blogdata = BlogPost(title=title, body=body, date_created=date_created)
+
 
     try:
-        db.session.add(formdata)
+        db.session.add(blogdata)
         db.session.commit()
     except:
         return "an error occurred"
