@@ -78,10 +78,7 @@ def add_entry():
         body = request.form['body']
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-
-    # blogdata = BlogPost(id=id, title=title, body=body, date_created=date_created)
     blogdata = BlogPost(title=title, body=body, date_created=date_created)
-
 
     try:
         db.session.add(blogdata)
@@ -163,7 +160,6 @@ def code():
 @app.route('/delete_post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def delete_post(post_id):
-    # return f"<h1>{post_id}</h1>"
 
     post = BlogPost.query.get_or_404(post_id)
     try:
