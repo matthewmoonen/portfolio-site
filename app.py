@@ -87,23 +87,18 @@ def render_add_entry():
 @app.route('/add_entry', methods=['POST'])
 @login_required
 def add_entry():
-    title = request.form.get('title')
-    body = request.form.get('body')
+    title = request.form['title']
+    body = request.form['body']
 
-    # TODO: insert the new blog entry into the SQLite database
+    # create a new BlogPost instance
+    post = BlogPost(title=title, body=body)
+
+    # add the new post to the database
+    db.session.add(post)
+    db.session.commit()
 
     flash('New entry was successfully added')
     return redirect(url_for('admin'))
-
-
-
-
-
-
-
-
-
-
 
 @app.route("/welcome")
 def welcome():
