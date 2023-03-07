@@ -5,7 +5,7 @@ from datetime import datetime
 import secrets
 from models import messages, BlogPost
 from extensions import db
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 
 
@@ -18,15 +18,15 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 
 db.init_app(app)
 
-
 with app.app_context():
     """Create DB for contact form if not already exists"""
     db.create_all()
+
 
 @app.route("/")
 def index():
@@ -63,7 +63,7 @@ def login():
         else:
             session['logged_in'] = True
             flash('You were just logged in!')
-            return redirect(url_for('home'))
+            return redirect(url_for('blog'))
     return render_template("login.html", error=error)
 
 @app.route("/logout")
@@ -107,10 +107,6 @@ def contact():
 @app.route("/icons")
 def show_icons():
     return render_template("icons.html")
-
-# @app.route("/blog")
-# def blog():
-#     return render_template("blog.html")
 
 @app.route("/navbar")
 def navbar():

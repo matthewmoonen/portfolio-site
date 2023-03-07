@@ -1,8 +1,9 @@
-from app import db
+from app import db, app
 from models import BlogPost
 
 # Create db and db tables
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 # insert
 db.session.add(BlogPost("Good", "I\'m v. good"))
