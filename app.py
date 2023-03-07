@@ -47,7 +47,7 @@ def login_required(f):
     return wrap
 
 
-@app.route("/blog/admin")
+@app.route("/admin-blog")
 @login_required
 def blog_admin():
     posts = db.session.query(BlogPost).all()
