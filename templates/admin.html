@@ -17,9 +17,9 @@
         <p>Click <a href="/logout">here</a> to log out.</p>
         <h3>Recent Blog Posts:</h3>
         {% for post in posts %}
-        <strong>Title: </strong> {{ post.title }} <br>
+        <!-- <strong>Title: </strong> {{ post.title }} <br> -->
         <!-- <strong>Posts: </strong> {{ post.body }} <br> -->
-        <strong>Link: </strong> https://matthewmoonen.com/{{ post.slug }}/ <br>
+        <a href="https://matthewmoonen.com/{{ post.slug }}/"></a>{{ post.title }}<br>
         <strong>ID: </strong> {{ post._id }} <br>
         <a href="{{ url_for('delete_post', post_id=post._id) }}" onclick="return confirm('Are you sure you want to delete this post?')">Delete</a>
         {% endfor %}
