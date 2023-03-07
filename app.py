@@ -170,10 +170,8 @@ def delete_post():
         db.session.commit()
         flash('The post was successfully deleted')
     except:
-        print('error 400')
         return "an error occurred"
     else:
-        flash('Entry was successfully deleted')
         return redirect(url_for('admin'))
 
 
