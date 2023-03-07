@@ -64,6 +64,7 @@ def admin():
 
 
 @app.route('/blog/')
+@login_required
 def show_blog_post():
     session["mykey"] = "myvalue"
     posts = db.session.query(BlogPost).all()
