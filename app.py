@@ -1,10 +1,10 @@
 from flask import Flask, render_template, redirect, request, session, url_for
 from german.german import german_app
-
 from forms import ContactForm
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import secrets
+from models import messages
+from extensions import db
 
 app = Flask(__name__)
 app.register_blueprint(german_app, url_prefix="/german")
@@ -13,29 +13,9 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///messages.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy()
+
 db.init_app(app)
 
-class messages(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    first_name = db.Column(db.String(20), nullable=False)
-    last_name = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    subject = db.Column(db.String(100))
-    message = db.Column(db.String(2000), nullable=False)
-    date_created = db.Column(db.String(30))
-    ip_address = db.Column(db.String)
-    is_forwarded = db.Column(db.Integer, nullable=False)
-
-    def __init__(self, first_name, last_name, email, subject, message, date_created, ip_address, is_forwarded):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.subject = subject
-        self.message = message
-        self.date_created = date_created
-        self.ip_address = ip_address
-        self.is_forwarded = is_forwarded
 
 with app.app_context():
     """Create DB for contact form if not already exists"""
