@@ -7,6 +7,7 @@ from models import messages, BlogPost
 from extensions import db
 from functools import wraps
 from flask_session import Session
+import redis
 
 
 
@@ -14,6 +15,12 @@ app = Flask(__name__)
 app.register_blueprint(german_app, url_prefix="/german")
 
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
+
+# Set Redis connection details
+redis_host = "localhost"
+redis_port = 6379
+redis_password = "banana"
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 
@@ -23,8 +30,15 @@ app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
 app.config['SESSION_COOKIE_SECURE'] = True
 
-# app.config['SESSION_TYPE'] = 'redis'
-# Session(app)
+
+
+app.config['SESSION_TYPE'] = 'redis'
+app.config["SESSION_TYPE"] = "redis"
+app.config["SESSION_REDIS"] = redis.Redis(
+    host=redis_host, port=redis_port, password=redis_password
+)
+
+Session(app)
 
 
 db.init_app(app)
@@ -53,6 +67,7 @@ def login_required(f):
 @app.route("/admin")
 @login_required
 def admin():
+    session["mykey"] = "myvalue"
     posts = db.session.query(BlogPost).all()
     return render_template("admin.html", posts=posts)
 
@@ -75,6 +90,7 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    session["mykey"] = "myvalue"
     session.pop("logged_in", None)
     flash("You were just logged out!")
     return redirect(url_for('welcome'))
