@@ -66,8 +66,10 @@ def admin():
 @app.route('/blog/<slug>/')
 def show_blog_post(slug):
     post = db.session.query(BlogPost).filter_by(slug=slug).first()
-    return render_template("blog-post.html", post=post)
-
+    if post:
+        return render_template("blog-post.html", post=post)
+    else:
+        return f"404"
 
 # @app.route('/blogbyint/<int:post_id>/')
 # def show_blog_post_by_int(post_id):

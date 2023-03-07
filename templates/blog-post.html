@@ -1,16 +1,11 @@
 {% extends '/base/blog-template.html' %}
 
-{% block title %}Matthew Moonen{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
 
-
-<h3>Posts:</h3>
-<strong>Title: </strong> {{ post.title }} <br>
-<strong>Posts: </strong> {{ post.body }} <br>
-<strong>Slug: </strong> {{ post.slug }} <br>
-<strong>ID: </strong> {{ post._id }} <br>
-
+<h1>{{ post.title }}</h3>
+<strong>Post: </strong> {{ post.body }} <br>
 
 {% endblock %}
 
