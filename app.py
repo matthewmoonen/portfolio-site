@@ -67,7 +67,7 @@ def admin():
 def blog_post(slug):
     post = db.session.query(BlogPost).filter_by(slug=slug).first()
     if post:
-        return render_template("blog-post.html", post=post)
+        return render_template("blog-post.html", post=post, slug=slug)
     else:
         return f"404"
 
