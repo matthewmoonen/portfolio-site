@@ -63,7 +63,7 @@ def admin():
     return render_template("admin.html", posts=posts)
 
 
-@app.route('/blog/')
+@app.route('/blog')
 @login_required
 def show_blog_post():
     session["mykey"] = "myvalue"
