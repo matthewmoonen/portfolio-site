@@ -47,11 +47,11 @@ def login_required(f):
     return wrap
 
 
-@app.route("/blog")
+@app.route("/blog/admin")
 @login_required
-def blog():
+def blog_admin():
     posts = db.session.query(BlogPost).all()
-    return render_template("blog.html", posts=posts)
+    return render_template("blog-admin.html", posts=posts)
 
 @app.route("/welcome")
 def welcome():
@@ -66,7 +66,7 @@ def login():
         else:
             session['logged_in'] = True
             flash('You were just logged in!')
-            return redirect(url_for('blog'))
+            return redirect(url_for('blog_admin'))
     return render_template("login.html", error=error)
 
 @app.route("/logout")
