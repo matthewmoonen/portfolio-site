@@ -89,10 +89,10 @@ def add_entry():
     if form.is_submitted():
         title = request.form['title']
         body = request.form['body']
-        date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
         slug = request.form['slug']
+        date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-    blogdata = BlogPost(title=title, body=body, date_created=date_created)
+    blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created)
 
     try:
         db.session.add(blogdata)
