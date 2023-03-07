@@ -160,6 +160,21 @@ def navbar():
 def code():
     return render_template("code.html")
 
+@app.route('/delete_post/<int:post_id>', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = BlogPost.query.get_or_404(post_id)
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        flash('The post was successfully deleted')
+    except:
+        print('error 400')
+        return "an error occurred"
+    else:
+        flash('Entry was successfully deleted')
+        return redirect(url_for('admin'))
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
     # app.run(debug=True)
