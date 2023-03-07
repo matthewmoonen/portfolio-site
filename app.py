@@ -163,7 +163,7 @@ def code():
 @app.route('/delete_post/<int:post_id>', methods=['GET', 'POST'])
 @login_required
 def delete_post():
-    post_id = post_id
+    post_id = str(post_id)
     return post_id
 
     # post = BlogPost.query.filter_by(id=post_id).first_or_404()
