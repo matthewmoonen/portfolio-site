@@ -51,6 +51,17 @@
 
 @media (max-width: 991px) {
 
+    .hide-me {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    }
+    .hide-me.show {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+    }
+
     .navbar a {
         color: black;
     }
@@ -145,6 +156,10 @@
 
 
 @media (min-width: 992px) {
+
+    .hide-me {
+        display: none;
+    }
 
     .centre-navbar-mobile {
         display: none;
