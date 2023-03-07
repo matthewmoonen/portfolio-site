@@ -1,14 +1,25 @@
-{% extends '/base/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <br>
+        <p>Click <a href="/logout">here</a> to log out.</p>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
 
-{% block title %}Blog — Matthew Moonen{% endblock %}
-
-{% block content %}
-
-
-<h1>Matthew Moonen</h1>
-
-<div class="blog-post">
-    Hi!
-</div>
-
-{% endblock %}
+        <h3>Posts:</h3>
+        {% for post in posts %}
+        <strong>Title: </strong> {{ post.title }} <br>
+        <strong>Posts: </strong> {{ post.description }} <br>
+        {% endfor %}
+    </div>
+</body>
+</html>

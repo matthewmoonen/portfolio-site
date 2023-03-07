@@ -1,18 +1,25 @@
-from flask import Flask, render_template, redirect, request, session, url_for
+from flask import Flask, render_template, redirect, request, session, url_for, flash
 from german.german import german_app
 from forms import ContactForm
 from datetime import datetime
 import secrets
-# from models import messages
+from models import messages, BlogPost
 from extensions import db
+from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
+
+
 
 app = Flask(__name__)
 app.register_blueprint(german_app, url_prefix="/german")
 
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///messages.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy()
+
 
 db.init_app(app)
 
@@ -24,6 +31,48 @@ with app.app_context():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if "logged_in" in session:
+            return f(*args, **kwargs)
+        else:
+            flash("You need to log in first!")
+            return redirect(url_for("login"))
+    return wrap
+
+
+@app.route("/blog")
+@login_required
+def blog():
+    posts = db.session.query(BlogPost).all()
+    return render_template("blog.html", posts=posts)
+
+@app.route("/welcome")
+def welcome():
+    return render_template("welcome.html")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'invalid credentials; please try again'
+        else:
+            session['logged_in'] = True
+            flash('You were just logged in!')
+            return redirect(url_for('home'))
+    return render_template("login.html", error=error)
+
+@app.route("/logout")
+@login_required
+def logout():
+    session.pop("logged_in", None)
+    flash("You were just logged out!")
+    return redirect(url_for('welcome'))
+
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
@@ -59,9 +108,9 @@ def contact():
 def show_icons():
     return render_template("icons.html")
 
-@app.route("/blog")
-def blog():
-    return render_template("blog.html")
+# @app.route("/blog")
+# def blog():
+#     return render_template("blog.html")
 
 @app.route("/navbar")
 def navbar():
@@ -75,4 +124,3 @@ if __name__ == "__main__":
     app.run(host='0.0.0.0')
     # app.run(debug=True)
 
-from models import *

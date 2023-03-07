@@ -1,7 +1,9 @@
 from datetime import datetime
 from extensions import db
 
+
 class messages(db.Model):
+    __tablename__ = "mymessages"
     _id = db.Column("id", db.Integer, primary_key=True)
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
@@ -21,3 +23,17 @@ class messages(db.Model):
         self.date_created = date_created
         self.ip_address = ip_address
         self.is_forwarded = is_forwarded
+
+
+class BlogPost(db.Model):
+    __tablename__ = "blogposts"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    body = db.Column(db.String, nullable=False)
+
+    def __init__(self, title, body):
+        self.title = title
+        self.body = body
+
+    def __repr__(self):
+        return '<title {}'.format(self.title)
