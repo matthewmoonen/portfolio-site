@@ -86,7 +86,6 @@ def add_entry():
         db.session.add(formdata)
         db.session.commit()
     except:
-        print('error 400')
         return "an error occurred"
     else:
         flash('New entry was successfully added')
@@ -96,7 +95,7 @@ def add_entry():
 @app.route('/delete_post/<int:post_id>', methods=['POST'])
 @login_required
 def delete_post(post_id):
-    post = BlogPost.query.filter_by(id=post_id).first_or_404()
+    post = BlogPost.query.filter_by(post_id=post_id).first_or_404()
     # post = BlogPost.query.filter_by(id=post_id).first()
     try:
         db.session.delete(post)
