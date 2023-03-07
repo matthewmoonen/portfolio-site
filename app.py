@@ -11,10 +11,13 @@ import redis
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-
+# Instantiate the Flask application
 app = Flask(__name__)
+
+# Return German learning game as a blueprint/modular app
 app.register_blueprint(german_app, url_prefix="/german")
 
+# Create secret key securely
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
 # Set Redis connection details
@@ -24,37 +27,50 @@ redis_port = 6379
 # TODO: Update this 
 redis_password = "banana"
 
+# Configuration of SQL database and session cookies
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
 app.config['SESSION_COOKIE_SECURE'] = True
+
+# Configuration of Redis which allows multiple workers to access the same session credentials on the VPS
 app.config['SESSION_TYPE'] = 'redis'
 app.config["SESSION_REDIS"] = redis.Redis(host=redis_host, port=redis_port, password=redis_password)
 Session(app)
+
+# Initialise the database
 db.init_app(app)
 
+
+# Create DB for contact form if not already exists
 with app.app_context():
-    """Create DB for contact form if not already exists"""
     db.create_all()
 
+# Store hashed password for admin panel in a safe location not exposed to Github
 with open('secret-files/admin_password_hash.txt', 'r') as file:
     ADMIN_PASSWORD_HASH = file.read().strip()
 
+# Start of routes. Index is the landing page.
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# A decorator function that creates login requirement for certain views.
 def login_required(f):
+    # Wraps decorator preserves the original function's name and docstring
     @wraps(f)
     def wrap(*args, **kwargs):
+        # Check whether user is logged in
         if "logged_in" in session:
             return f(*args, **kwargs)
+        # Handle user not logged in trying to access page that requires login
         else:
             flash("You need to log in first!")
             return redirect(url_for("login"))
     return wrap
 
+# Admin panel primarily for creating blog posts
 @app.route("/admin/")
 @login_required
 def admin():
@@ -62,7 +78,7 @@ def admin():
     posts = db.session.query(BlogPost).all()
     return render_template("admin.html", posts=posts)
 
-
+# Retrieve blog post via URL slug. Display 404 error if post not available.
 @app.route('/blog/<slug>/')
 def blog_post(slug):
     post = db.session.query(BlogPost).filter_by(slug=slug).first()
@@ -71,19 +87,13 @@ def blog_post(slug):
     else:
         return f"404"
 
-# @app.route('/blogbyint/<int:post_id>/')
-# def show_blog_post_by_int(post_id):
-#     post = db.session.query(BlogPost).filter_by(_id=post_id).first()
-#     return render_template("blog-post.html", post=post)
-
-
-# route for rendering the form
+# route for rendering the post blog form
 @app.route('/add_entry/', methods=['GET'])
 @login_required
 def render_add_entry():
     return render_template('add_entry.html')
 
-# route for handling the form submission
+# route for handling the post blog form submission
 @app.route('/add_entry/', methods=['POST'])
 @login_required
 def add_entry():
@@ -105,32 +115,42 @@ def add_entry():
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
 
+# TODO: delete this
 @app.route("/welcome/")
 def welcome():
     return render_template("welcome.html")
 
+# Login route. Currently there is only one login user as admin.
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
+    # If admin user already logged in, redirect to admin page.
     if 'logged_in' in session and session['logged_in']:
         return redirect(url_for('admin'))
     error = None
+    # Verify username/password for admin user logging in.
     if request.method == 'POST':
+        # Handle incorrect credentials
         if request.form['username'] != 'admin' or not check_password_hash(ADMIN_PASSWORD_HASH, request.form['password']):
             error = 'invalid credentials; please try again'
+        # Handle correct credentials
         else:
             session['logged_in'] = True
             flash('You were just logged in!')
             return redirect(url_for('admin'))
     return render_template("login.html", error=error)
 
+# User automatically logged out when 
 @app.route("/logout/")
 @login_required
 def logout():
     session["mykey"] = "myvalue"
+    # "pop" the key off the session cookie
     session.pop("logged_in", None)
     flash("You were just logged out!")
     return redirect(url_for('welcome'))
 
+# Contact form submits to a SQL database. 
+# Need separate Python script and chron job to forward the emails.
 @app.route("/contact/", methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
@@ -161,19 +181,22 @@ def contact():
             return render_template('thanks.html', first_name=first_name)
     return render_template("contact.html")
 
-
+# TODO: combine into the regular index page.
 @app.route("/icons/")
 def show_icons():
     return render_template("icons.html")
 
+# Navbar is part of the base html/css elements.
 @app.route("/navbar/")
 def navbar():
     return render_template("base/navbar1.html")
 
+# My projects TODO: combine into index page
 @app.route("/code")
 def code():
     return render_template("code.html")
 
+# Handle admin deleting post from the admin page
 @app.route('/delete_post/<int:post_id>/', methods=['GET', 'POST'])
 @login_required
 def delete_post(post_id):
