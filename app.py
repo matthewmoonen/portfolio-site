@@ -5,7 +5,6 @@ from datetime import datetime
 import secrets
 from models import messages, BlogPost
 from extensions import db
-# from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 
 
@@ -18,7 +17,11 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy()
+
+app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
+app.config['SESSION_COOKIE_PATH'] = '/'
+
+
 
 
 db.init_app(app)
