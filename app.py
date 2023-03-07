@@ -87,14 +87,29 @@ def add_entry():
         db.session.commit()
     except:
         print('error 400')
-        return render_template("an error occurred")
+        return "an error occurred"
     else:
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
+    
+# route for deleting a blog post
+@app.route('/delete_post/<int:post_id>', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = BlogPost.query.filter_by(id=post_id).first()
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        flash('The post was successfully deleted')
+    else:
+        flash('The post could not be found')
+    return redirect(url_for('admin'))
+
 
 @app.route("/welcome")
 def welcome():
     return render_template("welcome.html")
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
