@@ -202,16 +202,20 @@
         transform: translateY(-1rem);
     }
       
-      .navbar-links {
+      .navbar-links a {
         display: block;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.4s ease-out, transform .2s ease-in-out;
       }
       
+      
+
       .navbar-links:hover a:not(:hover) {
         opacity: 0.5;
       }
       
       .navbar-links a:hover {
         opacity: 1;
+        transform: scale(1.05);
+        /* transition: opacity 0.9s ease; */
       }
 }

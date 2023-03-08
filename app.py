@@ -8,6 +8,7 @@ from extensions import db
 from functools import wraps
 from flask_session import Session
 import redis
+from secret_files import redis_pw
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -25,7 +26,7 @@ redis_host = "localhost"
 redis_port = 6379
 
 # TODO: Update this 
-redis_password = "banana"
+redis_password = redis_pw.redis_password()
 
 # Configuration of SQL database and session cookies
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
@@ -48,7 +49,7 @@ with app.app_context():
     db.create_all()
 
 # Store hashed password for admin panel in a safe location not exposed to Github
-with open('secret-files/admin_password_hash.txt', 'r') as file:
+with open('secret_files/admin_password_hash.txt', 'r') as file:
     ADMIN_PASSWORD_HASH = file.read().strip()
 
 # Start of routes. Index is the landing page.
@@ -189,7 +190,14 @@ def show_icons():
 # Navbar is part of the base html/css elements.
 @app.route("/navbar/")
 def navbar():
-    return render_template("base/navbar1.html")
+    return render_template("base/navbar.html")
+
+
+@app.route("/navbar2/")
+def navbar2():
+    return render_template("base/navbar2.html")
+
+
 
 # My projects TODO: combine into index page
 @app.route("/code")
