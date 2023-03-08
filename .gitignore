@@ -2,5 +2,6 @@ venv/
 notes/
 __pycache__/
 secret-files/
+secret_files/
 wsgi.py
 instance/
