@@ -15,6 +15,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Instantiate the Flask application
 app = Flask(__name__)
 
+# if os.getenv('FLASK_ENV') == 'development':
+#     app.run(debug=True)
+# else:
+#     app.run(host='0.0.0.0')
+
+
 # Return German learning game as a blueprint/modular app
 app.register_blueprint(german_app, url_prefix="/german")
 
@@ -222,7 +228,5 @@ def delete_post(post_id):
 
 
 if __name__ == "__main__":
-    if os.environ.get('FLASK_ENV') == 'development':
-        app.run(debug=True)
-    else:
-        app.run(host='0.0.0.0')
+    # app.run(debug=True)
+    app.run(host='0.0.0.0')
