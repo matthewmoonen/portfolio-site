@@ -9,7 +9,6 @@ from functools import wraps
 from flask_session import Session
 import redis
 import os
-# from secret_files import redis_pw
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -32,7 +31,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
-app.config['SESSION_COOKIE_SECURE'] = True
+
+if os.getenv("FLASK_ENV")  == 'production':
+    app.config['SESSION_COOKIE_SECURE'] = True
 
 # Configuration of Redis which allows multiple workers to access the same session credentials on the VPS
 app.config['SESSION_TYPE'] = 'redis'
@@ -47,9 +48,10 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# Store hashed password for admin panel in a safe location not exposed to Github
-with open('secret_files/admin_password_hash.txt', 'r') as file:
-    ADMIN_PASSWORD_HASH = file.read().strip()
+
+ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+
+
 
 # Start of routes. Index is the landing page.
 @app.route("/")
