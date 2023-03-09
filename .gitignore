@@ -5,3 +5,4 @@ secret-files/
 secret_files/
 wsgi.py
 instance/
+environmentvariables.env

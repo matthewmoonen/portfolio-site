@@ -8,7 +8,8 @@ from extensions import db
 from functools import wraps
 from flask_session import Session
 import redis
-from secret_files import redis_pw
+import os
+# from secret_files import redis_pw
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -22,11 +23,9 @@ app.register_blueprint(german_app, url_prefix="/german")
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
 # Set Redis connection details
-redis_host = "localhost"
-redis_port = 6379
-
-# TODO: Update this 
-redis_password = redis_pw.redis_password()
+redis_host = os.getenv("REDIS_HOST", "localhost")
+redis_port = os.getenv("REDIS_PORT", 6379)
+redis_password = os.getenv("REDIS_PASSWORD", "")
 
 # Configuration of SQL database and session cookies
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
