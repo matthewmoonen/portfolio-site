@@ -8,6 +8,7 @@ from extensions import db
 from functools import wraps
 from flask_session import Session
 import redis
+from dotenv import load_dotenv
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -15,11 +16,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Instantiate the Flask application
 app = Flask(__name__)
 
-# if os.getenv('FLASK_ENV') == 'development':
-#     app.run(debug=True)
-# else:
-#     app.run(host='0.0.0.0')
-
+# Load environment variables from file and make accessible to project
+load_dotenv("/home/matthew/portfolio-site/environmentvariables.env")
 
 # Return German learning game as a blueprint/modular app
 app.register_blueprint(german_app, url_prefix="/german")
@@ -27,17 +25,18 @@ app.register_blueprint(german_app, url_prefix="/german")
 # Create secret key securely
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
-# Set Redis connection details
+# Set redis connection details
 redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_port = os.getenv("REDIS_PORT", 6379)
 redis_password = os.getenv("REDIS_PASSWORD", "")
 
-# Configuration of SQL database and session cookies
+# Configure SQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Configure session cookies
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
-
 if os.getenv("FLASK_ENV")  == 'production':
     app.config['SESSION_COOKIE_SECURE'] = True
 
@@ -49,15 +48,12 @@ Session(app)
 # Initialise the database
 db.init_app(app)
 
-
 # Create DB for contact form if not already exists
 with app.app_context():
     db.create_all()
 
-
+# Store hashed password for admin panel in .env to prevent exposing to GitHub
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
-
-
 
 # Start of routes. Index is the landing page.
 @app.route("/")
@@ -101,7 +97,7 @@ def blog_post(slug):
 def render_add_entry():
     return render_template('add_entry.html')
 
-# route for handling the post blog form submission
+# route for handling post blog form submission
 @app.route('/add_entry/', methods=['POST'])
 @login_required
 def add_entry():
@@ -147,7 +143,7 @@ def login():
             return redirect(url_for('admin'))
     return render_template("login.html", error=error)
 
-# User automatically logged out when 
+# User automatically logged out when they visit here
 @app.route("/logout/")
 @login_required
 def logout():
@@ -228,5 +224,5 @@ def delete_post(post_id):
 
 
 if __name__ == "__main__":
-    # app.run(debug=True)
     app.run(host='0.0.0.0')
+    # app.run(debug=True)
