@@ -7,30 +7,23 @@
     {% include '/base/navbar2.html' %}
 
 <style>
-    		/* Style the index-sections */
-		.index-section{
-			/* height: 100vh; */
-            min-height: 70vh;
-			padding: 50px;
-			/* font-size: 30px; */
-			/* text-align: center; */
-            margin: 0;
-		}
+    body {
+    background-color: hsl(207, 13%, 17%);
+    }
+    /* Style the index-sections */
+    .index-section{
+        min-height: 70vh;
+        padding: 50px;
+        margin: 0;
+    }
 
-		/* Style the first section differently */
-		#index-home {
-			/* background-color: black; */
+    #index-home {
             /* background-image: url("https://upload.wikimedia.org/wikipedia/commons/c/cc/A_snowy_day_-_geograph.org.uk_-_3303211.jpg"); */
             background-image: url({{ url_for('static', filename='img/ams.jpg') }});
 
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            /* height: 60vh; */
-            /* position: relative; */
-            /* text-align: center; */
-
-
             color: white;
             height: 100vh;
             padding: 50px;
@@ -38,7 +31,6 @@
             text-align: center;
             margin: 0;
             margin-top: -70px;
-            /* transform: translateY(-100px); */
 		}
 
 		/* Style the second section differently */
@@ -64,16 +56,17 @@
         .index-section {
             opacity: 0;
             transition: opacity 1s ease-in-out;
+
         }
 
         .index-section.active {
             opacity: 1;
         }
         .index-home {
-        -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
-       -moz-animation: fadein 2s; /* Firefox < 16 */
-        -ms-animation: fadein 2s; /* Internet Explorer */
-         -o-animation: fadein 2s; /* Opera < 12.1 */
+            -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadein 2s; /* Firefox < 16 */
+            -ms-animation: fadein 2s; /* Internet Explorer */
+            -o-animation: fadein 2s; /* Opera < 12.1 */
             animation: fadein 2s;
         }
 

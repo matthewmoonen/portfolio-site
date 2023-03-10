@@ -35,20 +35,86 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 
 
-// Define fade-in behavior for sections
-document.addEventListener('scroll', function() {
-    let sections = document.querySelectorAll('.index-section');
+// // Define fade-in behavior for sections
+// document.addEventListener('scroll', function() {
+//     let homeSection = document.querySelectorAll('.index-home');
 
-    sections.forEach(section => {
-        let sectionTop = section.getBoundingClientRect().top;
-        let sectionBottom = section.getBoundingClientRect().bottom;
-        let sectionHeight = section.getBoundingClientRect().height;
+//     homeSection.forEach(homeSection => {
+//         let homeSectionTop = homeSection.getBoundingClientRect().top;
+//         let homeSectionBottom = homeSection.getBoundingClientRect().bottom;
+//         let homeSectionHeight = homeSection.getBoundingClientRect().height;
 
-        if (sectionTop < window.innerHeight && sectionBottom >= 0) {
-            section.classList.add('active');
-        } 
-        else if (sectionTop < window.innerHeight - sectionHeight) {
-            section.classList.remove('active');
-        }
+//         if (homeSectionTop < window.innerHeight && homeSectionBottom >= 0) {
+//             homeSection.classList.add('active');
+//         } 
+//         else if (homeSectionTop < window.innerHeight - homeSectionHeight) {
+//             homeSection.classList.remove('active');
+//         }
+//     });
+
+
+
+
+//     const sections = document.querySelectorAll('.index-section');
+
+//     const isInViewport = (element) => {
+//       const { top, bottom, height } = element.getBoundingClientRect();
+//       return top < window.innerHeight && bottom >= 0 && height > 0;
+//     };
+    
+//     sections.forEach((section) => {
+//       if (isInViewport(section)) {
+//         section.classList.add('active');
+//       } else {
+//         section.classList.remove('active');
+//       }
+//     });
+    
+
+
+
+
+//     // let sections = document.querySelectorAll('.index-section');
+
+//     // sections.forEach(section => {
+//     //     let sectionTop = section.getBoundingClientRect().top;
+//     //     let sectionBottom = section.getBoundingClientRect().bottom;
+//     //     let sectionHeight = section.getBoundingClientRect().height;
+
+//     //     if (sectionTop < window.innerHeight && sectionBottom >= 0) {
+//     //         section.classList.add('active');
+//     //     } 
+//     //     else if (sectionTop < window.innerHeight - sectionHeight) {
+//     //         section.classList.remove('active');
+//     //     }
+//     // });
+// });
+
+
+
+
+
+
+
+
+const isInViewport = (element) => {
+    const { top, bottom, height } = element.getBoundingClientRect();
+    return top < window.innerHeight && bottom >= 0 && height > 0;
+  };
+  
+  const handleScroll = () => {
+    const sections = document.querySelectorAll('.index-section');
+    sections.forEach((section) => {
+      if (isInViewport(section)) {
+        section.classList.add('active');
+      } else {
+        section.classList.remove('active');
+      }
     });
-});
+  };
+  
+  // Call handleScroll initially to set active classes on load
+  handleScroll();
+  
+  document.addEventListener('scroll', handleScroll);
+  
