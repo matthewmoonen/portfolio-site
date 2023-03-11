@@ -19,18 +19,23 @@
 
     #index-home {
             /* background-image: url("https://upload.wikimedia.org/wikipedia/commons/c/cc/A_snowy_day_-_geograph.org.uk_-_3303211.jpg"); */
-            background-image: url({{ url_for('static', filename='img/ams.jpg') }});
+            /* background-image: url({{ url_for('static', filename='img/ams.jpg') }}); */
+            /* background-image: url({{ url_for('static', filename='img/dark2.png') }}); */
+            /* background-image: url({{ url_for('static', filename='img/dark2.png') }}); */
+            /* background-image: url({{ url_for('static', filename='img/index1.jpg') }}); */
 
-            background-position: center;
+            /* background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            color: white;
+            color: white; */
             height: 100vh;
             padding: 50px;
-            font-size: 30px;
-            text-align: center;
+            /* font-size: 30px; */
+            /* text-align: center; */
+            text-align: left;
+
             margin: 0;
-            margin-top: -70px;
+            /* margin-top: -70px; */
 		}
 
 		/* Style the second section differently */
@@ -56,18 +61,57 @@
         .index-section {
             opacity: 0;
             transition: opacity 1s ease-in-out;
-
         }
 
         .index-section.active {
             opacity: 1;
         }
+
+
+        .bigbox {
+            width: 1000px;
+            height: 100px;
+            /* background: linear-gradient(to right, rgb(247, 23, 72), rgb(249, 87, 90), rgb(252, 176, 77), rgb(250, 225, 165), rgb(207, 219, 241), rgb(143, 242, 162), rgb(92, 178, 230), rgb(84, 170, 222), rgb(126, 95, 240), rgb(191, 110, 202), rgb(240, 178, 180)); */
+            
+            /* background: linear-gradient(to right, rgb(247, 23, 72), rgb(249, 87, 90), rgb(252, 176, 77), rgb(84, 170, 222), rgb(182, 80, 195), rgb(240, 178, 180), rgb(252, 205, 65), rgb(249, 87, 90), rgb(84, 170, 222)); */
+            background: linear-gradient(to right, rgb(252, 176, 77), rgb(249, 87, 90));
+
+        
+        }
+        .bigbox2 {
+            width: 1000px;
+            height: 100px;
+            background: linear-gradient(to right, rgb(249, 87, 90), rgb(84, 170, 222));
+            /* background: linear-gradient(to right, rgb(252, 205, 65), rgb(249, 87, 90), rgb(84, 170, 222),  rgb(252, 205, 65), rgb(249, 87, 90), rgb(84, 170, 222)); */
+
+            /* background: linear-gradient(to right, rgb(249, 87, 90), rgb(252, 176, 77), rgb(84, 170, 222), rgb(182, 80, 195), rgb(240, 178, 180), rgb(252, 205, 65), rgb(249, 87, 90), rgb(84, 170, 222), rgb(117, 62, 124), rgb(252, 176, 77)); */
+
+        }
+
+/* 
+        .container {
+  height: 2000px;
+} */
+
+.ismt {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.ismt.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
         .index-home {
-            -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
-            -moz-animation: fadein 2s; /* Firefox < 16 */
-            -ms-animation: fadein 2s; /* Internet Explorer */
-            -o-animation: fadein 2s; /* Opera < 12.1 */
-            animation: fadein 2s;
+            -webkit-animation: fadein 4s; /* Safari, Chrome and Opera > 12.1 */
+            -moz-animation: fadein 4s; /* Firefox < 16 */
+            -ms-animation: fadein 4s; /* Internet Explorer */
+            -o-animation: fadein 4s; /* Opera < 12.1 */
+            animation: fadein 4s;
         }
 
         @keyframes fadein {
@@ -107,16 +151,180 @@
     <main>
 
         <div id="index-home" class="index-home">
+                <style>
+              @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+              
+                    .cursor {
+                        display: inline-block;
+                        vertical-align: middle;
+                        animation: blink 0.7s infinite;
             
-            <h1>Welcome to My Portfolio</h1>
-            <p>This is the home section.</p>
+                    }
+                    @keyframes blink {
+                        0% {
+                            opacity: 0;
+                        }
+            
+                        50% {
+                            opacity: 1;
+                        }
+            
+                        100% {
+                            opacity: 0;
+                        }
+                    }
+            
+                    #text, #already-there {
+                        white-space: pre-wrap;
+                  font-family: 'Space Mono', 'Courier New', Courier, monospace;
+                    }
+                  .index-home {
+                    background-color: rgb(33, 33, 33);
+                  }
+                            .red {
+                      color: rgb(255, 106, 106);
+                    }
+                    .blue {
+                        color: rgb(124, 190, 244);
+                    }
+                    .darkblue {
+                      color: rgb(81, 154, 214);
+                    }
+                    .white {
+                        color: rgb(215, 215, 215);
+                    }
+                    .purple {
+                        color: rgb(145, 92, 178);
+                    }
+                    .orange {
+                        color: rgb(255, 162, 0);
+                    }
+                    .grey {
+                        color: rgb(66, 75, 82);
+                    }
+                    .code-break {
+                      margin: 0px 0;
+                      padding: 0;
+                    }
+                  </style>
+                  <div></div>
+                  <!-- <div id="already-there"><p><span class="red">const</span> <span class="darkblue">you</span> <span class="red">=</span> <span class="blue">"you"</span><span class="white">;</span><br class="code-break"><span class="red">const</span> <span class="darkblue">me</span> <span class="red">=</span> <span class="blue">"Matthew Moonen"</span><span class="white">;</span><br class="code-break"><span class="red">let</span> <span class="white">youBrowse</span> <span class="red">=</span> <span class="blue">"matthewmoonen.com"</span><span class="white">;</span></p></div> -->
+                  <div id="text"></div>
+                
+            
+            
+                  <script>
+                    var text = '<span class="red">const</span> <span class="darkblue">you</span> <span class="red">=</span> <span class="blue">"you"</span><span class="white">;</span>\n<span class="red">const</span> <span class="darkblue">me</span> <span class="red">=</span> <span class="blue">"Matthew Moonen"</span><span class="white">;</span>\n<span class="red">let</span> <span class="white">youBrowse</span> <span class="red">=</span> <span class="blue">"matthewmoonen.com"</span><span class="white">;</span>\n \n<span class="red">while</span> <span class="darkblue">(</span><span class="white">youBrowse</span> <span class="red">===</span> <span class="blue">"matthewmoonen.com"</span><span class="darkblue">) {</span> \n<span class="grey">••</span><span class="white">youBrowse</span> <span class="red">=</span> <span class="purple">welcome</span><span class="darkblue">(</span><span class="orange">me</span><span class="white">,</span> <span class="orange">you<span class="darkblue">)</span><span class="white">;</span> \n<span class="darkblue">}</span>';
+                    
+                    
+                    // var text = '<span class="red">const</span> <span class="darkblue">you</span> <span class="red">=</span> <span class="blue">"you"</span><span class="white">;</span>\n<span class="red">const</span> <span class="darkblue">me</span> <span class="red">=</span> <span class="blue">"Matthew Moonen"</span><span class="white">;</span>\n<span class="red">let</span> <span class="white">youBrowse</span> <span class="red">=</span> <span class="blue">"matthewmoonen.com"</span><span class="white">;</span>\n \n<span class="red">while</span> <span class="darkblue">(</span><span class="white">youBrowse</span> <span class="red">===</span> <span class="blue">"matthewmoonen.com"</span><span class="darkblue">) {</span> \n  <span class="purple">welcome</span><span class="orange">(</span><span class="darkblue">me</span><span class="white">,</span> <span class="darkblue">you<span class="orange">)</span><span class="white">;</span> \n  <span class="red">if</red> <span class="orange">(</span><span class="white">youWantToLeave</span> <span class="red">===</span> <span class="darkblue">true</span><span class="orange">) {</span> \n    <span class="darkblue">console</span><span class="white">.</span><span class="purple">log(</span><span class="blue">"Thanks for stopping by!"</span><span class="purple">)</span><span class="white">;</span> \n    <span class="red">break</span><span class="white">;</span> \n  <span class="orange">}</span> \n<span class="blue">}</span>';
+
+                    // var text = '<span class="red">const</span> <span class="darkblue">you</span> <span class="red">=</span> <span class="blue">"you"</span><span class="white">;</span>\n<span class="red">const</span> <span class="darkblue">me</span> <span class="red">=</span> <span class="blue">"Matthew Moonen"</span><span class="white">;</span>\n<span class="red">let</span> <span class="white">youBrowse</span> <span class="red">=</span> <span class="blue">"matthewmoonen.com"</span><span class="white">;</span>\n \n<span class="red">while</span> <span class="darkblue">(</span><span class="white">youBrowse</span> <span class="red">===</span> <span class="blue">"matthewmoonen.com"</span><span class="darkblue">) {</span> \n  <span class="purple">welcome</span><span class="orange">(</span><span class="darkblue">me</span><span class="white">,</span> <span class="darkblue">you<span class="orange">)</span><span class="white">;</span> \n  <span class="red">if</red> <span class="orange">(</span><span class="white">youWantToLeave</span> <span class="red">===</span> <span class="darkblue">true</span><span class="orange">) {</span> \n    <span class="darkblue">console</span><span class="white">.</span><span class="purple">log(</span><span class="blue">"Thanks for stopping by!"</span><span class="purple">)</span><span class="white">;</span> \n    <span class="red">break</span><span class="white">;</span> \n  <span class="orange">}</span> \n<span class="blue">}</span>';
+            
+                    // var text = '<span class="red">while</span> <span class="darkblue">(</span><span class="white">youBrowse</span> <span class="red">===</span> <span class="blue">"matthewmoonen.com"</span><span class="darkblue">) {</span> \n  <span class="purple">welcome</span><span class="orange">(</span><span class="darkblue">me</span><span class="white">,</span> <span class="darkblue">you<span class="orange">)</span><span class="white">;</span> \n  <span class="red">if</red> <span class="orange">(</span><span class="white">youLeave</span> <span class="red">===</span> <span class="darkblue">true</span><span class="orange">) {</span> \n    <span class="darkblue">console</span><span class="white">.</span><span class="purple">log(</span><span class="blue">"See you next time!"</span><span class="purple">)</span><span class="white">;</span> \n    <span class="red">break</span><span class="white">;</span> \n  <span class="orange">}</span> \n<span class="blue">}</span>';
+                    // var text = '<span class="red">while</span> <span class="darkblue">(</span><span class="white">youBrowse</span> <span class="red">===</span> <span class="blue">"matthewmoonen.com"</span><span class="darkblue">) {</span> \n    <span class="purple">welcome</span><span class="orange">(</span><span class="darkblue">me</span><span class="white">,</span> <span class="darkblue">you<span class="orange">)</span><span class="white">;</span> \n    <span class="red">if</red> <span class="orange">(</span><span class="white">youLeave</span> <span class="red">===</span> <span class="darkblue">true</span><span class="orange">) {</span> \n        <span class="darkblue">console</span><span class="white">.</span><span class="purple">log(</span><span class="blue">"See you next time!"</span><span class="purple">)</span><span class="white">;</span> \n        <span class="red">break</span><span class="white">;</span> \n    <span class="orange">}</span> \n<span class="blue">}</span>';
+                    
+                    // var text = '<span class="red">while</span> <span class="blue">(</span><span class="white">youBrowse</span> <span class="red">===</span> <span class="blue">"matthewmoonen.com") {</span> \n    <span class="purple">welcome</span><span class="orange">(</span><span class="blue">me</span><span class="white">,</span> <span class="blue">you<span class="orange">)</span><span class="white">;</span> \n    <span class="red">if</red> <span class="orange">(</span><span class="white">youLeave</span> <span class="red">===</span> <span class="blue">true</span><span class="orange">) {</span> \n        <span class="blue">console</span><span class="white">.</span><span class="purple">log(</span><span class="blue">"See you next time!"</span><span class="purple">)</span><span class="white">;</span> \n        <span class="red">break</span><span class="white">;</span> \n    <span class="orange">}</span> \n<span class="blue">}</span>';
+            
+                    var element = document.getElementById("text");
+                    var index = 0;
+                    var interval = setInterval(addLetter, 16);
+                  
+                    function addLetter() {
+                      // Get the current character
+                      var char = text.charAt(index);
+                  
+                      // Check if the current character is the start of a tag
+                      if (char === "<") {
+                        // Get the end of the tag
+                        var endIndex = text.indexOf(">", index);
+                        if (endIndex !== -1) {
+                          // Extract the tag and its contents
+                          var tag = text.slice(index, endIndex + 1);
+                          var contents = text.slice(index + tag.length, endIndex);
+                  
+                          // Create a new element and add it to the HTML element
+                          var newElement = document.createElement("span");
+                          if (tag.includes("class")) {
+                            // Set the class attribute if present
+                            var className = tag.match(/class=['"]([^'"]+)['"]/)[1];
+                            newElement.setAttribute("class", className);
+                          }
+                          newElement.textContent = contents;
+                          element.appendChild(newElement);
+                  
+                          // Increment the index past the tag and its contents
+                          index = endIndex + 1;
+                        }
+                      } else {
+                        // Add the current character to the HTML element
+                        var lastChild = element.lastChild;
+                        if (lastChild && lastChild.nodeType === Node.ELEMENT_NODE && lastChild.tagName === "SPAN") {
+                          // Add the current character to the last span element
+                          lastChild.textContent += char;
+                        } else {
+                          // Create a new span element and add it to the HTML element
+                          var newElement = document.createElement("span");
+                          newElement.textContent = char;
+                          element.appendChild(newElement);
+                        }
+                  
+                        // Increment the index
+                        index++;
+                      }
+                  
+                      // If all letters have been added, stop the interval
+                      if (index >= text.length) {
+                        clearInterval(interval);
+                      }
+                    }
+                    let me = "matthew moonen"
+                    console.log(`helloooo ${me}`)
+                  </script>            
+            <!-- <span class="ismt"><h1 class="ismt">Welcome to My Portfolio</h1>
+            <p class="ismt">This is the home section.</p></span> -->
         </div>
 
+
+
+
+
+
+        <!-- <div class="container">
+            <div class="ismt">
+              <h2>Section 1</h2>
+              <p>Some text...</p>
+            </div>
+            <div class="ismt">
+              <h2>Section 2</h2>
+              <p>Some more text...</p>
+            </div>
+            <div class="ismt">
+              <h2>Section 3</h2>
+              <p>Even more text...</p>
+            </div>
+            <div class="bigbox"></div>
+            <div class="bigbox2"></div>
+          </div>
+           -->
+
+           <div class="index-section" id="welcome">
+            <p>
+                <span class="red">function</span> <span class="purple">welcome</span><span class="darkblue">(</span><span class="orange">me</span><span class="white">,</span><span class="orange"> you</span><span class="darkblue">) {</span>
+            </p>
+           </div>
+
+
+
+
         <div id="projects" class="index-section">
-            <h1>My Projects</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
-    
+                <h1 class="ismt">My Projects</h1>
+                <div class="ismt">
+                    <h2>Section 1</h2>
+                    <p class="ismt">Some text...</p>
+                  </div>
+                <p class="ismt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
+                <p class="ismt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
         </div>
 
 

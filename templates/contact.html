@@ -4,21 +4,62 @@
 
 {% block content %}
     <style>
+        body {
+            /* background-color: rgb(30, 37, 42); */
+            /* background-color: rgb(44, 51, 51); */
+            background-color: rgb(42, 43, 53);
+            /* background-color: rgb(57, 57, 57); */
+            /* background-color: rgb(57, 57, 67); */
+            /* background-color: rgb(127,127,127); */
+            /* background-color: rgb(187,187,187); */
+            background-color: rgb(68,70,83);
+            
+
+            /* color: white; */
+            color: hsl(0, 0%, 100%, 65%);
+        }
         main {
             margin-left: 2%;
             margin-right: 2%;
         }
         .my-form {
             max-width: 992px;
+            /* color: red; */
+            /* background-color: aqua; */
         }
 
         input, button, textarea {
             padding: 0.2rem 1rem;
+            border-style: solid;
+            border-width: 1px;
+            /* color: green; */
+            background-color: rgb(71, 79, 103);
+            color: rgb(153, 153, 153);
+            background-color: rgb(109, 114, 117);
+            background-color: rgb(64, 65, 79);
+            border: none;
+            
+
+            /* border-color: black; */
+            /* border-style: solid;
+            border-width: 1px; */
+            /* border-color: rgb(205, 103, 102); */
+    border-style: solid;
+    border-width: 1px;
+    border-image: linear-gradient(to bottom right, rgba(252, 176, 77, 0.7), rgba(249, 87, 90, 0.7)) 1;
         }
+
+        textarea:focus, input:focus{
+    outline: none;
+    border-image: linear-gradient(to bottom right, rgba(252, 176, 77, 0.9), rgba(249, 87, 90, 0.9)) 1;
+    box-shadow: 0 0 10px 0 rgba(252, 176, 77, 0.5), 0 0 10px 0 rgba(249, 87, 90, 0.5);
+}
+
+
 
         input, textarea {
             font-size: 1.1rem;
-            border-radius: 3px;
+            /* border-radius: 3px; */
             /* background-color: whateveryouwant; */
         }
 
@@ -26,8 +67,23 @@
             font-size: 1.5rem;
             border-radius: 3px;
             background-color: transparent;
-            color: black;
-            border-color: black;
+            /* color: black;
+            border-color: black; */
+
+            color: white;
+            border-color: white;
+
+            /* border-color: rgb(249, 229, 162); */
+            /* color: rgb(249, 229, 162); */
+            /* background-color: rgb(205, 103, 102); */
+            background-color: rgb(84, 170, 222);
+            /* border-color: rgb(124, 216, 255);
+            color: rgb(124, 216, 255); */
+
+
+            /* border-color: rgb(205, 103, 102);
+            color: rgb(205, 103, 102); */
+
             border-style: solid;
             border-width: medium;
         }
@@ -195,8 +251,6 @@
     <main>
         <h1>Contact</h1>
         <p>Please complete the form below to contact me</p>
-
-        <p>Click Here to see my code for this form, and learn how to use an SQLite and Chron Jobs to automate email forwarding on a VPS.</p>
         <form name="my-form" class="my-form" action="" method="post">
             <div class="form-group" id="firstLastOnSameLine">
                 <div class="form-group">

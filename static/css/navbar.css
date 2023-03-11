@@ -1,6 +1,6 @@
 :root{
     --mainColour: hsl(0, 0%, 100%);
-    --hoverColour: hsl(0, 0%, 100%, 50%);
+    /* --hoverColour: hsl(0, 0%, 100%, 5%); */
 }
 .navbar {
     /* opacity: 98%; */
@@ -15,8 +15,8 @@
     -webkit-backdrop-filter: blur(1rem);
     border-bottom: solid;
     border-bottom-width: 1px;
-    border-bottom-color: hsla(207, 13%, 17%, 0.9);
-    border-bottom-color: hsla(0, 0%, 26%, 0.9);
+    /* border-bottom-color: hsla(207, 13%, 17%, 0.9);
+    border-bottom-color: hsla(0, 0%, 26%, 0.9); */
     border-bottom-color: hsla(0, 0%, 20%, 0.9);
 
     z-index: 1100;
@@ -225,6 +225,7 @@
 
     .navbar-links:hover a:not(:hover) {
         opacity: 0.7;
+        opacity: 0.5;
         filter: blur(0.015rem);
         -webkit-filter: blur(0);
 

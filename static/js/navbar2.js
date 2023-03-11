@@ -97,19 +97,190 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 
 
+
+
+
+// // THIS IS GOOD!
+// const isInViewport = (element) => {
+//     const { top, bottom, height } = element.getBoundingClientRect();
+//     return top < window.innerHeight && bottom >= 0 && height > 0;
+//   };
+  
+//   const handleScroll = () => {
+//     const sections = document.querySelectorAll('.index-section');
+//     sections.forEach((section) => {
+//       if (isInViewport(section)) {
+//         section.classList.add('active');
+//       } else {
+//         section.classList.remove('active');
+//       }
+//     });
+//   };
+  
+//   // Call handleScroll initially to set active classes on load
+//   handleScroll();
+  
+//   document.addEventListener('scroll', handleScroll);
+  
+
+
+
+
+
+
+
+
+
+
+
+// Niet zo goed!
+// const isInViewport = (element) => {
+//     const { top, bottom, height } = element.getBoundingClientRect();
+//     return top < window.innerHeight && bottom >= 0 && height > 0;
+//   };
+  
+//   const handleScroll = () => {
+//     const sections = document.querySelectorAll('.index-section, .movement-transition');
+//     sections.forEach((section) => {
+//       if (isInViewport(section)) {
+//         section.classList.add('active');
+//       } else {
+//         section.classList.remove('active');
+//       }
+//     });
+//   };
+  
+//   // Call handleScroll initially to set active classes on load
+//   handleScroll();
+  
+//   document.addEventListener('scroll', handleScroll);
+  
+//   const handleTransition = () => {
+//     const transitions = document.querySelectorAll('.movement-transition');
+//     transitions.forEach((transition) => {
+//       if (isInViewport(transition)) {
+//         transition.style.transform = 'translateY(0)';
+//         transition.style.opacity = 1;
+//         transition.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+//       }
+//     });
+//   };
+  
+//   // Call handleTransition initially to set initial position
+//   handleTransition();
+  
+//   document.addEventListener('scroll', handleTransition);
+  
+
+
+
+
+// const isInViewport = (element) => {
+//     const { top, bottom, height } = element.getBoundingClientRect();
+//     return top < window.innerHeight && bottom >= 0 && height > 0;
+//   };
+  
+//   const handleScroll = () => {
+//     const sections = document.querySelectorAll('.index-section, .movement-transition');
+//     sections.forEach((section) => {
+//       if (isInViewport(section)) {
+//         section.classList.add('active');
+//       } else {
+//         section.classList.remove('active');
+//       }
+//     });
+//   };
+  
+//   // Call handleScroll initially to set active classes on load
+//   handleScroll();
+  
+//   document.addEventListener('scroll', () => {
+//     handleScroll();
+//     handleTransition();
+//   });
+  
+//   const handleTransition = () => {
+//     const transitions = document.querySelectorAll('.movement-transition');
+//     transitions.forEach((transition) => {
+//       if (isInViewport(transition)) {
+//         transition.style.transform = 'translateY(0)';
+//         transition.style.opacity = 1;
+//         transition.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+//       }
+//     });
+//   };
+  
+
+
+
+
+
+
+
+
+
+
+// const isInViewport = (element) => {
+//     const { top, bottom, height } = element.getBoundingClientRect();
+//     return top < window.innerHeight && bottom >= 0 && height > 0;
+//   };
+  
+//   const handleScroll = () => {
+//     const sections = document.querySelectorAll('.index-section, .movement-transition');
+//     sections.forEach((section) => {
+//       if (isInViewport(section)) {
+//         section.classList.add('active');
+//       } else {
+//         section.classList.remove('active');
+//       }
+//     });
+//   };
+  
+//   // Call handleScroll initially to set active classes on load
+//   handleScroll();
+  
+//   document.addEventListener('scroll', () => {
+//     handleScroll();
+//     handleTransition();
+//   });
+  
+//   const handleTransition = () => {
+//     const transitions = document.querySelectorAll('.movement-transition.active');
+//     transitions.forEach((transition) => {
+//       if (isInViewport(transition)) {
+//         transition.style.transform = 'translateY(0)';
+//         transition.style.opacity = 1;
+//         transition.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+//       }
+//     });
+//   };
+  
+
+
+
+
+
+
+
+
+
+
+
 const isInViewport = (element) => {
     const { top, bottom, height } = element.getBoundingClientRect();
     return top < window.innerHeight && bottom >= 0 && height > 0;
   };
   
   const handleScroll = () => {
-    const sections = document.querySelectorAll('.index-section');
+    const sections = document.querySelectorAll('.ismt');
     sections.forEach((section) => {
       if (isInViewport(section)) {
         section.classList.add('active');
-      } else {
-        section.classList.remove('active');
-      }
+      } 
+      // UNCOMMENT to make elements move again on scroll.
+      // else {
+      //   section.classList.remove('active');
+      // }
     });
   };
   
@@ -117,4 +288,35 @@ const isInViewport = (element) => {
   handleScroll();
   
   document.addEventListener('scroll', handleScroll);
+  
+
+
+
+
+
+
+
+
+
+// THIS IS GOOD!
+const isInViewporta = (element) => {
+    const { top, bottom, height } = element.getBoundingClientRect();
+    return top < window.innerHeight && bottom >= 0 && height > 0;
+  };
+  
+  const handleScrolla = () => {
+    const sectionsa = document.querySelectorAll('.index-section');
+    sectionsa.forEach((sectiona) => {
+      if (isInViewporta(sectiona)) {
+        sectiona.classList.add('active');
+      } else {
+        sectiona.classList.remove('active');
+      }
+    });
+  };
+  
+  // Call handleScroll initially to set active classes on load
+  handleScrolla();
+  
+  document.addEventListener('scroll', handleScrolla);
   
