@@ -17,6 +17,11 @@
         font-family: 'Roboto';
     }
     
+    .index-background1 {
+    background-color: rgb(33, 33, 33);`
+    }
+
+
     /* TODO */
     .index-section{
         min-height: 70vh;
@@ -32,7 +37,7 @@
         text-align: left;
         margin: 0;
     }
-
+    
     #projects {
         background-color: black;
         color: whitesmoke;
@@ -148,9 +153,7 @@
         font-weight: 500;
         font-size: 14px;
     }
-    .index-home {
-    background-color: rgb(33, 33, 33);
-    }
+    
             .red {
         color: rgb(255, 106, 106);
     }
@@ -201,93 +204,199 @@
 
     #page-title {
         color: white;
-        text-align: center;
+        /* margin: auto; */
+        margin: auto;
+        max-width: 800px;
+
+
+
+
+        /* margin-top: 0;
+        margin-bottom: 0; */
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+
+
+
+
+
+
+
+
+
+
+
     }
     .title-myname {
         font-size: 75px;
     }
 
+
+
+
+#text {
+    position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+}
+
+
+
+
+
+    .cursor {
+  animation: blink 0.8s linear infinite;
+  display: inline-block;
+  width: 1ch;
+  padding-top: 0;
+  color: white;
+        font-family: Verdana;
+        font-weight: 900;
+        /* font-size: 19px; */
+        transform: translateY(-2px);
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
     </style>
 
             <main>
 
-            <div id="index-home" class="index-home">
+            <div id="index-home" class="index-home index-background1">
                 
+                <div id="text"></div>
                 <div id="page-title" style="opacity: 0;">
                     <p class="title-leadin">Hi, my name is</p>
                     <h1 class="title-myname">Matthew Moonen</h1>
                     <p class="title-tagline">"Welcome to my portfolio showcasing my journey from biology to code, exploring new technologies and building digital solutions that make a difference."</p>
                 </div>
-                  <div id="text"></div>
             
             
                   <script>
-                    var text = '<span class="red">const</span> <span class="darkblue">me</span> <span class="red">=</span> <span class="blue">"Matthew Moonen"</span><span class="white">;</span>\n<span class="red">let</span> <span class="white">you</span> <span class="red">=</span> <span class="blue">"visitor"</span><span class="white">;</span>\n\n<span class="purple">greetings</span><span class="darkblue">()</span>\n\n<span class="red italic-code">async function</span> <span class="purple">greetings</span><span class="darkblue">() {</span>\n<span class="grey">••</span><span class="darkblue">console</span><span class="white">.</span><span class="purple">log</span><span class="orange">(</span><span class="blue">`Hello</span> <span class="purple">${</span><span class="darkblue">you</span><span class="purple">}</span><span class="blue">. Welcome!`</span><span class="orange">)</span><span class="white">;</span>\n<span class="grey">// Scroll down to see the full function ;)</span>'
-                    var element = document.getElementById("text");
-                    var index = 0;
-                    var interval = setInterval(addLetter, 16);
-                  
-                    function addLetter() {
-                      // Get the current character
-                      var char = text.charAt(index);
-                  
-                      // Check if the current character is the start of a tag
-                      if (char === "<") {
-                        // Get the end of the tag
-                        var endIndex = text.indexOf(">", index);
-                        if (endIndex !== -1) {
-                          // Extract the tag and its contents
-                          var tag = text.slice(index, endIndex + 1);
-                          var contents = text.slice(index + tag.length, endIndex);
-                  
-                          // Create a new element and add it to the HTML element
-                          var newElement = document.createElement("span");
-                          if (tag.includes("class")) {
-                            // Set the class attribute if present
-                            var className = tag.match(/class=['"]([^'"]+)['"]/)[1];
-                            newElement.setAttribute("class", className);
-                          }
-                          newElement.textContent = contents;
-                          element.appendChild(newElement);
-                  
-                          // Increment the index past the tag and its contents
-                          index = endIndex + 1;
-                        }
-                      } else {
-                        // Add the current character to the HTML element
-                        var lastChild = element.lastChild;
-                        if (lastChild && lastChild.nodeType === Node.ELEMENT_NODE && lastChild.tagName === "SPAN") {
-                          // Add the current character to the last span element
-                          lastChild.textContent += char;
-                        } else {
-                          // Create a new span element and add it to the HTML element
-                          var newElement = document.createElement("span");
-                          newElement.textContent = char;
-                          element.appendChild(newElement);
-                        }
-                  
-                        // Increment the index
-                        index++;
-                      }
-                  
-                      // If all letters have been added, stop the interval
-                      if (index >= text.length) {
-                        clearInterval(interval)
-                        console.log('done');
-                        pushDown()
-                      }
-                    }
 
-                    function pushDown() {
-            setTimeout(() => {
-                const div = document.getElementById("text");
-                div.style.transition = "transform 0.5s ease-out";
-                div.style.transform = "translateY(350px)";
-                const pageTitle = document.getElementById("page-title");
-                pageTitle.style.transition = "opacity 0.5s ease-out 0.5s";
-                pageTitle.style.opacity = "1";
-            }, 1000);
+
+// var textArray = ['text one', 'text two', 'text three', 'text four']
+
+var textArray = ['<span class="red">const</span> <span class="darkblue">me</span> <span class="red">=</span> <span class="blue">"Matthew Moonen"</span><span class="white">;</span>', '\n<span class="red">let</span> <span class="white">you</span> <span class="red">=</span> <span class="blue">"visitor"</span><span class="white">;</span>', '\n\n<span class="purple">greetings</span><span class="darkblue">()</span><span class="white">;</span>', '\n\n<span class="red italic-code">async function</span> <span class="purple">greetings</span><span class="darkblue">() {</span>\n<span class="grey">••</span><span class="darkblue">console</span><span class="white">.</span><span class="purple">log</span><span class="orange">(</span><span class="blue">`Welcome</span> <span class="purple">${</span><span class="darkblue">you</span><span class="purple">}</span><span class="blue">!`</span><span class="orange">)</span><span class="white">;</span>\n<span class="grey">••</span><span class="red italic-code">await new</span> <span class="darkblue">Promise</span><span class="orange">(</span><span class="purple">(resolve)</span> <span class="red">=></span> <span class="purple">{</span>\n<span class="grey">••••</span><span class="darkblue">window</span><span class="white">.</span><span class="purple">addEventListener</span><span class="darkblue">(</span><span class="blue">"scroll"</span><span class="white">,</span> <span class="orange">()</span> <span class="red">=></span> <span class="orange">{</span>\n<span class="grey">••••••</span><span class="red">const</span> <span class="purple">{</span>\n<span class="grey">••••••••</span><span class="darkblue">scrollTop</span><span class="white">,</span>\n<span class="grey">••••••••</span><span class="darkblue">scrollHeight</span><span class="white">,</span>\n<span class="grey">••••••••</span><span class="darkblue">clientHeight</span>\n<span class="grey">••••••</span><span class="purple">}</span> <span class="red">=</span> <span class="darkblue">document</span><span class="white">.</span><span class="darkblue">documentElement</span><span class="white">;</span>\n<span class="grey">••••••</span><span class="red">if</span> <span class="purple">(</span><span class="darkblue">scrollTop</span> <span class="red">+</span> <span class="darkblue">clientHeight</span> <span class="red">=></span> <span class="darkblue">scrollHeight</span><span class="purple">) {</span>\n<span class="grey">••••••••</span><span class="purple">resolve</span><span class="darkblue">()</span><span class="white">;</span>\n<span class="grey">••••••</span><span class="purple">}</span>\n<span class="grey">••••</span><span class="orange">}</span><span class="darkblue">)</span><span class="white">;</span>\n<span class="grey">••</span><span class="purple">}</span><span class="orange">)</span><span class="white">;</span>\n<span class="grey">••</span><span class="darkblue">console</span><span class="white">.</span><span class="purple">log</span><span class="orange">(</span><span class="blue">`Thanks for stopping by</span> <span class="purple">${</span><span class="darkblue">me</span><span class="purple">}</span><span class="blue">\'s website!`</span><span class="orange">)</span><span class="white">;</span>\n<span class="darkblue">}</span>']
+var element = document.getElementById("text");
+var elementCount = 0;
+
+addElements();
+
+function addElements() {
+  var text = textArray[elementCount];
+  var index = 0;
+  var interval;
+  var waitTime;
+  var endAnimation = false;
+//   var showCursor = true;
+
+  if (elementCount <= 2) {
+    waitTime = 1500;
+    interval = setInterval(addLetter, 30);
+  } else if (elementCount === 2) {
+    waitTime = 400;
+    interval = setInterval(addLetter, 15);
+  } else if (elementCount === 3) {
+    waitTime = 300;
+    // endAnimation = true
+    interval = setInterval(addLetter, 4);
+  } 
+
+  function addLetter() {
+    // Get the current character
+    var char = text.charAt(index);
+
+    // Check if the current character is the start of a tag
+    if (char === "<") {
+      // Get the end of the tag
+      var endIndex = text.indexOf(">", index);
+      if (endIndex !== -1) {
+        // Extract the tag and its contents
+        var tag = text.slice(index, endIndex + 1);
+        var contents = text.slice(index + tag.length, endIndex);
+
+        // Create a new element and add it to the HTML element
+        var newElement = document.createElement("span");
+        if (tag.includes("class")) {
+          // Set the class attribute if present
+          var className = tag.match(/class=['"]([^'"]+)['"]/)[1];
+          newElement.setAttribute("class", className);
         }
+        newElement.textContent = contents;
+        element.appendChild(newElement);
+
+        // Increment the index past the tag and its contents
+        index = endIndex + 1;
+      }
+    } else {
+      // Add the current character to the HTML element
+      var lastChild = element.lastChild;
+      if (lastChild && lastChild.nodeType === Node.ELEMENT_NODE && lastChild.tagName === "SPAN") {
+        // Add the current character to the last span element
+        lastChild.textContent += char;
+      } else {
+        // Create a new span element and add it to the HTML element
+        var newElement = document.createElement("span");
+        newElement.textContent = char;
+        element.appendChild(newElement);
+      }
+
+      // Increment the index
+      index++;
+    }
+
+    // If all letters have been added, stop the interval and add the cursor
+    if (index >= text.length) {
+      clearInterval(interval);
+      element.insertAdjacentHTML("beforeend", '<span class="cursor">|</span>');
+      // Remove the cursor after 5 seconds
+      setTimeout(function() {
+        var cursor = element.querySelector('.cursor');
+        cursor.parentNode.removeChild(cursor);
+        if (endAnimation === true) {
+            triggerEndAnimation();
+        }
+        elementCount++;
+        addElements();
+      }, waitTime);
+    }
+  }
+}
+
+
+function triggerEndAnimation() {
+    setTimeout(() => {
+    const div = document.getElementById("text");
+    div.style.transition = "transform 0.5s ease-out";
+    div.style.transform = "translateY(-1500px)";
+    const pageTitle = document.getElementById("page-title");
+    pageTitle.style.transition = "opacity 0.5s ease-out 5s";
+    pageTitle.style.opacity = "1";
+    }, 5000);
+}
 
 
 

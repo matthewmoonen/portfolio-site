@@ -60,6 +60,10 @@ ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 def index():
     return render_template("index.html")
 
+@app.route("/index2")
+def index2():
+    return render_template("index2.html")
+
 # A decorator function that creates login requirement for certain views.
 def login_required(f):
     # Wraps decorator preserves the original function's name and docstring
