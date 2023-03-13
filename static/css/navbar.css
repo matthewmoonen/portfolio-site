@@ -1,5 +1,7 @@
 :root{
-    --mainColour: hsl(0, 0%, 100%);
+    /* --mainColour: hsl(0, 0%, 100%); */
+    --mainColour: #c2c2c2;
+
     /* --hoverColour: hsl(0, 0%, 100%, 5%); */
 }
 .navbar {
@@ -20,6 +22,7 @@
     border-bottom-color: hsla(0, 0%, 20%, 0.9);
 
     z-index: 1100;
+    /* visibility: hidden; */
 }
 
 .navbar:hover{
@@ -233,6 +236,8 @@
     
     .navbar-links a:hover {
         opacity: 1;
+        color: hsl(0, 0%, 100%);
+        fill: hsl(0, 0%, 100%);
     }
     .text-links a:hover {
         transform: scale(1.065);

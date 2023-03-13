@@ -11,27 +11,79 @@ var element = document.getElementById("text");
 var elementCount = 0;
 
 addElements();
+// triggerEndAnimation()
+
+
+
+
+function fadeInDiv() {
+  // Get the div element by its ID
+  const div = document.getElementById("page-title");
+
+  // Set the div's initial opacity to 0
+  div.style.opacity = 0;
+
+  // Wait for 5 seconds
+  setTimeout(() => {
+    // Use the CSS transition property to fade in the div over 2 seconds with an ease-in-out animation
+    div.style.transition = "opacity 1s ease-in";
+    div.style.opacity = 1;
+  }, 7000);
+}
+
+// Call the function on page load
+window.addEventListener("load", fadeInDiv);
+
+
+
+
+function fadeInNavbar() {
+  // Get the div element by its ID
+  const div = document.querySelector(".navbar");
+  const body = document.body
+
+  // Set the div's initial opacity to 0
+  div.style.opacity = 0;
+  body.style.backgroundColor = "rgb(33, 33, 33)"
+  div.style.backgroundColor = "rgb(33, 33, 33)"
+
+  // Wait for 5 seconds
+  setTimeout(() => {
+    // Use the CSS transition property to fade in the div over 2 seconds with an ease-in-out animation
+    div.style.backgroundColor = "hsla(207, 13%, 17%, 0.672)"
+    body.style.backgroundColor = "hsl(207, 13%, 17%)"
+    div.style.transition = "opacity 1s ease-in";
+    div.style.opacity = 1;
+  }, 7000);
+}
+
+window.addEventListener("load", fadeInNavbar)
+
+
 
 function addElements() {
-    var text = textArray[elementCount].replace(/\n/g, "<br>");
+  var text = textArray[elementCount].replace(/\n/g, "<br>");
   var text = textArray[elementCount];
   var index = 0;
   var interval;
   var waitTime;
   var homeTopHalf = document.querySelector("#text")
-  var fadeOut = false
+  var endAnimation = false
 
   if (elementCount <= 2) {
-    waitTime = 1500;
-    interval = setInterval(addLetter, 30);
+    waitTime = 800;
+    interval = setInterval(addLetter, 20);
   } else if (elementCount === 2) {
-    waitTime = 400;
+    showTitle();
+    waitTime = 300;
     // fadeOut = true;
-    interval = setInterval(addLetter, 15);
+    endAnimation = true;
+    // triggerEndAnimation()
+    interval = setInterval(addLetter, 10);
 } else if (elementCount === 3) {
     waitTime = 0;
     // fadeOut = true;
-    interval = setInterval(addLetter, 15);
+    interval = setInterval(addLetter, 5);
   } 
 
   function addLetter() {
@@ -88,12 +140,6 @@ function addElements() {
         setTimeout(function() {
             var cursor = element.querySelector('.cursor');
             cursor.parentNode.removeChild(cursor);
-            // if (endAnimation === true) {
-                //     triggerEndAnimation();
-                // }
-                if (fadeOut === true) {
-            triggerFadeOut(homeTopHalf);
-        }
         elementCount++;
         addElements();
       }, waitTime);
@@ -117,6 +163,7 @@ function triggerFadeOut(element) {
     requestAnimationFrame(animate);
   }
   
+
 
 
 
@@ -147,7 +194,15 @@ function triggerFadeOut(element) {
 //   }, 50);
 // }
 
+
+
+
+
+
+
+
 function triggerEndAnimation() {
+  console.log('triggered');
     setTimeout(() => {
     const div = document.getElementById("text");
     div.style.transition = "transform 5s ease-out";

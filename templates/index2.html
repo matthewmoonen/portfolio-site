@@ -7,9 +7,41 @@
     <link rel="stylesheet" href="/static/css/index.css">
     <script defer src="/static/js/index.js"></script>
     <title>Matthew Moonen</title>
+    <script>
+        const me = "Matthew Moonen";
+        let you = "visitor";
+
+        greetings()
+
+        async function greetings() {
+            console.log(`Hello ${you}. Welcome!`);
+            await new Promise((resolve) => {
+                window.addEventListener("scroll", () => {
+                    const {
+                        scrollTop,
+                        scrollHeight,
+                        clientHeight
+                    } = document.documentElement;
+                    if (scrollTop + clientHeight >= scrollHeight) {
+                        resolve();
+                    }
+                });
+            });
+            console.log(`Thanks stopping by ${me}'s website!`);
+        }
+    </script>
 </head>
 <body>
 <main>
+<style>
+    .navbar {
+        opacity: 0;
+        background-color: rgb(33, 33, 33);
+    }
+    body {
+        background-color: rgb(33, 33, 33);
+    }
+</style>
 {% include '/base/navbar2.html' %}
 
     <div id="index-home" class="index-home index-background1">
@@ -17,17 +49,29 @@
             <div id="text"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
         </div>
         
-        <!-- <div id="page-title" style="opacity: 0;"> -->
-        <div id="page-title">
-
+        <div id="page-title" style="opacity: 0;">
             <p class="title-leadin">Hi, my name is</p>
             <h1 class="title-myname">Matthew Moonen</h1>
-            <p class="title-tagline">"Welcome to my portfolio showcasing my journey from biology to code, exploring new technologies and building digital solutions that make a difference."</p>
+            <p class="title-tagline">I'm a programmer and former research biologist with a strong interest in front-end and back-end development, as well as server configuration.</p>
+            <p class="promise">// Scroll to the bottom to see how the promise resolves ;)</p>
         </div>
     </div>
 
+    <div id="about" class="about index-section">
+        <h1>About Me</h1>
 
+<p>I have been passionate about technology for as long as I can remember and have been tinkering with Linux Server distributions for over a decade. As an avid photographer, I used my Linux Servers to host my growing library of images, which introduced me to various technologies, including Command Line Interfaces, Docker, SQL, and virtualization. Additionally, I was always mindful of best-practice security measures.</p>
 
+<p>Starting in 2022, I fully immersed myself in various programming courses such as Harvard Online's CS50 series and FreeCodeCamp, where I gained poficiency in languages including C, Python, JavaScript, SQL, HTML and CSS, with a particular focus on Python. I am now enrolled to study a Master of Data Science part-time.</p>            
+
+<p>With new knowledge under my belt, I decided to rent a Virtual Private Server (VPS) and use my knowledge of Linux Server administration to create a website that showcases my programming skills.</p>
+
+<p>The main project featured in my portfolio is a German Language Learning app, which was a key motivation for me to acquire programming skills. After studying German and working as an English teacher in Germany, I recognized that certain concepts, such as cases and declensions, were not effectively covered by existing gamified language-learning platforms, leading to difficulties for German learners. To address this gap, I aimed to create an app that could both fill these holes and serve as a means for me to learn programming. Its development requires a wide range of fundamental concepts, including frontend and backend development, security and authentication, data analysis, machine learning, algorithms, UI and UX design, scalability and CI/CD.</p>
+
+<p>By learning these concepts, I hope to transition into a career in the tech industry and produce an open-source hobby project that can benefit people.</p>
+
+<p>Check out my portfolio below to follow my progress on this and other projects I have developed throughout my learning journey.</p>
+</div>
 
 
 
@@ -46,26 +90,26 @@
             </div>
             <div class="bigbox"></div>
             <div class="bigbox2"></div>
-          </div>
-           -->
-
-
+          </div> -->
 
 
         <div id="projects" class="index-section">
-                <h1 class="ismt">My Projects</h1>
+                <h1 class="ismt">Key Projects</h1>
                 <div class="ismt">
                     <h2>Section 1</h2>
                     <p class="ismt">Some text...</p>
                   </div>
-                <p class="ismt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
+                <p class="ismt">After learning German and Dutch for several years, I noticed an opportunity to 
+                    If enough 
+
+                </p>
                 <p class="ismt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
         </div>
 
 
         <div id="my-technologies" class="index-section">
             <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/icons.css') }}">
-            <h1>Some of the technologies I've used:</h1>
+            <h1>My toolkit:</h1>
             <div class="icon-container">
                 <svg class="tech-icons" xmlns="http://www.w3.org/2000/svg" width="60px" height="60px" viewBox="0 0 512 512"><title>Python</title><path d="M314,36.38c-18.59-3.06-45.8-4.47-64.27-4.38a311.09,311.09,0,0,0-51.66,4.38c-45.74,8-54.07,24.7-54.07,55.54V128H256v16H107.62C66.06,144,32.33,193.67,32,255.12c0,.29,0,.58,0,.88a162.91,162.91,0,0,0,3.13,32c9.29,46.28,38.23,80,72.49,80H128V314c0-31.3,20.84-59.95,55-66.1l9.87-1.23H314a56.05,56.05,0,0,0,15.06-2A52.48,52.48,0,0,0,368,193.68V91.92C368,63,343.32,41.19,314,36.38ZM194.93,105.5a20.37,20.37,0,1,1,20.3-20.3A20.29,20.29,0,0,1,194.93,105.5Z"/><path d="M475.28,217c-10.7-42.61-38.41-73-70.9-73H386.67v47.45c0,39.57-26,68.22-57.74,73.13a63.54,63.54,0,0,1-9.69.75H198.08a60,60,0,0,0-15.23,1.95C160.54,273.14,144,291.7,144,315.77V417.54c0,29,29.14,46,57.73,54.31,34.21,9.95,71.48,11.75,112.42,0,27.19-7.77,53.85-23.48,53.85-54.31V384H256V368H404.38c29.44,0,54.95-24.93,67.45-61.31A156.83,156.83,0,0,0,480,256,160.64,160.64,0,0,0,475.28,217ZM316.51,404a20.37,20.37,0,1,1-20.3,20.3A20.29,20.29,0,0,1,316.51,404Z"/></svg> 
                 <span class="text-wrapper1">
@@ -181,6 +225,7 @@
                     <span class="text-wrapper2">Docker</span>
                 </span>
             </div>
+            <p>And many more! Click here to see more about how I've used these technologies</p>
         </div>
     
         <div id="blog" class="index-section">
