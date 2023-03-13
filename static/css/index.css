@@ -17,13 +17,61 @@ body {
     padding: 0;
     font-family: 'Rubik', sans-serif;
     font-size: .9rem;
+    background-color: hsl(207, 13%, 17%);
+    font-family: 'Roboto';
+    /* font-family: 'Rubik'; */
 }
 
-body {
-    background-color: hsl(207, 13%, 17%);
-    /* font-family: 'Rubik'; */
-    font-family: 'Roboto';
+.home a:hover {
+  animation: colourCycle 3s linear infinite;
 }
+
+@keyframes colourCycle {
+  0% {
+    color: rgb(249, 87, 90);
+  }
+  25% {
+    color: rgb(252, 176, 77);
+  }
+  50% {
+    color: rgb(249, 87, 90);
+  }
+  75% {
+    color: rgb(84, 170, 222);
+  }
+  100% {
+    /* color: rgb(252, 176, 77); */
+    color: rgb(249, 87, 90);
+
+  }
+}
+
+
+
+/* @keyframes colourCycle {
+  0% {
+    color: rgb(252, 176, 77);
+  }
+  25% {
+    color: rgb(249, 87, 90);
+  }
+  50% {
+    color: rgb(252, 176, 77);
+  }
+  75% {
+    color: rgb(84, 170, 222);
+  }
+  100% {
+    color: rgb(249, 87, 90);
+  }
+} */
+
+
+
+
+
+
+
 
 .index-background1 {
     background-color: rgb(33, 33, 33);`
