@@ -27,7 +27,7 @@ function fadeInDiv() {
     // Use the CSS transition property to fade in the div over 2 seconds with an ease-in-out animation
     div.style.transition = "opacity 1s ease-in";
     div.style.opacity = 1;
-  }, 7000);
+  }, 6000);
 }
 
 // Call the function on page load
@@ -54,7 +54,7 @@ function fadeInNavbar() {
     body.style.backgroundColor = "hsl(207, 13%, 17%)"
     div.style.transition = "opacity 1s ease-in";
     div.style.opacity = 1;
-  }, 7000);
+  }, 5000);
 }
 
 window.addEventListener("load", fadeInNavbar)
@@ -71,15 +71,15 @@ function addElements() {
   var endAnimation = false
 
   if (elementCount <= 2) {
-    waitTime = 800;
+    waitTime = 600;
     interval = setInterval(addLetter, 20);
   } else if (elementCount === 2) {
     showTitle();
-    waitTime = 300;
+    waitTime = 200;
     // fadeOut = true;
     endAnimation = true;
     // triggerEndAnimation()
-    interval = setInterval(addLetter, 10);
+    interval = setInterval(addLetter, 8);
 } else if (elementCount === 3) {
     waitTime = 0;
     // fadeOut = true;
