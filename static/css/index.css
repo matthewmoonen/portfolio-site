@@ -110,17 +110,36 @@ body {
     color: whitesmoke;
 }
 
+#projects h1 {
+  color: rgb(252, 176, 77);
+    /* color: rgb(249, 87, 90); */
+    /* color: rgb(84, 170, 222); */
+}
+
 #blog {
-    background-color: #ccc;
+    background-color: var(--backgroundColour1);
+    background-color: var(--backgroundColour2);
+
 }
 
 /* Style the fourth section differently */
 #contact {
-    background-color: #bbb;
+  /* background-color: var(--backgroundColour2); */
+  background-color: var(--backgroundColour1);
+  color: #d3d3d3;
+  color: #c2c2c2;
+  color: rgb(160, 160, 160);
 }
 
+.my-form-container {
+  /* background-color: var(--backgroundColour2); */
+  background-color: var(--backgroundColour1);
+
+}
+
+
 #my-technologies {
-    background-color: #bbb;
+    background-color: var(--backgroundColour1);
 }
 
 .index-section {
@@ -356,7 +375,7 @@ transform: translateY(0);
   z-index: 40;
   margin: 0 2.5em 0 0;
   padding: 0;
-  background-color: var(--background-colour2);
+  /* background-color: var(--backgroundColour2); */
   text-align: right;
   transform: translateY(-40px);
   right: 0;
@@ -366,7 +385,7 @@ transform: translateY(0);
   height: 100%;
   text-align: right;
   transform: translateY(-30px);
-  background-color: var(--background-colour1);
+  background-color: var(--backgroundColour1);
   /* transform: translateY(-em); */
 }
 
@@ -526,3 +545,4 @@ letter-spacing: 0.03em;
   font-weight: 300;
   font-size: 19px;
 }
+

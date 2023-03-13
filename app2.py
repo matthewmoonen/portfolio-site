@@ -56,38 +56,8 @@ with app.app_context():
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
 # Start of routes. Index is the landing page.
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/")
 def index():
-
-    # Contact form submits to a SQL database. 
-    # If using this form, you need a separate Python script and chron job to forward the emails.
-    form = ContactForm()
-    if form.is_submitted():
-        first_name = request.form['firstName']
-        last_name = request.form['lastName']
-        email = request.form['email']
-        subject = request.form['subject']
-        message = request.form['message']
-        date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
-
-        # Get client IP address:
-        if 'X-Forwarded-For' in request.headers:
-            ip_address = request.headers.getlist("X-Forwarded-For")[0].rpartition(' ')[-1]
-        else:
-            ip_address = request.remote_addr or 'untrackable'
-
-        is_forwarded = 0
-        formdata = messages(first_name=first_name, last_name=last_name, email=email, subject=subject, message=message, date_created=date_created, ip_address=ip_address, is_forwarded=is_forwarded)
-
-        try:
-            db.session.add(formdata)
-            db.session.commit()
-        except:
-            print('error 400')
-            return render_template('oops.html')
-        else:
-            return render_template('thanks.html', first_name=first_name)
-
     return render_template("index.html")
 
 @app.route("/index2")
@@ -187,6 +157,37 @@ def logout():
     flash("You were just logged out!")
     return redirect(url_for('welcome'))
 
+# Contact form submits to a SQL database. 
+# Need separate Python script and chron job to forward the emails.
+@app.route("/contact/", methods=['GET', 'POST'])
+def contact():
+    form = ContactForm()
+    if form.is_submitted():
+        first_name = request.form['firstName']
+        last_name = request.form['lastName']
+        email = request.form['email']
+        subject = request.form['subject']
+        message = request.form['message']
+        date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
+
+        # Get client IP address:
+        if 'X-Forwarded-For' in request.headers:
+            ip_address = request.headers.getlist("X-Forwarded-For")[0].rpartition(' ')[-1]
+        else:
+            ip_address = request.remote_addr or 'untrackable'
+
+        is_forwarded = 0
+        formdata = messages(first_name=first_name, last_name=last_name, email=email, subject=subject, message=message, date_created=date_created, ip_address=ip_address, is_forwarded=is_forwarded)
+
+        try:
+            db.session.add(formdata)
+            db.session.commit()
+        except:
+            print('error 400')
+            return render_template('oops.html')
+        else:
+            return render_template('thanks.html', first_name=first_name)
+    return render_template("contact.html")
 
 # TODO: combine into the regular index page.
 @app.route("/icons/")
