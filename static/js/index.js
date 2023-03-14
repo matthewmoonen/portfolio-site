@@ -12,6 +12,30 @@ var elementCount = 0;
 addElements();
 // triggerEndAnimation()
 
+// body.style.maxHeight = "100vh"
+// body.style.overflow = "hidden"
+
+
+// window.onload = function() {
+//   setTimeout(function() {
+//     document.querySelector(".index-section").style.display = "block";
+//   }, 5000); // 5000 is the time in milliseconds (5 seconds) after which the rest of the page will be displayed
+// };
+
+
+	window.onload = function() {
+		setTimeout(function() {
+      // body.style.maxHeight = "none";
+			var restOfPageElements = document.querySelectorAll(".index-section");
+			for (var i = 0; i < restOfPageElements.length; i++) {
+				restOfPageElements[i].style.visibility = "visible";
+			}
+      document.body.style.overflow = "auto";
+		}, 5000); // 5000 is the time in milliseconds (5 seconds) after which the rest of the page will be displayed
+	};
+
+
+
 
 
 
@@ -40,7 +64,11 @@ function fadeInNavbar() {
   // Get the div element by its ID
   const div = document.querySelector(".navbar");
   const body = document.body
+  // const indexPageSections = document.querySelector(".index-section")
   // const promiseSection = document.querySelector(".promise-section");
+
+  
+
 
   // Set the div's initial opacity to 0
   div.style.opacity = 0;
@@ -54,6 +82,11 @@ function fadeInNavbar() {
     body.style.backgroundColor = "hsl(207, 13%, 17%)"
     div.style.transition = "opacity 1s ease-in";
     div.style.opacity = 1;
+    // indexPageSections.style.display = "flex";
+    // promiseSection.style.display = "grid"
+    // body.style.maxHeight = "none"
+    // body.style.overflow = "scroll"
+
   }, 5000);
 }
 

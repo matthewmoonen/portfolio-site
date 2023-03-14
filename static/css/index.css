@@ -47,32 +47,6 @@ body {
 }
 
 
-
-/* @keyframes colourCycle {
-  0% {
-    color: rgb(252, 176, 77);
-  }
-  25% {
-    color: rgb(249, 87, 90);
-  }
-  50% {
-    color: rgb(252, 176, 77);
-  }
-  75% {
-    color: rgb(84, 170, 222);
-  }
-  100% {
-    color: rgb(249, 87, 90);
-  }
-} */
-
-
-
-
-
-
-
-
 .index-background1 {
     background-color: rgb(33, 33, 33);`
 }
@@ -289,12 +263,6 @@ transform: translateY(0);
     font-size: 75px;
 }
 
-/* #text {
-        position: relative;
-        top: 50%;
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-} */
 
 #page-title {
 
@@ -402,15 +370,7 @@ transform: translateY(0);
     overflow: hidden;
     /* height: 30vh; */
     height: 100vh;
-    /* z-index: 1; */
-    /* opacity: 0.1; */
-    /* background-color: purple; */
     width: 800px;
-    /* margin-left: calc(50vw - 400px); */
-    /* transform: translateX(200px);
-    transform: translateY(200px); */
-    /* transform: translate(200px, 200px); */
-    /* transform: translate(calc(50vw - 400px), -10vh); */
     transform: translateY(-50%);
     margin: auto;
   }
@@ -544,5 +504,365 @@ letter-spacing: 0.03em;
   margin-bottom: 1rem;
   font-weight: 300;
   font-size: 19px;
+  /* font-family: 'Source Code Pro'; */
 }
 
+
+
+
+.my-form-container {
+  padding-left: 2%;
+  padding-right: 2%;
+}
+.my-form {
+  max-width: 992px;
+  /* color: red; */
+  /* background-color: aqua; */
+}
+
+input, textarea {
+  padding: 0.2rem 1rem;
+  border-style: solid;
+  border-width: 1px;
+  /* color: green; */
+  /* background-color: rgb(71, 79, 103); */
+  /* color: rgb(153, 153, 153); */
+  /* color: rgb(20, 20, 20); */
+    color: #d3d3d3;
+
+  /* background-color: rgb(109, 114, 117); */
+  /* background-color: rgb(64, 65, 79); */
+  /* background-color: rgb(20, 20, 20); */
+
+
+
+/* 
+  background-color: hsl(207, 13%, 17%);
+  background-color: rgb(45, 45, 45);
+  background-color: hsl(206, 13%, 25%); */
+  background-color: hsl(206, 12%, 23%);
+  border: none;
+border-style: solid;
+border-width: 1px;
+border-image: linear-gradient(to bottom right, rgba(252, 176, 77, 0.7), rgba(249, 87, 90, 0.7)) 1;
+border-image: linear-gradient(to bottom right, rgba(249, 87, 90, 0.7), rgba(84, 170, 222, 0.7)) 1;
+
+}
+
+
+button {
+  color: rgb(84, 170, 222);
+}
+
+textarea:focus, input:focus{
+outline: none;
+border-image: linear-gradient(to top, rgba(84, 170, 222, 0.9), rgba(249, 87, 90, 0.9)) 1;
+box-shadow: 0 0 1px 0 rgba(84, 170, 222, 0.5), 0 0 10px 0 rgba(249, 87, 90, 0.5);
+}
+
+
+
+input, textarea {
+  font-family: 'Source Code Pro';
+  font-size: 0.8rem;
+  /* border-radius: 3px; */
+  /* background-color: whateveryouwant; */
+}
+
+button {
+  font-size: 1.5rem;
+  border-radius: 3px;
+  background-color: transparent;
+  /* color: black;
+  border-color: black; */
+
+  /* color: white; */
+  /* border-color: white; */
+
+  /* border-color: rgb(249, 229, 162); */
+  /* color: rgb(249, 229, 162); */
+  /* background-color: rgb(205, 103, 102); */
+  /* background-color: rgb(84, 170, 222); */
+  
+  /* border-color: rgb(124, 216, 255);
+  color: rgb(124, 216, 255); */
+
+
+  /* border-color: rgb(205, 103, 102);
+  color: rgb(205, 103, 102); */
+
+  border-style: solid;
+  border-width: medium;
+}
+
+button:hover {
+  /* background-color: black; */
+  /* color: white; */
+  /* border-color: white; */
+  /* background-color: rgba(249, 87, 90, 0.1); */
+border-image: linear-gradient(to top left, rgba(249, 87, 90, 0.7), rgba(84, 170, 222, 0.7)) 1;
+}
+
+.form-group label {
+  display: none;
+}
+
+.form-group {
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#firstLastOnSameLine {
+  padding: 0;
+}
+
+
+@media all and (max-width: 991px) {
+  /* Display submit button across whole page on mobile/tablet */
+  .btn {
+      display: block;
+      width: 100%;
+      margin-top: 5px;
+  }
+
+  ::-webkit-input-placeholder {
+    /* WebKit browsers */
+    /* color: hsl(206, 12%, 55%); */
+
+    color: hsl(207, 4%, 57%);
+    color: hsl(207, 4%, 50%);
+    color: hsl(207, 4%, 53%);
+
+    }
+    :-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    ::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    :-ms-input-placeholder {
+        /* Internet Explorer 10+ */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    input::placeholder {
+      color: hsl(206, 12%, 55%)
+      color: hsl(207, 4%, 57%);
+      color: hsl(207, 4%, 50%);
+      color: hsl(207, 4%, 53%);
+
+    }
+    textarea::-webkit-input-placeholder {
+        /* WebKit browsers */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    textarea:-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    textarea::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    textarea:-ms-input-placeholder {
+        /* Internet Explorer 10+ */
+        color: hsl(206, 12%, 55%)
+        color: hsl(207, 4%, 57%);
+        color: hsl(207, 4%, 50%);
+        color: hsl(207, 4%, 53%);
+
+    }
+    textarea::placeholder {
+      color: hsl(206, 12%, 55%)
+  /* background-color: hsl(206, 12%, 30%); */
+  /* background-color: hsl(204, 12%, 32%); */
+  color: hsl(207, 4%, 57%);
+  color: hsl(207, 4%, 50%);
+  color: hsl(207, 4%, 53%);
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+}
+
+
+
+@media all and (min-width: 768px) {
+  .my-form-container {
+      margin-left: 4%;
+      margin-right: 4%;
+  }
+  
+  #firstLastOnSameLine {
+      display: flex; 
+      width: 48%;
+      float: left;
+      margin-right: 1%;
+  }
+
+  input, textarea {
+      font-size: 1.05rem;
+  }
+
+}
+
+
+@media all and (min-width: 992px) {
+
+  /* Display form labels when screen reaches a minimum size */
+  .form-group label{
+      display: block;
+      font-size: 0.95rem;
+      padding-bottom: 0.15rem;
+  }
+
+
+  /* Place button on RHS on desktop */
+  .btn {
+      float: right;
+  }
+
+
+  /* Make placeholders disappear when labels appear */
+  ::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: transparent;
+  }
+  :-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
+      color: transparent;
+  }
+  ::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
+      color: transparent;
+  }
+  :-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      color: transparent;
+  }
+  input::placeholder {
+      color: transparent;
+  }
+  textarea::-webkit-input-placeholder {
+      /* WebKit browsers */
+      color: transparent;
+  }
+  textarea:-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
+      color: transparent;
+  }
+  textarea::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
+      color: transparent;
+  }
+  textarea:-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      color: transparent;
+  }
+  textarea::placeholder {
+      color: transparent;
+  }
+
+  /* update button size */
+  button {
+      font-size: 1.3rem;
+      display: inline;
+  }
+
+  .my-form-container {
+-webkit-animation: fadein 1.15s; /* Safari, Chrome and Opera > 12.1 */
+-moz-animation: fadein 1.15s; /* Firefox < 16 */
+-ms-animation: fadein 1.15s; /* Internet Explorer */
+-o-animation: fadein 1.15s; /* Opera < 12.1 */
+  animation: fadein 1.15s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.contact-heading {
+/* color: rgb(84, 170, 222); */
+color: rgb(249, 87, 90);
+
+}
+
+
+
+}
+
+button {
+  border-color: rgb(84, 170, 222);
+  padding: 0.2rem 1rem;
+  border-style: solid;
+}
+
+
+body {
+  overflow: hidden;
+}
+
+
+.index-section {
+  visibility: hidden;
+}
