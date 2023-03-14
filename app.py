@@ -11,10 +11,28 @@ import redis
 from dotenv import load_dotenv
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 
 # Instantiate the Flask application
 app = Flask(__name__)
+
+""" Specify static pathway locations. In this case, I am using both 
+regular static within the Flask app, and an external directory where 
+userfiles are to be located """
+
+# Server static files from the regular Flask app location
+app.static_folder = 'static'
+app.static_url_path = '/static'
+
+
+# Serve static files from a directory outside the Flask app directory
+app.add_url_rule('/userdata/<path:filename>', endpoint='userdata', view_func=app.send_static_file, subdomain='', defaults={'filename': ''})
+app.config['EXTERNAL_STATIC_FOLDER'] = '/home/matthew/userdata'
+
+
+
+
 
 # Load environment variables from file and make accessible to project
 load_dotenv("/home/matthew/portfolio-site/environmentvariables.env")
@@ -29,6 +47,19 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_port = os.getenv("REDIS_PORT", 6379)
 redis_password = os.getenv("REDIS_PASSWORD", "")
+
+
+
+# Register static route for image upload path
+app.add_url_rule('/userdata/<path:filename>', endpoint='userdata', view_func=app.send_static_file, subdomain='')
+
+# Configure image uploads
+app_root = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = "/home/matthew/userdata/admin"
+ALLOWED_EXTENSIONS = {'svg', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 
 # Configure SQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
@@ -90,9 +121,6 @@ def index():
 
     return render_template("index.html")
 
-@app.route("/index2")
-def index2():
-    return render_template("index2.html")
 
 # A decorator function that creates login requirement for certain views.
 def login_required(f):
@@ -116,14 +144,68 @@ def admin():
     posts = db.session.query(BlogPost).all()
     return render_template("admin.html", posts=posts)
 
+
+
+
+
+
+# Check that uploaded image's file extension is valid.
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Handle upload
+""" TODO: See here to improve security and performance
+https://flask.palletsprojects.com/en/2.2.x/patterns/fileuploads/
+"""
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('admin', name=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+    '''
+
+
+
+
+
+
 # Retrieve blog post via URL slug. Display 404 error if post not available.
 @app.route('/blog/<slug>/')
 def blog_post(slug):
     post = db.session.query(BlogPost).filter_by(slug=slug).first()
     if post:
-        return render_template("templates/blog.html", post=post, slug=slug)
+        return render_template("base/blog-template.html", post=post, slug=slug)
     else:
         return f"404"
+
+
+@app.route("/blog/")
+def blog():
+    posts = db.session.query(BlogPost).all()
+    return render_template("blog.html", posts=posts)
+
 
 # route for rendering the post blog form
 @app.route('/add_entry/', methods=['GET'])

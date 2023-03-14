@@ -39,7 +39,7 @@ function fadeInTitle() {
   // Get the div element by its ID
   const pageTitle = document.getElementById("page-title");
   const promise = document.querySelector(".promise");
-  // const functionLine1 = document.querySelector('.line1');
+  const functionLine1 = document.querySelector('#asdf');
   // const functionLine2 = document.querySelector('.line2');
   // const functionLine3 = document.querySelector('.line3');
   // const functionLine4 = document.querySelector('.line4');
@@ -49,7 +49,7 @@ function fadeInTitle() {
   // Set the pageTitle's initial opacity to 0
   pageTitle.style.opacity = 0;
   promise.style.opacity = 0;
-  // functionLine1.style.opacity = 1;
+  functionLine1.style.opacity = 0;
 
 
 
@@ -60,8 +60,8 @@ function fadeInTitle() {
     pageTitle.style.opacity = 1;
     promise.style.transition = "opacity 3s ease-in";
     promise.style.opacity = 1;
-    // functionLine1.style.transition = "opacity 1s ease-out"
-    // functionLine1.style.opacity = 0.2;
+    functionLine1.style.transition = "opacity 5s ease-in"
+    functionLine1.style.opacity = 0.6;
     // functionLine2.style.transition = "opacity 1s ease-out"
     // functionLine2.style.opacity = 0.2;
     // functionLine3.style.transition = "opacity 1s ease-out"
@@ -97,15 +97,12 @@ function fadeInNavbar() {
   // Wait for 5 seconds
   setTimeout(() => {
     // Use the CSS transition property to fade in the div over 2 seconds with an ease-in-out animation
+    div.style.visibility = "visible"
     div.style.backgroundColor = "hsla(207, 13%, 17%, 0.672)"
     body.style.backgroundColor = "hsl(207, 13%, 17%)"
     div.style.transition = "opacity 1s ease-in";
     div.style.opacity = 1;
-    // indexPageSections.style.display = "flex";
-    // promiseSection.style.display = "grid"
-    // body.style.maxHeight = "none"
-    // body.style.overflow = "scroll"
-
+    body.style.backgroundColor = "hsl(207, 13%, 17%)"
   }, 5000);
 }
 

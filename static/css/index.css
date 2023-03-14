@@ -19,9 +19,8 @@ body {
     padding: 0;
     font-family: 'Rubik', sans-serif;
     font-size: .9rem;
-    background-color: hsl(207, 13%, 17%);
-    font-family: 'Roboto';
-    /* font-family: 'Rubik'; */
+    background-color: var(--backgroundColour1);
+    font-family: 'Roboto', sans-serif;
 }
 
 .home a:hover {
@@ -278,7 +277,8 @@ transform: translateY(0);
         margin: auto;
         max-width: 800px;
         z-index: 999;
-        transform: translateY(-50px);
+        transform: translateY(-40px);
+        background: rgba(33, 33, 33, 0.3);
         
         /* position: fixed;
         right: 0;
@@ -342,7 +342,7 @@ transform: translateY(0);
     margin: auto;
     left: 0;
     right: 0;
-    transform: translateY(calc(-60px + -100vh));
+    transform: translateY(calc(-65px + -100vh));
     z-index: 50;
 }
 .promise-section {
@@ -379,7 +379,7 @@ transform: translateY(0);
     margin: auto;
   }
 
-
+/* 
 .line4 {
   opacity: 0.9;
 }
@@ -442,7 +442,75 @@ transform: translateY(0);
   
   .line19 {
     opacity: 0;
+  } */
+
+
+
+.line4 {
+  opacity: 0.9;
+}
+
+   .line5 {
+    opacity: 0.8;
   }
+  
+  .line6 {
+    opacity: 0.63;
+  }
+  
+  .line7 {
+    opacity: 0.55;
+  }
+  
+  .line8 {
+    opacity: 0.47;
+  }
+  
+  .line9 {
+    opacity: 0.40;
+  }
+  
+  .line10 {
+    opacity: 0.4;
+  }
+  
+  .line11 {
+    opacity: 0.4;
+  }
+  
+  .line12 {
+    opacity: 0.4;
+  }
+  
+  .line13 {
+    opacity: 0.4;
+  }
+  
+  .line14 {
+    opacity: 0.4;
+  }
+  
+  .line15 {
+    opacity: 0.2;
+  }
+  
+  .line16 {
+    opacity: 0.2;
+  }
+  
+  .line17 {
+    opacity: 0.2;
+  }
+  
+  .line18 {
+    opacity: 0.05;
+  }
+  
+  .line19 {
+    opacity: 0.1;
+  }
+
+
 
 
 @media (max-width: 799px) {
@@ -745,6 +813,8 @@ button:hover {
       display: block;
       font-size: 0.95rem;
       padding-bottom: 0.15rem;
+      /* font-family: 'Rubrik'; */
+      letter-spacing: 0.05rem;
   }
 
 
@@ -837,11 +907,7 @@ button:hover {
   to   { opacity: 1; }
 }
 
-.contact-heading {
-/* color: rgb(84, 170, 222); */
-color: rgb(249, 87, 90);
 
-}
 
 
 

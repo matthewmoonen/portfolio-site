@@ -2,13 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - Matthew Moonen</title>
+    <title>{{ post.title }} - Matthew Moonen</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .hero-image {
+            background-image: url("https://upload.wikimedia.org/wikipedia/commons/c/cc/A_snowy_day_-_geograph.org.uk_-_3303211.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 60vh;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-text {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -53%);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: inline-block;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5em;
+            width: 75vw;
+            font-weight: bold;
+            text-shadow: none;
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        .date {
+            font-size: 1.2em;
+            font-style: italic;
+            font-weight: lighter;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 50px 0;
+            text-align: justify;
+        }
+
+        @media (min-width: 801px) {
+            .hero-text h1 {
+                font-size: 3.5em;
+            }
+            
+            .hero-image {
+                padding: 100px 0;
+                height: 40vh;
+            }
+        }
+
+    </style>
 </head>
 <body>
+    
     {% block content %}
-
+    
     {% endblock %}
+    <div class="hero-image">
+        <div class="hero-text">
+            <p class="date">March 10, 2023</p>
+            <h1>{{ post.title }}</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <div class="post-body">{{ post.body|safe }}</div>
+    </div>
 </body>
 </html>
+
+
