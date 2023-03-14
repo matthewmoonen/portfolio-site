@@ -49,11 +49,11 @@
         <div id="page-title" style="opacity: 0;">
             <p class="title-leadin">Hi, my name is</p>
             <h1 class="title-myname">Matthew Moonen</h1>
-            <p class="title-tagline">I'm a programmer and former research biologist with a strong interest in full stack development and server configuration.</p>
+            <p class="title-tagline">I'm a programmer and Linux Server enthusiast with a background in research biology.</p>
         </div>
-    </div>
-    <div class="promise-section">
-        <div class="promise">// Scroll to the bottom to see how the promise resolves ;)</div>
+        <div class="promise-section">
+            <div class="promise">// Scroll to the bottom to see how the promise resolves ;)</div>
+        </div>
     </div>
     
 
@@ -63,23 +63,24 @@
     
 
     <div id="about" class="about index-section">
-        <div id="about-container" class="about-container index-section">
-        <div class="about-content ismt">
-        <h1 class="ismt">About Me</h1>
-        <div class="ismt">
-            <img src="{{ url_for('static',filename='/img/me.jpg') }}" alt="A photo of me" width="200"></img>
-            <p>I have been passionate about technology for as long as I can remember and have been tinkering with Linux Server distributions for over a decade. As an avid photographer, I used my Linux Servers to host my growing library of images, which introduced me to various technologies, including Command Line Interfaces, Docker, SQL, and virtualization. Additionally, I was always mindful of best-practice security measures.</p>
-
-            <p>Starting in 2022, I fully immersed myself in various programming courses such as Harvard Online's CS50 series and FreeCodeCamp, where I gained poficiency in languages including C, Python, JavaScript, SQL, HTML and CSS, with a particular focus on Python. I am now enrolled to study a Master of Data Science part-time.</p>            
-
-            <p>With new knowledge under my belt, I decided to rent a Virtual Private Server (VPS) and use my knowledge of Linux Server administration to create a website that showcases my programming skills.</p>
-
-            <p>The main project featured in my portfolio is a German Language Learning app, which was a key motivation for me to acquire programming skills. After studying German and working as an English teacher in Germany, I recognized that certain concepts, such as cases and declensions, were not effectively covered by existing gamified language-learning platforms, leading to difficulties for German learners. To address this gap, I aimed to create an app that could both fill these holes and serve as a means for me to learn programming. Its development requires a wide range of fundamental concepts, including frontend and backend development, security and authentication, data analysis, machine learning, algorithms, UI and UX design, scalability and CI/CD.</p>
-
-            <p>By learning these concepts, I hope to transition into a career in the tech industry and produce an open-source hobby project that can benefit people.</p>
-
-            <p>Check out my portfolio below to follow my progress on this and other projects I have developed throughout my learning journey.</p>
-        </div>
+        <!-- <div id="about-container" class="about-container "> -->
+            <h1 class="ismt">About Me</h1>
+            <div class="about-content">
+        <div class="about-text ismt">
+            <div class="about-img-container">
+                <img src="{{ url_for('static',filename='/img/me.jpg') }}" alt="A photo of me" class="about-img"></img>
+            </div>
+        <p>I have been passionate about technology for as long as I can remember and have been tinkering with Linux Server distributions for over a decade. As an avid photographer, I used my Linux Servers to host my growing library of images, which introduced me to various technologies, including Command Line Interfaces, Docker, SQL, and virtualization. Additionally, I was always mindful of best-practice security measures.</p>
+        
+        <p>Starting in 2022, I fully immersed myself in various programming courses such as Harvard Online's CS50 series and FreeCodeCamp, where I gained poficiency in languages including C, Python, JavaScript, SQL, HTML and CSS, with a particular focus on Python. I am now enrolled to study a Master of Data Science part-time.</p>            
+        
+        <p>With new knowledge under my belt, I decided to rent a Virtual Private Server (VPS) and use my knowledge of Linux Server administration to create a website that showcases my programming skills.</p>
+        
+        <p>The main project featured in my portfolio is a German Language Learning app, which was a key motivation for me to acquire programming skills. After studying German and working as an English teacher in Germany, I recognized that certain concepts, such as cases and declensions, were not effectively covered by existing gamified language-learning platforms, leading to difficulties for German learners. To address this gap, I aimed to create an app that could both fill these holes and serve as a means for me to learn programming. Its development requires a wide range of fundamental concepts, including frontend and backend development, security and authentication, data analysis, machine learning, algorithms, UI and UX design, scalability and CI/CD.</p>
+        
+        <p>By learning these concepts, I hope to transition into a career in the tech industry and produce an open-source hobby project that can benefit people.</p>
+        
+        <p>Check out my portfolio below to follow my progress on this and other projects I have developed throughout my learning journey.</p>
     </div>
         </div>
     </div>
@@ -103,8 +104,8 @@
           </div> -->
 
 
-        <div id="projects">
-            <div id="projects-container" class="projects-container index-section">
+        <div id="projects" class="index-section">
+            <div id="projects-container" class="projects-container">
                 <h1 class="ismt">Key Projects</h1>
                 <div class="ismt">
                     <h2>Section 1</h2>
@@ -241,16 +242,15 @@
         </div>
     
         <div id="blog" class="index-section">
-            <h1>My Blog</h1>
+            <h1>Blog</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec justo est. Nam in massa vel libero facilisis tristique. Etiam ullamcorper lacus eget pharetra elementum. Proin eu dolor a odio tincidunt maximus eu vitae nulla. Proin euismod metus magna, auctor bibendum magna dictum sit amet. Fusce convallis urna ut felis fringilla, vel dapibus augue laoreet.</p>
     
         </div>
     
         <div id="contact" class="index-section">
-            <h1>Contact Me</h1>
+            <h1>Contact</h1>
             <div class="my-form-container" id="my-form-container">
-                <h1 class="contact-heading">Contact</h1>
                 <p>Please complete the form below to contact me</p>
                 <form name="my-form" class="my-form" action="" method="post">
                     <div class="form-group" id="firstLastOnSameLine">

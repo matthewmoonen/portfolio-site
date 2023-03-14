@@ -6,10 +6,12 @@
     box-sizing: border;
 }
 
+
+
+
 :root{
 --backgroundColour1: rgb(33, 33, 33);
 --backgroundColour2: hsl(207, 13%, 17%);
-  /* --hoverColour: hsl(0, 0%, 100%, 5%); */
 }
 
 body {
@@ -61,6 +63,8 @@ body {
     min-height: 100vh;
     /* padding: 50px; */
     margin: 0;
+    padding: 50px 0 20px 0;
+
 }
 
 
@@ -68,26 +72,25 @@ body {
   background-color: var(--backgroundColour2);
   /* color: #c2c2c2; */
   color: #d3d3d3;
-  transform: translateY(-30px);
-  padding-top: 50px;
+  /* transform: translateY(-30px); */
 }
 .about-content {
-  max-width: 800px;
+  /* max-width: 800px; */
+  display: flex;
   margin: auto;
-}
 
+}
+.about-img {
+  float: right;
+  max-width: 30vw;
+  height: auto;
+}
 
 
 
 #projects {
     background-color: var(--backgroundColour1);
     color: whitesmoke;
-}
-
-#projects h1 {
-  color: rgb(252, 176, 77);
-    /* color: rgb(249, 87, 90); */
-    /* color: rgb(84, 170, 222); */
 }
 
 #blog {
@@ -124,6 +127,11 @@ body {
 .index-section.active {
     opacity: 1;
 }
+
+.index-section h1 {
+  color: rgba(249, 87, 90, 1);
+}
+
 
 /* TODO */
 .bigbox {
@@ -311,7 +319,7 @@ transform: translateY(0);
     /* position: static; */
     display: block;
     /* height: 100vh; */
-    height: calc(100vh - 2rem);
+    height: calc(100vh - 3.8rem);
     /* padding: 1rem; */
     text-align: left;
     /* margin: 0; */
@@ -339,51 +347,37 @@ transform: translateY(0);
 }
 .promise-section {
   position: absolute;
-  height: 30px;
-  z-index: 40;
-  margin: 0 2.5em 0 0;
+  margin: 0 2.5em 2.5em 0;
   padding: 0;
-  /* background-color: var(--backgroundColour2); */
   text-align: right;
-  transform: translateY(-40px);
   right: 0;
+  bottom: 0;
 }
 
 .promise {
+  opacity: 0;
   height: 100%;
   text-align: right;
-  transform: translateY(-30px);
-  background-color: var(--backgroundColour1);
-  /* transform: translateY(-em); */
+  color: rgb(56, 63, 69);
+  font-family: 'Space Mono', 'Courier New';
+  font-weight: 700;
+  font-size: 14px;
 }
 
 #text {
-    /* position: relative; */
     white-space: pre-wrap;
     font-family: 'Source Code Pro', 'Space Mono', 'Courier New', Courier, monospace;
     font-weight: 500;
     font-size: 16px;
     position: absolute;
     bottom: 0;
-    /* height: 30vh; */
     overflow-y: auto;
     overflow: hidden;
-    /* height: 30vh; */
     height: 100vh;
     width: 800px;
     transform: translateY(-50%);
     margin: auto;
   }
-
-.promise {
-  /* color: rgb(59, 68, 77); */
-  color: rgb(56, 63, 69);
-
-  font-family: 'Space Mono', 'Courier New';
-  font-weight: 700;
-  font-size: 14px;
-}
-
 
 
 .line4 {
@@ -516,8 +510,6 @@ letter-spacing: 0.03em;
 }
 .my-form {
   max-width: 992px;
-  /* color: red; */
-  /* background-color: aqua; */
 }
 
 input, textarea {
@@ -557,7 +549,7 @@ button {
 textarea:focus, input:focus{
 outline: none;
 border-image: linear-gradient(to top, rgba(84, 170, 222, 0.9), rgba(249, 87, 90, 0.9)) 1;
-box-shadow: 0 0 1px 0 rgba(84, 170, 222, 0.5), 0 0 10px 0 rgba(249, 87, 90, 0.5);
+box-shadow: 0 0 1px 1px rgba(84, 170, 222, 1);
 }
 
 
@@ -596,11 +588,15 @@ button {
 }
 
 button:hover {
-  /* background-color: black; */
-  /* color: white; */
-  /* border-color: white; */
-  /* background-color: rgba(249, 87, 90, 0.1); */
-border-image: linear-gradient(to top left, rgba(249, 87, 90, 0.7), rgba(84, 170, 222, 0.7)) 1;
+  border-image: linear-gradient(to top left, rgba(249, 87, 90, 0.7), rgba(84, 170, 222, 0.7)) 1;
+  background: -webkit-linear-gradient(to top left, rgba(249, 87, 90, 1.0), rgba(84, 170, 222, 1.0));
+  background: linear-gradient(to top left, rgba(249, 87, 90, 1.0), rgba(84, 170, 222, 1.0));
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  box-shadow: 0 0 0.5px 1px rgba(84, 170, 222, 1.0);
+
 }
 
 .form-group label {
