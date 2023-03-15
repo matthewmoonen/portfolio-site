@@ -22,19 +22,9 @@ logging.basicConfig(filename='record.log', level=logging.DEBUG)
 app = Flask(__name__)
 
 
-# # Enable gunicorn logging of error messages
-# if __name__ != '__main__':
-#    gunicorn_logger = logging.getLogger('gunicorn.error')
-#    app.logger.handlers = gunicorn_logger.handlers
-#    app.logger.setLevel(gunicorn_logger.level)
-
-
-
-
 """ Specify static pathway locations. In this case, I am using both 
 regular static within the Flask app, and an external directory where 
 userfiles are to be located """
-
 # Server static files from the regular Flask app location
 app.static_folder = 'static'
 app.static_url_path = '/static'
@@ -45,17 +35,17 @@ app.add_url_rule('/userdata/<path:filename>', endpoint='userdata', view_func=app
 app.config['EXTERNAL_STATIC_FOLDER'] = '/home/matthew/userdata'
 
 
-
-
-
 # Load environment variables from file and make accessible to project
 load_dotenv("/home/matthew/portfolio-site/environmentvariables.env")
+
 
 # Return German learning game as a blueprint/modular app
 app.register_blueprint(german_app, url_prefix="/german")
 
+
 # Create secret key securely
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
+
 
 # Set redis connection details
 redis_host = os.getenv("REDIS_HOST", "localhost")
@@ -63,9 +53,9 @@ redis_port = os.getenv("REDIS_PORT", 6379)
 redis_password = os.getenv("REDIS_PASSWORD", "")
 
 
-
 # Register static route for image upload path
 app.add_url_rule('/userdata/<path:filename>', endpoint='userdata', view_func=app.send_static_file, subdomain='')
+
 
 # Configure image uploads
 app_root = os.path.dirname(os.path.abspath(__file__))
@@ -79,26 +69,32 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 # Configure session cookies
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
 app.config['SESSION_COOKIE_PATH'] = '/'
 if os.getenv("FLASK_ENV")  == 'production':
     app.config['SESSION_COOKIE_SECURE'] = True
 
+
 # Configuration of Redis which allows multiple workers to access the same session credentials on the VPS
 app.config['SESSION_TYPE'] = 'redis'
 app.config["SESSION_REDIS"] = redis.Redis(host=redis_host, port=redis_port, password=redis_password)
 Session(app)
 
+
 # Initialise the database
 db.init_app(app)
+
 
 # Create DB for contact form if not already exists
 with app.app_context():
     db.create_all()
 
+
 # Store hashed password for admin panel in .env to prevent exposing to GitHub
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+
 
 # Start of routes. Index is the landing page.
 @app.route("/", methods=['GET', 'POST'])
@@ -158,6 +154,7 @@ def login_required(f):
             return redirect(url_for("login"))
     return wrap
 
+
 # Admin panel primarily for creating blog posts
 @app.route("/admin/")
 @login_required
@@ -167,14 +164,11 @@ def admin():
     return render_template("admin.html", posts=posts)
 
 
-
-
-
-
 # Check that uploaded image's file extension is valid.
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 # Handle upload
 """ TODO: See here to improve security and performance
@@ -190,8 +184,7 @@ def upload_file():
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
+        # If the user does not select a file, the browser submits an empty file without a filename.
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
@@ -208,10 +201,6 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
-
-
-
-
 
 
 # Retrieve blog post via URL slug. Display 404 error if post not available.
@@ -239,6 +228,7 @@ def blog():
 def render_add_entry():
     return render_template('add_entry.html')
 
+
 # route for handling post blog form submission
 @app.route('/add_entry/', methods=['POST'])
 @login_required
@@ -249,11 +239,8 @@ def add_entry():
         body = request.form['body']
         slug = request.form['slug']
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
-        # date_MMMM_dd_yy = datetime.now().strftime("%B %d, %Y")
-    blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created)
 
-    # blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created, date_MMMM_dd_yy=date_MMMM_dd_yy)
-    
+    blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created)
 
     try:
         db.session.add(blogdata)
@@ -286,7 +273,7 @@ def render_edit_entry(_id):
     if post is None:
         abort(404)
     form = BlogSubmitForm(obj=post)
-    # get the slug value from the database and pass it to the form
+    # Get the slug value from the database and pass it to the form
     slug = BlogPost.query.filter_by(_id=_id).first().slug
     form.slug.data = slug
     return render_template('edit_entry.html', form=form, post=post, _id=_id)
@@ -301,11 +288,11 @@ def edit_entry(_id):
         title = request.form['title']
         body = request.form['body']
         slug = request.form['slug']
-        # query the blog post from the database
+        # Query the blog post from the database
         blogpost = BlogPost.query.get(_id)
         if not blogpost:
             abort(404)
-        # update the blog post data
+        # Update the blog post data
         blogpost.title = title
         blogpost.body = body
         blogpost.slug = slug
@@ -317,11 +304,6 @@ def edit_entry(_id):
             flash('Entry was successfully edited')
             return redirect(url_for('admin'))
 
-
-# TODO: delete this
-@app.route("/welcome/")
-def welcome():
-    return render_template("welcome.html")
 
 # Login route. Currently there is only one login user as admin.
 @app.route("/login/", methods=['GET', 'POST'])
@@ -342,6 +324,7 @@ def login():
             return redirect(url_for('admin'))
     return render_template("login.html", error=error)
 
+
 # User automatically logged out when they visit here
 @app.route("/logout/")
 @login_required
@@ -350,13 +333,19 @@ def logout():
     # "pop" the key off the session cookie
     session.pop("logged_in", None)
     flash("You were just logged out!")
-    return redirect(url_for('welcome'))
+    return redirect(url_for('logged_out'))
+
+
+@app.route("/logged_out/")
+def logged_out():
+    return render_template("logged_out.html")
 
 
 # TODO: combine into the regular index page.
 @app.route("/icons/")
 def show_icons():
     return render_template("icons.html")
+
 
 # Navbar is part of the base html/css elements.
 @app.route("/navbar/")
@@ -368,12 +357,6 @@ def navbar():
 def navbar2():
     return render_template("base/navbar2.html")
 
-
-
-# My projects TODO: combine into index page
-@app.route("/code")
-def code():
-    return render_template("code.html")
 
 # Handle admin deleting post from the admin page
 @app.route('/delete_post/<int:post_id>/', methods=['GET', 'POST'])
