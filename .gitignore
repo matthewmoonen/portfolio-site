@@ -7,3 +7,4 @@ wsgi.py
 instance/
 environmentvariables.env
 static/img/
+record.log

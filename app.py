@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, url_for, flash
+from flask import Flask, render_template, redirect, request, session, url_for, flash, jsonify
 from german.german import german_app
 from forms import ContactForm, BlogSubmitForm
 from datetime import datetime
@@ -12,10 +12,24 @@ from dotenv import load_dotenv
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+import logging
+
+
+logging.basicConfig(filename='record.log', level=logging.DEBUG)
 
 
 # Instantiate the Flask application
 app = Flask(__name__)
+
+
+# # Enable gunicorn logging of error messages
+# if __name__ != '__main__':
+#    gunicorn_logger = logging.getLogger('gunicorn.error')
+#    app.logger.handlers = gunicorn_logger.handlers
+#    app.logger.setLevel(gunicorn_logger.level)
+
+
+
 
 """ Specify static pathway locations. In this case, I am using both 
 regular static within the Flask app, and an external directory where 
@@ -89,6 +103,14 @@ ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 # Start of routes. Index is the landing page.
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    # # Uncomment to enable debugging of this route or copy/paste to another route to start debugging
+    # app.logger.info('Hello, world!')
+    # app.debug = True
+    # app.logger.debug('this is a DEBUG message')
+    # app.logger.info('this is an INFO message')
+    # app.logger.warning('this is a WARNING message')
+    # app.logger.error('this is an ERROR message')
+    # app.logger.critical('this is a CRITICAL message')
 
     # Contact form submits to a SQL database. 
     # If using this form, you need a separate Python script and chron job to forward the emails.
@@ -161,6 +183,7 @@ https://flask.palletsprojects.com/en/2.2.x/patterns/fileuploads/
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload_file():
+    session["mykey"] = "myvalue"
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -234,6 +257,60 @@ def add_entry():
     else:
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
+
+
+
+"""TODO: create base.html for add post and edit post page/admin pages"""
+# # route for rendering the post edit form
+# @app.route('/edit_entry/<int:_id>/', methods=['GET'])
+# @login_required
+# def render_edit_entry(_id):
+#     post = BlogPost.query.filter_by(_id=_id).first()
+#     if post is None:
+#         abort(404)
+#     form = BlogSubmitForm(obj=post)
+#     return render_template('edit_entry.html', form=form, _id=_id)
+
+
+# Route for rendering post edit form
+@app.route('/edit_entry/<int:_id>/', methods=['GET'])
+@login_required
+def render_edit_entry(_id):
+    post = BlogPost.query.filter_by(_id=_id).first()
+    if post is None:
+        abort(404)
+    form = BlogSubmitForm(obj=post)
+    # get the slug value from the database and pass it to the form
+    slug = BlogPost.query.filter_by(_id=_id).first().slug
+    form.slug.data = slug
+    return render_template('edit_entry.html', form=form, post=post, _id=_id)
+
+
+# Route for submitting post edit form
+@app.route('/edit_entry/<int:_id>', methods=['POST'])
+@login_required
+def edit_entry(_id):
+    form = BlogSubmitForm()
+    if form.is_submitted():
+        title = request.form['title']
+        body = request.form['body']
+        slug = request.form['slug']
+        # query the blog post from the database
+        blogpost = BlogPost.query.get(_id)
+        if not blogpost:
+            abort(404)
+        # update the blog post data
+        blogpost.title = title
+        blogpost.body = body
+        blogpost.slug = slug
+        try:
+            db.session.commit()
+        except:
+            return "an error occurred"
+        else:
+            flash('Entry was successfully edited')
+            return redirect(url_for('admin'))
+
 
 # TODO: delete this
 @app.route("/welcome/")

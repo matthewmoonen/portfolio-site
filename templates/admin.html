@@ -152,7 +152,8 @@
                     <td><a href="{{ url_for('blog_post', slug=post.slug) }}">{{ post.title }}</a></td>
 					<td>Matthew</td>
 					<td> {{ post._id }} </td>
-					<td><button class="btn btn-primary">Edit</button> 
+					<td><button class="btn btn-danger" onclick="if(confirm('Are you sure you want to edit this post?')) { window.location.href='{{ url_for('render_edit_entry', _id=post._id) }}'; }">Edit</button>
+
                         <button class="btn btn-danger" onclick="if(confirm('Are you sure you want to delete this post?')) { window.location.href='{{ url_for('delete_post', post_id=post._id) }}'; }">Delete</button>
 				</tr>
                 {% endfor %}
