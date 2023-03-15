@@ -219,7 +219,10 @@ def upload_file():
 def blog_post(slug):
     post = db.session.query(BlogPost).filter_by(slug=slug).first()
     if post:
-        return render_template("base/blog-template.html", post=post, slug=slug)
+        # Reformat date as MMMM dd, yy
+        parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
+        formatted_date = parsed_date.strftime("%B %d, %Y")
+        return render_template("base/blog-template.html", post=post, slug=slug, formatted_date=formatted_date)
     else:
         return f"404"
 
@@ -246,8 +249,11 @@ def add_entry():
         body = request.form['body']
         slug = request.form['slug']
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
-
+        # date_MMMM_dd_yy = datetime.now().strftime("%B %d, %Y")
     blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created)
+
+    # blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created, date_MMMM_dd_yy=date_MMMM_dd_yy)
+    
 
     try:
         db.session.add(blogdata)
