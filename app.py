@@ -237,10 +237,11 @@ def add_entry():
     if form.is_submitted():
         title = request.form['title']
         body = request.form['body']
+        blurb = request.form['blurb']
         slug = request.form['slug']
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-    blogdata = BlogPost(title=title, body=body, slug=slug, date_created=date_created)
+    blogdata = BlogPost(title=title, body=body, slug=slug, blurb=blurb, date_created=date_created)
 
     try:
         db.session.add(blogdata)
@@ -276,6 +277,8 @@ def render_edit_entry(_id):
     # Get the slug value from the database and pass it to the form
     slug = BlogPost.query.filter_by(_id=_id).first().slug
     form.slug.data = slug
+    blurb = BlogPost.query.filter_by(_id=_id).first().blurb
+    form.blurb.data = blurb
     return render_template('edit_entry.html', form=form, post=post, _id=_id)
 
 
@@ -287,6 +290,7 @@ def edit_entry(_id):
     if form.is_submitted():
         title = request.form['title']
         body = request.form['body']
+        blurb = request.form['blurb']
         slug = request.form['slug']
         # Query the blog post from the database
         blogpost = BlogPost.query.get(_id)
@@ -295,6 +299,7 @@ def edit_entry(_id):
         # Update the blog post data
         blogpost.title = title
         blogpost.body = body
+        blogpost.blurb = blurb
         blogpost.slug = slug
         try:
             db.session.commit()

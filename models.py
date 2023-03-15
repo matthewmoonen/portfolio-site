@@ -14,6 +14,7 @@ class messages(db.Model):
     ip_address = db.Column(db.String)
     is_forwarded = db.Column(db.Integer, nullable=False)
 
+
     def __init__(self, first_name, last_name, email, subject, message, date_created, ip_address, is_forwarded):
         self.first_name = first_name
         self.last_name = last_name
@@ -31,10 +32,13 @@ class BlogPost(db.Model):
     title = db.Column(db.String, nullable=False)
     body = db.Column(db.String, nullable=False)
     slug = db.Column(db.String, nullable=False)
+    blurb = db.Column(db.String(300))
     date_created = db.Column(db.String(30))
 
-    def __init__(self, title, body, slug, date_created):
+
+    def __init__(self, title, body, slug, date_created, blurb):
         self.title = title
         self.body = body
         self.slug = slug
+        self.blurb = blurb
         self.date_created = date_created
