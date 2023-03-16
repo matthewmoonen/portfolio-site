@@ -64,7 +64,6 @@ ALLOWED_EXTENSIONS = {'svg', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-
 # Configure SQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -110,6 +109,8 @@ def index():
 
     # Contact form submits to a SQL database. 
     # If using this form, you need a separate Python script and chron job to forward the emails.
+    
+    recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(2).all()
     form = ContactForm()
     if form.is_submitted():
         first_name = request.form['firstName']
@@ -136,8 +137,16 @@ def index():
             return render_template('oops.html')
         else:
             return render_template('thanks.html', first_name=first_name)
+        
 
-    return render_template("index.html")
+        
+        for post in recent_posts:
+            parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
+            post.formatted_date = parsed_date.strftime("%B %d, %Y")
+
+
+
+    return render_template("index.html", recent_posts=recent_posts)
 
 
 # A decorator function that creates login requirement for certain views.
@@ -214,6 +223,12 @@ def blog_post(slug):
         return render_template("base/blog-template.html", post=post, slug=slug, formatted_date=formatted_date)
     else:
         return f"404"
+
+
+@app.route("/mostrecent/")
+def most_recent():
+    recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(2).all()
+    return render_template("most_recent.html", recent_posts=recent_posts)
 
 
 @app.route("/blog/")

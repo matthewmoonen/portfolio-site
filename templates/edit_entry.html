@@ -5,25 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit entry</title>
+    <style>
+        #body, #blurb, #title, #slug {
+            width: 70vw;
+        }
+    </style>
+
 </head>
 <body>
-
+<div class="form-container">
     <form method="POST" action="{{ url_for('edit_entry', _id=_id) }}">
         {{ form.csrf_token }}
-        <label for="title">Title</label>
+        <label for="title">Title</label><br>
         <input type="text" id="title" name="title" value="{{ form.title.data }}"><br>
+        
+        <label for="blurb">Blurb</label><br>
+        <textarea rows="5" id="blurb" name="blurb">{{ form.blurb.data }}</textarea><br>
       
-        <label for="body">Body</label>
-        <textarea id="body" name="body">{{ form.body.data }}</textarea><br>
+        <label for="body">Body</label><br>
+        <textarea rows="10" id="body" name="body">{{ form.body.data }}</textarea><br>
 
-        <label for="blurb">Blurb</label>
-        <textarea id="blurb" name="blurb">{{ form.blurb.data }}</textarea><br>
-
-        <label for="slug">Slug</label>
+        <label for="slug">Slug</label><br>
         <input type="text" id="slug" name="slug" value="{{ form.slug.data }}"><br>
       
         <button type="submit" class="btn" id="btnSend">Submit</button>
       </form>
-
+</div>
 </body>
 </html>

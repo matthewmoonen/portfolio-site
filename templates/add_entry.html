@@ -5,24 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add entry</title>
+    <style>
+        #body, #blurb, #title, #slug {
+            width: 70vw;
+        }
+    </style>
 </head>
 <body>
 
     <form method="POST" action="{{ url_for('add_entry') }}">
-        <label for="title">Title:</label>
+        <label for="title">Title</label><br>
         <input type="text" id="title" name="title"><br>
       
-        <label for="body">Body:</label>
+        <label for="body">Body</label><br>
         <textarea id="body" name="body"></textarea><br>
         
-        <label for="blurb">Blurb</label>
+        <label for="blurb">Blurb</label><br>
         <textarea id="blurb" name="blurb"></textarea><br>
 
-        <label for="slug">Slug</label>
+        <label for="slug">Slug</label><br>
         <input type="text" id="slug" name="slug"><br>
 
         <button type="submit" class="btn" id="btnSend">Submit</button>
       </form>
-
 </body>
 </html>

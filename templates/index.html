@@ -219,7 +219,6 @@
             </div>
 
 
-
             <div class="icon-container">
             <svg xmlns="http://www.w3.org/2000/svg" width="60px" height="60px" class="bi bi-terminal" viewBox="0 0 16 16"><path d="M6 9a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3A.5.5 0 0 1 6 9zM3.854 4.146a.5.5 0 1 0-.708.708L4.793 6.5 3.146 8.146a.5.5 0 1 0 .708.708l2-2a.5.5 0 0 0 0-.708l-2-2z"/><path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12z"/></svg>
             <span class="text-wrapper1">
@@ -240,28 +239,17 @@
         <div id="blog" class="index-section">
         <h1>Blog</h1>
             <div class="blog-card-container">
+                {% for post in recent_posts %}
                 <div class="blog-card">
                     <div class="blog-card-content">
-                        <h2 class="blog-card-title">Title of Post 1</h2>
-                        <p class="blog-card-date">March 1, 2023</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ex velit. Fusce varius malesuada est. Nullam condimentum vestibulum lorem. Nam euismod in dolor id bibendum. Sed porttitor, libero eu lobortis bibendum, augue justo euismod risus, ac luctus velit tellus non elit.</p>
+                        <h2 class="blog-card-title"><a href="{{ url_for('blog', slug=post.slug)|replace('?slug=', '/') }}">{{ post.title }}</a></h2>
+                        <p class="blog-card-date">{{ post.date }}</p>
+                        <p>{{ post.blurb }}</p>
                     </div>
-                </div>
-                <div class="blog-card">
-                    <div class="blog-card-content">
-                        <h2 class="blog-card-title">Title of Post 2</h2>
-                        <p class="blog-card-date">March 2, 2023</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ex velit. Fusce varius malesuada est. Nullam condimentum vestibulum lorem. Nam euismod in dolor id bibendum. Sed porttitor, libero eu lobortis bibendum, augue justo euismod risus, ac luctus velit tellus non elit.</p>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <div class="blog-card-content">
-                        <p class="blog-card-date">March 2, 2023</p>
-                        <h2 class="blog-card-title">Title of Post 2</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ex velit. Fusce varius malesuada est. Nullam condimentum vestibulum lorem. Nam euismod in dolor id bibendum. Sed porttitor, libero eu lobortis bibendum, augue justo euismod risus, ac luctus velit tellus non elit.</p>
-                    </div>
-            <button id="all-blog-posts" onclick="window.location.href='/blog'"">See All Blog Posts</button>
+                {% endfor %}
+            <!-- <button id="all-blog-posts" onclick="window.location.href='/blog'"">See All Blog Posts</button> -->
         </div>
+    </div>
     
         <div id="contact" class="index-section">
             <h1>Contact</h1>
