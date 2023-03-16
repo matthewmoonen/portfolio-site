@@ -93,7 +93,7 @@ body {
 }
 
 #blog {
-    background-color: var(--backgroundColour1);
+    /* background-color: var(--backgroundColour1); */
     background-color: var(--backgroundColour2);
 
 }
@@ -928,3 +928,17 @@ body {
 .index-section {
   visibility: hidden;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

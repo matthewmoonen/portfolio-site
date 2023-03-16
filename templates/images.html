@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+        {% for hist in hists %}
+            <!-- <img src="{{ hist }}" alt="{{ hist }}"> -->
+            <img src="{{ url_for('static', filename=hist)}}" alt="">
+
+        {% endfor %}
+
+            <!-- <img src="/home/matthew/portfolio-site/static/img/me.jpg" alt="nothing here">
+            <img src="{{ url_for('static',filename='/img/me.jpg') }}" alt="A photo of me">
+            <img src="{{userdata/admin/dark4.png'}}" alt=""> -->
+
+</body>
+</html>

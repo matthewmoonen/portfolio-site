@@ -1,0 +1,99 @@
+        <style>
+            /* body {
+                margin: 0;
+                font-family: sans-serif;
+                color: whitesmoke;
+                background-color: black;
+            } */
+            
+            .blog-card-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+                max-width: 1200px;
+                margin: 0;
+                float: left;
+            }
+            
+            .blog-card {
+                width: calc(30vw - 20px - 40px);
+                margin: 10px 10px 10px 10px;
+                overflow: hidden;
+                transition: all 0.2s ease;
+            }
+            
+            .blog-card:hover img, .blog-card-title:hover {
+                opacity: 0.8;
+            }
+    
+            .blog-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+            
+            .blog-card-content {
+                text-align: justify;
+                background-color: rgb(33, 33, 33);
+            }
+            
+            .blog-card-title {
+                font-size: 1.5em;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            
+            .blog-card-date {
+                font-size: 0.9em;
+                font-weight: lighter;
+                margin-bottom: 10px;
+            }
+    
+            @media (min-width: 1200px) {
+                .blog-card {
+                    width: calc(400px - 20px - 40px);
+                }
+            }
+            
+            @media (max-width: 1199px) {
+                .blog-card {
+                    /* width: calc(50vw - 20px - 4rem); */
+                    width: calc(50vw - 20px - 40px);
+    
+                }
+            }
+            
+            @media (max-width: 767px) {
+                .blog-card {
+                    padding-left: 40px;
+                    padding-right: 40px;
+                    width: calc(100%);
+                }
+            }
+            
+        </style>
+        <div class="blog-card-container">
+            <div class="blog-card">
+                <!-- <img src="https://via.placeholder.com/400x200.png?text=Post+1" alt="Post 1"> -->
+                <div class="blog-card-content">
+                    <p class="blog-card-date">March 1, 2023</p>
+                    <h2 class="blog-card-title">Title of Post 1</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ex velit. Fusce varius malesuada est. Nullam condimentum vestibulum lorem. Nam euismod in dolor id bibendum. Sed porttitor, libero eu lobortis bibendum, augue justo euismod risus, ac luctus velit tellus non elit.</p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <!-- <img src="https://via.placeholder.com/400x200.png?text=Post+2" alt="Post 2"> -->
+                <div class="blog-card-content">
+                    <p class="blog-card-date">March 2, 2023</p>
+                    <h2 class="blog-card-title">Title of Post 2</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ex velit. Fusce varius malesuada est. Nullam condimentum vestibulum lorem. Nam euismod in dolor id bibendum. Sed porttitor, libero eu lobortis bibendum, augue justo euismod risus, ac luctus velit tellus non elit.</p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <!-- <img src="https://via.placeholder.com/400x200.png?text=Post+2" alt="Post 2"> -->
+                <div class="blog-card-content">
+                    <p class="blog-card-date">March 2, 2023</p>
+                    <h2 class="blog-card-title">Title of Post 2</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet ex velit. Fusce varius malesuada est. Nullam condimentum vestibulum lorem. Nam euismod in dolor id bibendum. Sed porttitor, libero eu lobortis bibendum, augue justo euismod risus, ac luctus velit tellus non elit.</p>
+                </div>
+            </div>
