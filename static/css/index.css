@@ -6,7 +6,6 @@
     box-sizing: border;
 }
 
-
 :root{
 --backgroundColour1: rgb(33, 33, 33);
 --backgroundColour2: hsl(207, 13%, 17%);
@@ -66,6 +65,7 @@ body {
 
 
 .about {
+  height: 200vh;
   background-color: var(--backgroundColour2);
   /* color: #c2c2c2; */
   color: #d3d3d3;
@@ -152,7 +152,6 @@ transition: opacity 0.5s ease-in-out, transform 0.5s ease-in;
 opacity: 1;
 transform: translateY(0);
 }
-  
 
 
 .index-home {
@@ -268,21 +267,12 @@ transform: translateY(0);
 
 
 #page-title {
-
         color: white;
         margin: auto;
         max-width: 800px;
         z-index: 999;
         transform: translateY(-40px);
         background: rgba(33, 33, 33, 0.3);
-        
-        /* position: fixed;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%); */
-
-
-
     }
 
 
@@ -865,6 +855,38 @@ body {
 
 
 
+/* Styling for the projects section */
+#projects {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  width: 80vw;
+  max-width: 900px;
+  border-collapse: collapse;
+  margin: auto;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+thead {
+  background-color: #ccc;
+}
+
+tbody {
+  height: 700px;
+  background-color: #eee;
+}
+
+
+/* @media (min-width: 900px) {
+
+} */
 
 
 
@@ -872,3 +894,96 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Styling for icons section */
+
+
+#my-technologies {
+  display: block;
+  max-width: 100vw;
+}
+
+.icon-container{
+  width: 60px;
+  height: 70px;
+  position: relative;
+  float: left;
+  margin: 0.8rem;
+}
+
+.icon-container::before{
+  transition: opacity 200ms;
+  transition-delay: 1000ms;
+}
+
+.icon-container {
+  fill: rgb(215, 215, 215);
+}
+.icon-container:hover, .icon-container:active {
+  fill: rgb(238, 238, 238);
+}
+
+.icon-container:hover::before{
+  opacity: 0;
+  transition-delay: 0;
+}
+
+.text-wrapper1{
+  display: block;
+  align-items: center;
+}
+
+.text-wrapper1 span {
+  transition-delay: 0;
+}
+
+.text-wrapper1 span {
+  opacity: 0;
+  transition: transform 400ms, opacity 400ms;
+}
+
+.text-wrapper1 span {
+  transform: translateZ(0) translateY(-3rem);
+}
+
+.icon-container:hover .text-wrapper1 span,
+.icon-container:hover {
+  opacity: 1;
+  transform: translateZ(0) translateY(0);
+
+  @for $i from 1 through 3 {
+    &:nth-child(#{$i}) { 
+      @include transition-delay(0.1s * $i); 
+    }
+  }
+}
+
+.text-wrapper2 {
+  position: absolute;
+  top: 27%;
+  left: 0;
+  right: 0;
+  letter-spacing: 0.05rem;
+  /* color: rgb(196, 127, 0); */
+  color: hsl(212, 100%, 50%);
+  
+}
+
+.text-wrapper1 {
+  text-align: center;
+}
