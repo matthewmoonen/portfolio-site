@@ -144,8 +144,6 @@ def index():
             parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
             post.formatted_date = parsed_date.strftime("%B %d, %Y")
 
-
-
     return render_template("index.html", recent_posts=recent_posts)
 
 

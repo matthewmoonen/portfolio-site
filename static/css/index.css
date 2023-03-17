@@ -7,8 +7,6 @@
 }
 
 
-
-
 :root{
 --backgroundColour1: rgb(33, 33, 33);
 --backgroundColour2: hsl(207, 13%, 17%);
@@ -100,7 +98,6 @@ body {
 
 /* Style the fourth section differently */
 #contact {
-  /* background-color: var(--backgroundColour2); */
   background-color: var(--backgroundColour1);
   color: #d3d3d3;
   color: #c2c2c2;
@@ -108,7 +105,6 @@ body {
 }
 
 .my-form-container {
-  /* background-color: var(--backgroundColour2); */
   background-color: var(--backgroundColour1);
 
 }
@@ -379,73 +375,9 @@ transform: translateY(0);
     margin: auto;
   }
 
-/* 
-.line4 {
-  opacity: 0.9;
-}
-
-   .line5 {
-    opacity: 0.8;
-  }
-  
-  .line6 {
-    opacity: 0.63;
-  }
-  
-  .line7 {
-    opacity: 0.55;
-  }
-  
-  .line8 {
-    opacity: 0.47;
-  }
-  
-  .line9 {
-    opacity: 0.40;
-  }
-  
-  .line10 {
-    opacity: 0.35;
-  }
-  
-  .line11 {
-    opacity: 0.30;
-  }
-  
-  .line12 {
-    opacity: 0.27;
-  }
-  
-  .line13 {
-    opacity: 0.26;
-  }
-  
-  .line14 {
-    opacity: 0.33;
-  }
-  
-  .line15 {
-    opacity: 0.14;
-  }
-  
-  .line16 {
-    opacity: 0.08;
-  }
-  
-  .line17 {
-    opacity: 0.05;
-  }
-  
-  .line18 {
-    opacity: 0;
-  }
-  
-  .line19 {
-    opacity: 0;
-  } */
 
 
-
+/* Lower opacity of animation lines of code as as the animation moves through the lines */
 .line4 {
   opacity: 0.9;
 }
@@ -625,32 +557,13 @@ box-shadow: 0 0 1px 1px rgba(84, 170, 222, 1);
 input, textarea {
   font-family: 'Source Code Pro';
   font-size: 0.8rem;
-  /* border-radius: 3px; */
-  /* background-color: whateveryouwant; */
+
 }
 
 button {
   font-size: 1.5rem;
   border-radius: 3px;
   background-color: transparent;
-  /* color: black;
-  border-color: black; */
-
-  /* color: white; */
-  /* border-color: white; */
-
-  /* border-color: rgb(249, 229, 162); */
-  /* color: rgb(249, 229, 162); */
-  /* background-color: rgb(205, 103, 102); */
-  /* background-color: rgb(84, 170, 222); */
-  
-  /* border-color: rgb(124, 216, 255);
-  color: rgb(124, 216, 255); */
-
-
-  /* border-color: rgb(205, 103, 102);
-  color: rgb(205, 103, 102); */
-
   border-style: solid;
   border-width: medium;
 }
@@ -813,9 +726,27 @@ button:hover {
       display: block;
       font-size: 0.95rem;
       padding-bottom: 0.15rem;
-      /* font-family: 'Rubrik'; */
       letter-spacing: 0.05rem;
   }
+
+
+  .my-form-container {
+    margin-left: calc(50vw - 496px);
+    margin-right: 4%;
+}
+
+
+  .my-form-container {
+    padding-left: 0;
+    /* padding-left: calc(50vw - 300px); */
+    padding-right: 0;
+  }
+  .my-form {
+    max-width: 992px;
+    /* padding-left: calc(50vw - 992); */
+  }
+
+
 
 
   /* Place button on RHS on desktop */
@@ -906,12 +837,10 @@ button:hover {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-
-
-
-
-
 }
+
+
+
 
 button {
   border-color: rgb(84, 170, 222);
@@ -925,6 +854,7 @@ body {
 }
 
 
+/* Hide index section on page load until Javascript animation function triggers its visibility */
 .index-section {
   visibility: hidden;
 }
