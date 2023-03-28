@@ -16,7 +16,6 @@ addElements();
 				restOfPageElements[i].style.visibility = "visible";
 			}
       document.body.style.overflow = "auto";
-      // document.querySelector(".promise").style.visibility = "visible"
 		}, 5000); // 5000 is the time in milliseconds (5 seconds) after which the rest of the page will be displayed
 	};
 
