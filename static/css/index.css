@@ -20,41 +20,11 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
-.home a:hover {
-    animation: colourCycle 3s linear infinite;
-}
-
-@keyframes colourCycle {
-  0% {
-    color: rgb(249, 87, 90);
-  }
-  25% {
-    color: rgb(252, 176, 77);
-  }
-  50% {
-    color: rgb(249, 87, 90);
-  }
-  75% {
-    color: rgb(84, 170, 222);
-  }
-  100% {
-    color: rgb(249, 87, 90);
-  }
-}
-
-.index-background1 {
-    background-color: rgb(33, 33, 33);
-}
-
-.index-background2 {
-    background-color: hsl(207, 13%, 17%);
-}
 
 .index-section{
     margin: 0;
     padding: 50px 0 20px 0;
 }
-
 
 .about {
   background-color: var(--backgroundColour2);
@@ -63,13 +33,14 @@ body {
 .about-content {
   display: flex;
   margin: auto;
-
 }
 .about-img {
   float: right;
   max-width: 400px;
   height: auto;
 }
+
+
 
 #projects {
     position: relative;
@@ -110,19 +81,6 @@ body {
   color: rgba(249, 87, 90, 1);
 }
 
-.bigbox {
-    width: 1000px;
-    height: 100px;
-    background: linear-gradient(to right, rgb(252, 176, 77), rgb(249, 87, 90));
-}
-
-
-.bigbox2 {
-    width: 1000px;
-    height: 100px;
-    background: linear-gradient(to right, rgb(249, 87, 90), rgb(84, 170, 222));
-}
-
 .ismt {
 opacity: 0;
 transform: translateX(-25px);
@@ -133,7 +91,6 @@ transition: opacity 0.5s ease-in-out, transform 0.5s ease-in;
 opacity: 1;
 transform: translateX(0);
 }
-
 
 .index-home {
     -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
@@ -282,6 +239,7 @@ transform: translateX(0);
 
 
 #index-home {
+    background-color: var(--backgroundColour1);
     display: block;
     height: calc(100vh - 3.8rem);
     text-align: left;

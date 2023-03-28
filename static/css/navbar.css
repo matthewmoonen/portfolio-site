@@ -34,6 +34,29 @@
     letter-spacing: 0.07rem;
     font-size: 0.85rem;
 }
+.home a:hover {
+    animation: colourCycle 3s linear infinite;
+}
+
+@keyframes colourCycle {
+  0% {
+    color: rgb(249, 87, 90);
+  }
+  25% {
+    color: rgb(252, 176, 77);
+  }
+  50% {
+    color: rgb(249, 87, 90);
+  }
+  75% {
+    color: rgb(84, 170, 222);
+  }
+  100% {
+    color: rgb(249, 87, 90);
+  }
+}
+
+
 .navbar a {
     text-decoration: none;
     color: var(--mainColour);
