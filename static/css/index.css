@@ -7,8 +7,8 @@
 }
 
 :root{
---backgroundColour1: rgb(33, 33, 33);
---backgroundColour2: hsl(207, 13%, 17%);
+  --backgroundColour1: rgb(33, 33, 33);
+  --backgroundColour2: hsl(207, 13%, 17%);
 }
 
 body {
@@ -21,7 +21,7 @@ body {
 }
 
 .home a:hover {
-  animation: colourCycle 3s linear infinite;
+    animation: colourCycle 3s linear infinite;
 }
 
 @keyframes colourCycle {
@@ -38,29 +38,21 @@ body {
     color: rgb(84, 170, 222);
   }
   100% {
-    /* color: rgb(252, 176, 77); */
     color: rgb(249, 87, 90);
-
   }
 }
 
-
 .index-background1 {
-    background-color: rgb(33, 33, 33);`
+    background-color: rgb(33, 33, 33);
 }
 
 .index-background2 {
-  background-color: hsl(207, 13%, 17%);
+    background-color: hsl(207, 13%, 17%);
 }
 
-
-/* TODO */
 .index-section{
-    /* min-height: 100vh; */
-    /* padding: 50px; */
     margin: 0;
     padding: 50px 0 20px 0;
-
 }
 
 
@@ -69,7 +61,6 @@ body {
   color: #d3d3d3;
 }
 .about-content {
-  /* max-width: 800px; */
   display: flex;
   margin: auto;
 
@@ -80,8 +71,6 @@ body {
   height: auto;
 }
 
-
-
 #projects {
     position: relative;
     background-color: var(--backgroundColour1);
@@ -89,12 +78,9 @@ body {
 }
 
 #blog {
-    /* background-color: var(--backgroundColour1); */
     background-color: var(--backgroundColour2);
-
 }
 
-/* Style the fourth section differently */
 #contact {
   background-color: var(--backgroundColour1);
   color: #d3d3d3;
@@ -106,7 +92,6 @@ body {
   background-color: var(--backgroundColour1);
 
 }
-
 
 #my-technologies {
     background-color: var(--backgroundColour1);
@@ -125,15 +110,13 @@ body {
   color: rgba(249, 87, 90, 1);
 }
 
-
-/* TODO */
 .bigbox {
     width: 1000px;
     height: 100px;
     background: linear-gradient(to right, rgb(252, 176, 77), rgb(249, 87, 90));
 }
 
-/* TODO */
+
 .bigbox2 {
     width: 1000px;
     height: 100px;
@@ -142,13 +125,13 @@ body {
 
 .ismt {
 opacity: 0;
-transform: translateY(25px);
+transform: translateX(-25px);
 transition: opacity 0.5s ease-in-out, transform 0.5s ease-in;
 }
 
 .ismt.active {
 opacity: 1;
-transform: translateY(0);
+transform: translateX(0);
 }
 
 
@@ -828,8 +811,6 @@ button:hover {
 }
 
 
-
-
 button {
   border-color: rgb(84, 170, 222);
   padding: 0.2rem 1rem;
@@ -1044,11 +1025,6 @@ th a {
   /* color: rgb(249, 87, 90); */
 }
 
-.project-heading-h3 {
-  /* color: rgba(84, 170, 222, 1.0); */
-  /* color: rgb(252, 176, 77); */
-  /* text-align: center; */
-}
 
 /* .blog-card-title a {
   color: #d3d3d3;
@@ -1085,13 +1061,11 @@ th a {
 }
 
 .key-projects {
-  /* text-align: center; */
   margin: 0 auto;
   padding-top: 16px;
 }
 
 .tech-icons {
-  /* fill: rgba(255, 255, 255, 0.498); */
   fill: rgba(84, 170, 222, 0.7);
 }
 
@@ -1138,4 +1112,13 @@ th a {
 
 .project-link a.project-non-active-link {
     color: rgba(211, 211, 211, 0.4);
+}
+
+#function-line1 {
+  position: absolute;
+  height: 60vh;
+  width: 100vw;
+  top: 0;
+  right: 0;
+  background-color: rgb(33, 33, 33);
 }

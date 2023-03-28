@@ -57,22 +57,11 @@
         <div id="animation-text"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
         <div id="function-line1">|</div>
     </div>
-    <style>
-        #function-line1 {
-            position: absolute;
-            height: 60vh;
-            width: 100vw;
-            top: 0;
-            right: 0;
-            background-color: rgb(33, 33, 33);
-        }
-    </style>
-    
 
     <div id="about" class="about index-section">
             <h1 class="ismt">About Me</h1>
             <div class="about-content">
-                <div class="about-text ismt">
+                <div class="about-text">
                     <div class="about-img-container">
                         <img src="{{ url_for('static',filename='/img/me.jpg') }}" alt="A photo of me" class="about-img"></img>
                     </div>
@@ -85,7 +74,7 @@
             </div>
 
 
-<span class="technology-heading"><h2>My toolkit:</h2></span>
+<span class="technology-heading"><h2 class="ismt">My toolkit:</h2></span>
 
 <div id="my-technologies">
     <div class="icon-container">
@@ -165,9 +154,8 @@
 
     <p>This personal project was a key motivation for me to learn programming. After studying German and working as an English teacher in Germany, I recognized that certain concepts, such as cases and declensions, were not effectively covered by existing gamified language-learning platforms, leading to difficulties for German learners. To address this gap, I aimed to create an app that could both fill these gaps and serve as a means for me to learn programming. Developing the app also requires knowledge of fundamental concepts such as frontend and backend development, security and authentication, data analysis, machine learning, algorithms, UI and UX design, scalability, and CI/CD.</p>
         
-    <!-- <h3 class="project-heading-h3" style="color: rgba(252, 176, 77, 1.0)">Technology</h3> -->
     <h3 class="project-heading-h3" style="color: rgba(249, 87, 90, 1)">Technology</h3>
-    </p>The app queries a JSON API to retrieve lesson content. Lesson progress and score are handled via JavaScript in-browser. In future versions, the browser will return the user's results to the server.</p>
+    </p style="color: rgba(249, 87, 90, 1)">The app queries a JSON API to retrieve lesson content. Lesson progress and score are handled via JavaScript in-browser. In future versions, the browser will return the user's results to the server.</p>
 
     <h3 class="project-heading-h3">Future</h3>
     <p>Currently, the app only has one lesson, but future versions will deliver personalized JSON lesson content based on the user's previous progress and results. I plan to optimise learning retention by using spaced repetition algorithms like the <a href="https://en.wikipedia.org/wiki/Leitner_system">Leitner System</a>.</p>
@@ -305,7 +293,7 @@ for (let i = 0; i < projectLinks.length; i++) {
 
     
         <div id="blog" class="blog index-section">
-        <h1>Recent Blog Posts</h1>
+        <h1 class="ismt">Recent Blog Posts</h1>
             <div class="blog-card-container">
                 {% for post in recent_posts %}
                 <div class="blog-card">
@@ -315,13 +303,14 @@ for (let i = 0; i < projectLinks.length; i++) {
                         <p class="post-blurb">{{ post.blurb }} <a href="{{ url_for('blog', slug=post.slug)|replace('?slug=', '') }}">Read More</a></p>
                     </div>
                 {% endfor %}
-            <!-- <button id="all-blog-posts" onclick="window.location.href='/blog'"">See All Blog Posts</button> -->
+                <!-- TODO: add link to all blog posts when page finished. -->
+                <!-- <button id="all-blog-posts" onclick="window.location.href='/blog'"">See All Blog Posts</button> -->
         </div>
     </div>
     </div>
 </div>
         <div id="contact" class="index-section">
-            <h1 class="contact-heading">Contact</h1>
+            <h1 class="contact-heading ismt">Contact</h1>
             <div class="my-form-container" id="my-form-container">
                 <p>Please complete the form below to contact me</p>
                 <form name="my-form" class="my-form" action="" method="post">
