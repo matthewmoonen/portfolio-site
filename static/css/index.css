@@ -348,7 +348,7 @@ transform: translateY(0);
   font-size: 14px;
 }
 
-#text {
+#animation-text {
     white-space: pre-wrap;
     font-family: 'Source Code Pro', 'Space Mono', 'Courier New', Courier, monospace;
     font-weight: 500;
