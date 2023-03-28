@@ -263,10 +263,9 @@ transform: translateX(0);
   width: 1ch;
   padding-top: 0;
   color: white;
-        font-family: Verdana;
-        font-weight: 900;
-        /* font-size: 19px; */
-        transform: translateY(-2px);
+  font-family: Verdana;
+  font-weight: 900;
+  transform: translateY(-2px);
 }
 @keyframes blink {
   0% {
@@ -283,22 +282,15 @@ transform: translateX(0);
 
 
 #index-home {
-    /* position: static; */
     display: block;
-    /* height: 100vh; */
     height: calc(100vh - 3.8rem);
-    /* padding: 1rem; */
     text-align: left;
-    /* margin: 0; */
-    /* top: 0; */
     margin: auto;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 100;
-
 }
 
 .home-top-half {

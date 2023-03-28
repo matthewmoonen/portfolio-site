@@ -50,7 +50,6 @@
             <!-- TODO UPDATE -->
             <!-- <div class="promise">// Scroll to the bottom to see how the promise resolves ;)</div> -->
             <div class="promise">// The promise resolves in your console</div>
-
         </div>
     </div>
     <div class="home-top-half">
@@ -155,7 +154,7 @@
     <p>This personal project was a key motivation for me to learn programming. After studying German and working as an English teacher in Germany, I recognized that certain concepts, such as cases and declensions, were not effectively covered by existing gamified language-learning platforms, leading to difficulties for German learners. To address this gap, I aimed to create an app that could both fill these gaps and serve as a means for me to learn programming. Developing the app also requires knowledge of fundamental concepts such as frontend and backend development, security and authentication, data analysis, machine learning, algorithms, UI and UX design, scalability, and CI/CD.</p>
         
     <h3 class="project-heading-h3" style="color: rgba(249, 87, 90, 1)">Technology</h3>
-    </p style="color: rgba(249, 87, 90, 1)">The app queries a JSON API to retrieve lesson content. Lesson progress and score are handled via JavaScript in-browser. In future versions, the browser will return the user's results to the server.</p>
+    </p>The app queries a JSON API to retrieve lesson content. Lesson progress and score are handled via JavaScript in-browser. In future versions, the browser will return the user's results to the server.</p>
 
     <h3 class="project-heading-h3">Future</h3>
     <p>Currently, the app only has one lesson, but future versions will deliver personalized JSON lesson content based on the user's previous progress and results. I plan to optimise learning retention by using spaced repetition algorithms like the <a href="https://en.wikipedia.org/wiki/Leitner_system">Leitner System</a>.</p>
@@ -179,8 +178,8 @@
               <tbody>
                 <tr>
                   <td colspan="5" class="project-inner">
-                    <!-- Copy/Paste this into the JavaScript below -->
-                    <div id="project-content">asdf</div>
+                    <!--  -->
+                    <div id="project-content"></div>
                   </td>
                 </tr>
               </tbody>
@@ -229,8 +228,10 @@ function viewProject(projectNum) {
     projectContentElement.innerHTML = projectContent;
     projectContentElement.style.opacity = 1;
     projectContentElement.style.transform = "translateX(0)";
-  }, 400); // Delay for 500ms
+  }, 400); // Delay fade/animation for 500ms
 }
+window.addEventListener("load", viewProject(1)); // Show content of first project on page load
+
 
     </script>
 
@@ -271,6 +272,7 @@ tableHeadings.forEach((heading) => {
 
 <script>
 
+// Change the colour of each link based on whether it's currently clicked/selected.
 function toggleColor(event) {
   const projectLinks = document.querySelectorAll('.project-link a');
 
@@ -284,14 +286,9 @@ const projectLinks = document.querySelectorAll('.project-link a');
 for (let i = 0; i < projectLinks.length; i++) {
   projectLinks[i].addEventListener('click', toggleColor);
 }
-
-
     </script>
 
 
-
-
-    
         <div id="blog" class="blog index-section">
         <h1 class="ismt">Recent Blog Posts</h1>
             <div class="blog-card-container">
@@ -346,7 +343,5 @@ for (let i = 0; i < projectLinks.length; i++) {
                 <br>
             </div>
         </div> 
-
-
     </body>
     </html>
