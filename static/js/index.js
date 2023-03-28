@@ -1,23 +1,13 @@
+// Array of text displayed in the page-load animation
 var textArray = ['\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<span class="red line1">const</span> <span class="darkblue line1">me</span> <span class="red line1">=</span> <span class="blue line1">"Matthew Moonen"</span><span class="white line1">;</span>', '\n<span class="red line2">let</span> <span class="white line2">you</span> <span class="red line2">=</span> <span class="blue line2">"visitor"</span><span class="white line2">;</span>', '\n\n<span class="purple line3">greetings</span><span class="darkblue line3">()</span><span class="white line3">;</span>', '\n\n<span class="red italic-code line4">async function</span> <span class="purple line4">greetings</span><span class="darkblue line4">() {</span>\n<span class="grey line5">••</span><span class="darkblue line5">console</span><span class="white line5">.</span><span class="purple line5">log</span><span class="orange line5">(</span><span class="blue line5">`Welcome</span> <span class="purple line5">${</span><span class="darkblue line5">you</span><span class="purple line5">}</span><span class="blue line5">!`</span><span class="orange line5">)</span><span class="white line5">;</span>\n<span class="grey line6">••</span><span class="red italic-code line6">await new</span> <span class="darkblue line6">Promise</span><span class="orange line6">(</span><span class="purple line6">(resolve)</span> <span class="red line6">=></span> <span class="purple line6">{</span>\n<span class="grey line7">••••</span><span class="darkblue line7">window</span><span class="white line7">.</span><span class="purple line7">addEventListener</span><span class="darkblue line7">(</span><span class="blue line7">"scroll"</span><span class="white line7">,</span> <span class="orange line7">()</span> <span class="red line7">=></span> <span class="orange line7">{</span>\n<span class="grey line8">••••••</span><span class="red line8">const</span> <span class="purple line8">{</span>\n<span class="grey line9">••••••••</span><span class="darkblue line9">scrollTop</span><span class="white line9">,</span>\n<span class="grey line10">••••••••</span><span class="darkblue line10">scrollHeight</span><span class="white line10">,</span>\n<span class="grey line11">••••••••</span><span class="darkblue line11">clientHeight</span>\n<span class="grey line12">••••••</span><span class="purple line12">}</span> <span class="red line12">=</span> <span class="darkblue line12">document</span><span class="white line12">.</span><span class="darkblue line12">documentElement</span><span class="white line12">;</span>\n<span class="grey line13">••••••</span><span class="red line13">if</span> <span class="purple line13">(</span><span class="darkblue line13">scrollTop</span> <span class="red line13">+</span> <span class="darkblue line13">clientHeight</span> <span class="red line13">=></span> <span class="darkblue line13">scrollHeight</span><span class="purple line13">) {</span>\n<span class="grey line14">••••••••</span><span class="purple line14">resolve</span><span class="darkblue line14">()</span><span class="white line14">;</span>\n<span class="grey line15">••••••</span><span class="purple line15">}</span>\n<span class="grey line16">••••</span><span class="orange line16">}</span><span class="darkblue line16">)</span><span class="white line16">;</span>\n<span class="grey line17">••</span><span class="purple line17">}</span><span class="orange line17">)</span><span class="white line17">;</span>\n<span class="grey line18">••</span><span class="darkblue line18">console</span><span class="white line18">.</span><span class="purple line18">log</span><span class="orange line18">(</span><span class="blue line18">Thanks for stopping by</span> <span class="purple line18">${</span><span class="darkblue line18">me</span><span class="purple line18">}</span><span class="blue line18">\'s website!</span><span class="orange line18">)</span><span class="white line18">;</span>\n<span class="darkblue line19">}</span>']
 
 
 var element = document.getElementById("text");
+
+// Declare element count as variable, which 
 var elementCount = 0;
 
 addElements();
-// triggerEndAnimation()
-
-// body.style.maxHeight = "100vh"
-// body.style.overflow = "hidden"
-
-
-// window.onload = function() {
-//   setTimeout(function() {
-//     document.querySelector(".index-section").style.display = "block";
-//   }, 5000); // 5000 is the time in milliseconds (5 seconds) after which the rest of the page will be displayed
-// };
-
-
 	window.onload = function() {
     window.scrollTo(0, 0);
 		setTimeout(function() {
@@ -31,19 +21,14 @@ addElements();
 	};
 
 
-
-
-
+// Call the title fade-in function on page load
+window.addEventListener("load", fadeInTitle);
 
 function fadeInTitle() {
   // Get the div element by its ID
   const pageTitle = document.getElementById("page-title");
   const promise = document.querySelector(".promise");
-  const functionLine1 = document.querySelector('#asdf');
-  // const functionLine2 = document.querySelector('.line2');
-  // const functionLine3 = document.querySelector('.line3');
-  // const functionLine4 = document.querySelector('.line4');
-  // const functionLine5 = document.querySelector('.line5');
+  const functionLine1 = document.querySelector('#function-line1');
 
 
   // Set the pageTitle's initial opacity to 0
@@ -53,7 +38,7 @@ function fadeInTitle() {
 
 
 
-  // Wait for 5 seconds
+  // Wait for 6 seconds before showing title page (whilst animation occurs)
   setTimeout(() => {
     // Use the CSS transition property to fade in the pageTitle over 2 seconds with an ease-in-out animation
     pageTitle.style.transition = "opacity 1s ease-in";
@@ -62,19 +47,8 @@ function fadeInTitle() {
     promise.style.opacity = 1;
     functionLine1.style.transition = "opacity 5s ease-in"
     functionLine1.style.opacity = 0.6;
-    // functionLine2.style.transition = "opacity 1s ease-out"
-    // functionLine2.style.opacity = 0.2;
-    // functionLine3.style.transition = "opacity 1s ease-out"
-    // functionLine3.style.opacity = 0.2;
-    // functionLine4.style.transition = "opacity 1s ease-out"
-    // functionLine4.style.opacity = 0.2;
-    // functionLine5.style.transition = "opacity 1s ease-out"
-    // functionLine5.style.opacity = 0.2;
   }, 6000);
 }
-
-// Call the function on page load
-window.addEventListener("load", fadeInTitle);
 
 
 
@@ -111,7 +85,6 @@ window.addEventListener("load", fadeInNavbar)
 
 
 function addElements() {
-  // var text = textArray[elementCount].replace(/\n/g, "<br>");
   var text = textArray[elementCount];
   var index = 0;
   var interval;
@@ -194,67 +167,4 @@ function addElements() {
       }, waitTime);
     }
   }
-}
-
-
-
-function triggerFadeOut(element) {
-    let opacity = 1;
-    function animate() {
-      opacity -= 0.1;
-      element.style.opacity = opacity;
-      if(opacity <= 0) {
-        element.style.display = 'none';
-      } else {
-        requestAnimationFrame(animate);
-      }
-    }
-    requestAnimationFrame(animate);
-  }
-  
-
-
-
-
-// function triggerFadeOut(topHalfHome) {
-//     let opacity = 1;
-//     const timer = setInterval(function() {
-//       if(opacity <= 0.1) {
-//         clearInterval(timer);
-//         topHalfHome.style.opacity = 0;
-//         topHalfHome.style.display = 'none';
-//       }
-//       topHalfHome.style.opacity = opacity;
-//       opacity -= 0.1;
-//     }, 10);
-//   }
-  
-
-
-// function triggerFadeOut(topHalfHome) {
-//   let opacity = 1;
-//   const timer = setInterval(function() {
-//     if(opacity <= 0.1) {
-//       clearInterval(timer);
-//       topHalfHome.style.display = 'none';
-//     }
-//     topHalfHome.style.opacity = opacity;
-//     opacity -= 0.1;
-//   }, 50);
-// }
-
-
-
-
-
-
-
-
-function triggerEndAnimation() {
-  console.log('triggered');
-    setTimeout(() => {
-    const div = document.getElementById("text");
-    div.style.transition = "transform 5s ease-out";
-    div.style.transform = "translateY(-1500px)";
-    }, 5000);
 }
