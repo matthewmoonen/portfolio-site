@@ -16,7 +16,7 @@ addElements();
 				restOfPageElements[i].style.visibility = "visible";
 			}
       document.body.style.overflow = "auto";
-		}, 5000); // 5000 is the time in milliseconds (5 seconds) after which the rest of the page will be displayed
+		}, 4250); // time in milliseconds after which the title page will be displayed
 	};
 
 
@@ -55,7 +55,7 @@ function fadeInNavbar() { // Fades navbar in on load.
   body.style.backgroundColor = "rgb(33, 33, 33)" // Set colour of body background and title section background to match on load.
   div.style.backgroundColor = "rgb(33, 33, 33)"
 
-  // Wait for 5 seconds
+  // Wait for _ seconds
   setTimeout(() => {
     // Use the CSS transition property to fade in the div over 2 seconds with an ease-in-out animation
     div.style.visibility = "visible"
@@ -63,7 +63,7 @@ function fadeInNavbar() { // Fades navbar in on load.
     body.style.backgroundColor = "hsl(207, 13%, 17%)" // Change colour of page's main background after navbar appears.
     div.style.transition = "opacity 1s ease-in";
     div.style.opacity = 1;
-  }, 5000);
+  }, 4000);
 }
 window.addEventListener("load", fadeInNavbar) // Call the function on page load
 
