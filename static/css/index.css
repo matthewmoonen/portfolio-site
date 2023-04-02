@@ -256,10 +256,24 @@ th a {
 }
 
 #project-content {
-  height: 700px;
+  min-height: 500px;
 }
 
 
+/* .python-script-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+} */
+
+.python-script-title a {
+  color: #d3d3d3;
+  opacity: 0.65;
+}
+
+.python-script-title a:hover { 
+  opacity: 0.4;
+}
 
 
 
@@ -964,6 +978,9 @@ body {
   transition: opacity 0.3s linear, transform 0.3s linear;
 }
 
+#project-content p {
+  text-align: left;
+}
 
 .project-link a:link{
   text-decoration: none;
