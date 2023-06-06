@@ -275,19 +275,8 @@ th a {
   opacity: 0.4;
 }
 
-.portfolio-img {
-  filter: grayscale(100%) brightness(120%) contrast(0.7) blur(0.4px);
-  filter: grayscale(100%) brightness(120%) contrast(0.7);
-  transform: scale(0.9825);
-  transition: all 0.125s ease-in;
-  max-width: 600px;
-}
 
-.portfolio-img:hover {
-  filter: grayscale(0%) brightness(100%) contrast(1) blur(0px);
-  transform: scale(1);
-  box-shadow: 0px 0px 6px 1.5px rgba(255, 255, 255, 0.1);
-}
+
 
 
 
@@ -563,16 +552,6 @@ transform: translateX(0);
 .line19 {
     opacity: 0.1;
   }
-
-
-@media (max-width: 600px) {
-  .portfolio-img {
-    width: 100%;
-  }
-  .about-img {
-    width: 100%;
-  }
-}
 
 
 /* Style Home section on smaller devices */
