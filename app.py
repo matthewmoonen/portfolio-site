@@ -37,6 +37,8 @@ app.config['EXTERNAL_STATIC_FOLDER'] = '/home/matthew/userdata'
 
 # Load environment variables from file and make accessible to project
 load_dotenv("/home/matthew/portfolio-site/environmentvariables.env")
+flask_environment = os.getenv("FLASK_ENV")
+print("flask environment:" + str(flask_environment))
 
 
 # Return German learning game as a blueprint/modular app
@@ -51,7 +53,6 @@ app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_port = os.getenv("REDIS_PORT", 6379)
 redis_password = os.getenv("REDIS_PASSWORD", "")
-
 
 # Register static route for image upload path
 app.add_url_rule('/userdata/<path:filename>', endpoint='userdata', view_func=app.send_static_file, subdomain='')
@@ -79,7 +80,8 @@ if os.getenv("FLASK_ENV")  == 'production':
 # Configuration of Redis which allows multiple workers to access the same session credentials on the VPS
 app.config['SESSION_TYPE'] = 'redis'
 app.config["SESSION_REDIS"] = redis.Redis(host=redis_host, port=redis_port, password=redis_password)
-Session(app)
+if os.getenv("FLASK_ENV") == 'production':
+    Session(app)
 
 
 # Initialise the database
@@ -393,5 +395,8 @@ def delete_post(post_id):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000)
-    # app.run(debug=True)
+    if flask_environment  == 'production':
+        app.run(host='0.0.0.0', port=8000)
+
+    elif flask_environment == 'development':
+        app.run(debug=True)
