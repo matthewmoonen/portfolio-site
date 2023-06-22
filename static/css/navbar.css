@@ -1,8 +1,5 @@
 :root{
-    /* --mainColour: hsl(0, 0%, 100%); */
     --mainColour: #c2c2c2;
-
-    /* --hoverColour: hsl(0, 0%, 100%, 5%); */
 }
 .navbar {
     /* opacity: 98%; */
@@ -12,17 +9,12 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: hsla(207, 13%, 17%, 0.672);
     backdrop-filter: blur(0.6rem);
     -webkit-backdrop-filter: blur(1rem);
     border-bottom: solid;
     border-bottom-width: 1px;
-    /* border-bottom-color: hsla(207, 13%, 17%, 0.9);
-    border-bottom-color: hsla(0, 0%, 26%, 0.9); */
     border-bottom-color: hsla(0, 0%, 20%, 0.9);
-
     z-index: 1100;
-    /* visibility: hidden; */
 }
 
 .navbar:hover{
@@ -65,6 +57,9 @@
 .navbar a:visited {
     color: var(--mainColour)
 }
+
+  
+
 .navbar-links {
     display: block;
     position: absolute;
@@ -102,14 +97,20 @@
         transition-delay: 0s;
     }
 
-    .navbar a {
-        color: black;
+    .navbar-links a {
+        /* color: white; */
+        color: rgb(38, 44, 49);
+        transition: color 0.75s ease-in-out;
     }
     
-    .navbar a:visited {
-        color: black;
+    .navbar-links a:visited {
+        color: rgb(38, 44, 49);
+        /* color: white; */
     }
-
+    .navbar-links a.active {
+        /* color: blue;  */
+        color: white;
+    }
     
 
     .navbar {
@@ -179,10 +180,6 @@
         position: absolute;
         bottom: 80px;
         right: 10vw;
-    }
-
-    .svg-toggle-off {
-        fill: black;
     }
 
 }

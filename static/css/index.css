@@ -174,7 +174,9 @@ color: rgba(249, 87, 90, 1);
   font-size: 14px;
 }
 
-
+.promise-reveal {
+  display: none;
+}
 
 
 
