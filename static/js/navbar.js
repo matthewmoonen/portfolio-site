@@ -1,10 +1,3 @@
-function menuItemClick() {
-  console.log('menuitemclicked')
-  if (window.innerWidth < 992) {
-    console.log('and its on mobile')
-  }
-}
-
 function toggleMenuOn() {
     document.querySelector(".home").style.display = "none"
     document.querySelector(".toggle-on").style.display = "none"
@@ -32,9 +25,11 @@ function toggleMenuOff() {
     const body = document.querySelector("body");
     body.style.overflow = "scroll";
 
-    document.querySelector(".navbar").style.borderBottomWidth = "0px";
+    document.querySelector(".navbar").style.borderBottomWidth = "1px";
+    document.querySelector(".navbar").style.borderBottomColor = "hsla(0, 0%, 20%, 0.9)";
 
-    document.querySelector(".hide-me").style.display = "none";
+
+    // document.querySelector(".hide-me").style.display = "none";
     document.querySelector(".navbar-links").style.display = "none";
     document.querySelector(".home").style.display = "inline";
     document.querySelector(".toggle-on").style.display = "inline"
@@ -127,12 +122,20 @@ const isInViewporta = (element) => {
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
   
     if (viewportWidth >= 991) {
+      const body = document.querySelector("body");
+      body.style.overflow = "scroll";
+
+
       document.querySelector(".navbar-links").style.display = "inline"
+      document.querySelector(".navbar").style.borderBottomColor = "hsla(0, 0%, 20%, 0.9)";
+      document.querySelector(".navbar").style.borderBottomWidth = "1px";
+      document.querySelector(".home").style.display = "inline";
+
     } else {
-      document.querySelector(".navbar-links").style.display = "none"
+      document.querySelector(".navbar-links").style.display = "none";
     }
-  }
+  } 
   
-  // Attach the function to the window's resize event
+  // Attach handleViewporChange function to the window's resize event
   window.addEventListener("resize", handleViewportChange);
   
