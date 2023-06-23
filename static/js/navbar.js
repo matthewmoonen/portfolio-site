@@ -118,3 +118,21 @@ const isInViewporta = (element) => {
   
   document.addEventListener('scroll', handleScrolla);
   
+
+
+
+  function handleViewportChange() {
+    // Get the current viewport width
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  
+    if (viewportWidth >= 991) {
+      
+      document.querySelector(".navbar-links").style.display = "inline"
+    } else {
+      document.querySelector(".navbar-links").style.display = "none"
+    }
+  }
+  
+  // Attach the function to the window's resize event
+  window.addEventListener("resize", handleViewportChange);
+  
