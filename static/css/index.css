@@ -978,8 +978,9 @@ body {
 @media (max-width: 1400px) {
   .contact-heading {
     position: relative;
-    left: 43%;
-    right: 57%;
+    left: calc(50% - 50px);
+    right: calc(50% + 50px);
+    width: 50%;
   }
 }
 
