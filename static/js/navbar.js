@@ -121,12 +121,12 @@ const isInViewporta = (element) => {
 
 
 
+  // Partially fixes mobile menu bug on tablet rotate
   function handleViewportChange() {
     // Get the current viewport width
     var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
   
     if (viewportWidth >= 991) {
-      
       document.querySelector(".navbar-links").style.display = "inline"
     } else {
       document.querySelector(".navbar-links").style.display = "none"
