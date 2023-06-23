@@ -970,12 +970,17 @@ body {
   padding-top: 16px;
 }
 
-/* TODO: rearrange this to be responsive */
 #contact-container {
-  padding-left: 5vw;
-  max-width: 1300px;
+  max-width: 1100px;
   margin: 0 auto;
+}
 
+@media (max-width: 1400px) {
+  .contact-heading {
+    position: relative;
+    left: 43%;
+    right: 57%;
+  }
 }
 
 
