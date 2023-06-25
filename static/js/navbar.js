@@ -1,7 +1,6 @@
 function toggleMenuOn() {
     document.querySelector(".home").style.display = "none"
     document.querySelector(".toggle-on").style.display = "none"
-    // document.querySelector(".hide-me").style.display = "block"
     document.querySelector("body").style.overflow = "hidden"
     document.querySelector(".toggle-off").style.display = "inline"
     
@@ -17,6 +16,16 @@ function toggleMenuOn() {
         link.classList.toggle('active');
       }, 10);
     });
+
+    const iconLinks = document.querySelectorAll('.icon-links');
+  iconLinks.forEach((element) => {
+    element.style.transition = 'opacity 3s ease';
+    
+    setTimeout(() => {
+      element.style.opacity = '0.4';
+    }, 20);
+  });
+
 }
 
 function toggleMenuOff() {
@@ -27,9 +36,6 @@ function toggleMenuOff() {
 
     document.querySelector(".navbar").style.borderBottomWidth = "1px";
     document.querySelector(".navbar").style.borderBottomColor = "hsla(0, 0%, 20%, 0.9)";
-
-
-    // document.querySelector(".hide-me").style.display = "none";
     document.querySelector(".navbar-links").style.display = "none";
     document.querySelector(".home").style.display = "inline";
     document.querySelector(".toggle-on").style.display = "inline"
@@ -41,8 +47,15 @@ function toggleMenuOff() {
     navbarLinks.forEach(link => {
       link.classList.toggle('active');
     });
-
+    
+    const iconLinks = document.querySelectorAll('.icon-links');
+      iconLinks.forEach((element) => {
+          element.style.opacity = '0';
+        })
 }
+
+
+
 }
 
 // Define smooth scrolling behavior for navbar links
@@ -131,8 +144,26 @@ const isInViewporta = (element) => {
       document.querySelector(".navbar").style.borderBottomWidth = "1px";
       document.querySelector(".home").style.display = "inline";
 
+      const iconLinks = document.querySelectorAll('.icon-links');
+      iconLinks.forEach((element) => {
+          element.style.opacity = '1';
+        })
+
     } else {
+      const navbarLinks = document.querySelectorAll('.navbar-links a');
+      navbarLinks.forEach(link => {
+        link.classList.remove('active');
+      });
+      
+
+      document.querySelector(".navbar").style.borderBottomWidth = "1px";
+      document.querySelector(".navbar").style.borderBottomColor = "hsla(0, 0%, 20%, 0.9)";
       document.querySelector(".navbar-links").style.display = "none";
+      document.querySelector(".home").style.display = "inline";
+      document.querySelector(".toggle-on").style.display = "inline"
+      document.querySelector(".toggle-off").style.display = "none";
+      document.querySelector(".navbar").style.backgroundColor = "rgba(38, 44, 49, 0.67)";
+
     }
   } 
   
