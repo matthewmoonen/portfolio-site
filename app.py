@@ -36,14 +36,14 @@ app.config['EXTERNAL_STATIC_FOLDER'] = '/home/matthew/userdata'
 
 
 # Load environment variables from file and make accessible to project
-load_dotenv("/home/matthew/portfolio-site/environmentvariables.env")
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "environmentvariables.env")    )
 flask_environment = os.getenv("FLASK_ENV")
 print("flask environment:" + str(flask_environment))
 
 
 # Return German learning game as a blueprint/modular app
 app.register_blueprint(german_app, url_prefix="/german")
-
+    
 
 # Create secret key securely
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
@@ -99,7 +99,6 @@ ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
 # Start of routes. Index is the landing page.
 @app.route("/", methods=['GET', 'POST'])
-def index():
     # # Uncomment to enable debugging of this route or copy/paste to another route to start debugging
     # app.logger.info('Hello, world!')
     # app.debug = True
@@ -112,6 +111,7 @@ def index():
     # Contact form submits to a SQL database. 
     # If using this form, you need a separate Python script and chron job to forward the emails.
     
+def index():
     recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(2).all()
     form = ContactForm()
     if form.is_submitted():
@@ -119,7 +119,9 @@ def index():
         last_name = request.form['lastName']
         email = request.form['email']
         subject = request.form['subject']
-        message = request.form['message']
+        honey1 = request.form['message']
+        honey2 = request.form['phone']
+        message = request.form['address']
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
         # Get client IP address:
@@ -129,35 +131,45 @@ def index():
             ip_address = request.remote_addr or 'untrackable'
 
         is_forwarded = 0
-        formdata = messages(first_name=first_name, last_name=last_name, email=email, subject=subject, message=message, date_created=date_created, ip_address=ip_address, is_forwarded=is_forwarded)
 
-        try:
-            db.session.add(formdata)
-            db.session.commit()
-        except:
-            print('error 400')
-            return render_template('oops.html')
+
+        """
+        Spam = 0: Neither of the honeypot entries have been filled. Likely legit.
+        Spam = 1: One of the honeypot entries has been filled. Almost certainly spam.
+        Spam = 2: Neither of the honeypot entries have ben filled but there's no message body. A bit suspect.
+        """
+        if honey1 != "" or honey2 != "":
+            spam = 1
+        elif message == "":
+            spam = 2
         else:
-            return render_template('thanks.html', first_name=first_name)
-        
+            spam = 0
 
-        
+
         for post in recent_posts:
             parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
             post.formatted_date = parsed_date.strftime("%B %d, %Y")
 
+        formdata = messages(first_name=first_name, last_name=last_name, email=email, subject=subject, message=message, date_created=date_created, ip_address=ip_address, is_forwarded=is_forwarded, spam=spam)
+        try:
+            db.session.add(formdata)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return render_template('oops.html')
+        else:
+            return render_template('thanks.html', first_name=first_name)
+
+
     return render_template("index.html", recent_posts=recent_posts)
 
 
-# A decorator function that creates login requirement for certain views.
+
 def login_required(f):
-    # Wraps decorator preserves the original function's name and docstring
     @wraps(f)
     def wrap(*args, **kwargs):
-        # Check whether user is logged in
-        if "logged_in" in session:
+        if "logged_in" in session or os.getenv('FLASK_ENV') == 'development':
             return f(*args, **kwargs)
-        # Handle user not logged in trying to access page that requires login
         else:
             flash("You need to log in first!")
             return redirect(url_for("login"))
@@ -267,18 +279,6 @@ def add_entry():
         flash('New entry was successfully added')
         return redirect(url_for('admin'))
 
-
-
-"""TODO: create base.html for add post and edit post page/admin pages"""
-# # route for rendering the post edit form
-# @app.route('/edit_entry/<int:_id>/', methods=['GET'])
-# @login_required
-# def render_edit_entry(_id):
-#     post = BlogPost.query.filter_by(_id=_id).first()
-#     if post is None:
-#         abort(404)
-#     form = BlogSubmitForm(obj=post)
-#     return render_template('edit_entry.html', form=form, _id=_id)
 
 
 # Route for rendering post edit form

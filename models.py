@@ -13,9 +13,9 @@ class messages(db.Model):
     date_created = db.Column(db.String(30))
     ip_address = db.Column(db.String)
     is_forwarded = db.Column(db.Integer, nullable=False)
+    spam = db.Column(db.Integer, nullable=False)
 
-
-    def __init__(self, first_name, last_name, email, subject, message, date_created, ip_address, is_forwarded):
+    def __init__(self, first_name, last_name, email, subject, message, date_created, ip_address, is_forwarded, spam):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
@@ -24,6 +24,7 @@ class messages(db.Model):
         self.date_created = date_created
         self.ip_address = ip_address
         self.is_forwarded = is_forwarded
+        self.spam = spam
 
 
 class BlogPost(db.Model):

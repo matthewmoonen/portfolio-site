@@ -55,12 +55,22 @@ function fadeInNavbar() { // Fades navbar in on load.
   body.style.backgroundColor = "rgb(33, 33, 33)" // Set colour of body background and title section background to match on load.
   div.style.backgroundColor = "rgb(33, 33, 33)"
 
+  // body.style.backgroundColor = "white" 
+  // div.style.backgroundColor = "white"
+
+
+
+
   // Wait for _ seconds
   setTimeout(() => {
     // Use the CSS transition property to fade in the div over 2 seconds with an ease-in-out animation
     div.style.visibility = "visible"
     div.style.backgroundColor = "hsla(207, 13%, 17%, 0.672)"
     body.style.backgroundColor = "hsl(207, 13%, 17%)" // Change colour of page's main background after navbar appears.
+
+    // div.style.backgroundColor = "white"
+    // body.style.backgroundColor = "white" // Change colour of page's main background after navbar appears.
+
     div.style.transition = "opacity 1s ease-in";
     div.style.opacity = 1;
   }, 4000);
