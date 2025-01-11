@@ -205,21 +205,26 @@ def display_messages():
         messages.message,
         messages.date_created,
         messages.ip_address
-    ).filter(messages.spam == 0).order_by(desc(messages.date_created)).all()
-    
+    ).filter(
+        messages.spam == 0,
+        messages.is_forwarded == 0
+    ).order_by(desc(messages.date_created)).all()
+
     return render_template('messages.html', messages=messages_list)
+
+
 
 @app.route('/delete_message/<int:message_id>', methods=['POST'])
 @login_required
-def delete_message(message_id):
-    message_to_delete = messages.query.get_or_404(message_id)
+def mark_as_deleted(message_id):
+    message_to_update = messages.query.get_or_404(message_id)
     try:
-        db.session.delete(message_to_delete)
+        message_to_update.is_forwarded = 2
         db.session.commit()
-        flash('Message deleted successfully!', 'success')
+        flash('Message marked as deleted successfully!', 'success')
     except Exception as e:
         db.session.rollback()
-        flash('Error deleting message: ' + str(e), 'danger')
+        flash('Error updating message: ' + str(e), 'danger')
     return redirect(url_for('display_messages'))
 
 

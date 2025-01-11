@@ -60,7 +60,7 @@
                 <td>{{ msg[6] }}</td>
                 <td>{{ msg[7] }}</td>
                 <td>
-                    <form action="{{ url_for('delete_message', message_id=msg[0]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                    <form action="{{ url_for('mark_as_deleted', message_id=msg[0]) }}" method="POST" onsubmit="return confirm('Are you sure you want to mark this message as deleted?');">
                         <button type="submit">Delete</button>
                     </form>
                 </td>
