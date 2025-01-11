@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600&display=swap');
+
+
 
 * {
     box-sizing: border;
@@ -14,10 +14,9 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Rubik', sans-serif;
     font-size: .9rem;
     background-color: var(--backgroundColour1);
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Rubik', sans-serif;
 }
 
 .index-section{
@@ -97,7 +96,7 @@ body {
   color: #4f4f4f;
   font-size: 50px;
   font-weight: 900;
-  font-family: "Roboto";
+  font-family: 'Rubik', sans-serif;
 }
 
 
@@ -119,7 +118,7 @@ body {
 }
 
 .title-leadin, .title-tagline {
-  font-family: 'Rubik';
+  font-family: 'Rubik', sans-serif;
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -136,7 +135,7 @@ body {
 }
 
 .title-myname {
-  font-family: 'Rubik';
+  font-family: 'Rubik', sans-serif;
   font-weight: 500;
   margin-top: 0;
   padding-top: 0;
@@ -160,7 +159,7 @@ body {
 
 
 #logg-heading, #deutsch-heading {
-  font-family: 'Roboto';
+  font-family: 'Rubik', sans-serif;
   font-size: 85px;
   margin-top: 0;
   letter-spacing: 0.1rem;
@@ -222,7 +221,7 @@ body {
 
 
 #logi-paragraph, #deutsch-paragraph {
-  font-family: 'Roboto';
+  font-family: 'Rubik', sans-serif;
   font-size: 18px;
   font-weight: 400;
   color: #9f9f9f;
@@ -268,7 +267,7 @@ body {
 
 
 .title-projects {
-  font-family: 'Roboto';
+  font-family: 'Rubik', sans-serif;
   font-weight: 400;
   margin-top: 0;
   padding-top: 0;

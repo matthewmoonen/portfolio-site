@@ -13,7 +13,7 @@ import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import logging
-
+from sqlalchemy import desc
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG)
 
@@ -189,6 +189,38 @@ def admin():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+
+@app.route('/messages')
+@login_required
+def display_messages():
+    messages_list = db.session.query(
+        messages._id,
+        messages.first_name,
+        messages.last_name,
+        messages.email,
+        messages.subject,
+        messages.message,
+        messages.date_created,
+        messages.ip_address
+    ).filter(messages.spam == 0).order_by(desc(messages.date_created)).all()
+    
+    return render_template('messages.html', messages=messages_list)
+
+@app.route('/delete_message/<int:message_id>', methods=['POST'])
+@login_required
+def delete_message(message_id):
+    message_to_delete = messages.query.get_or_404(message_id)
+    try:
+        db.session.delete(message_to_delete)
+        db.session.commit()
+        flash('Message deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error deleting message: ' + str(e), 'danger')
+    return redirect(url_for('display_messages'))
 
 
 # Handle upload

@@ -1,4 +1,3 @@
-# from datetime import datetime
 from extensions import db
 
 
@@ -27,6 +26,7 @@ class messages(db.Model):
         self.spam = spam
 
 
+
 class BlogPost(db.Model):
     __tablename__ = "blogposts"
     _id = db.Column("id", db.Integer, primary_key=True)
@@ -35,7 +35,6 @@ class BlogPost(db.Model):
     slug = db.Column(db.String, nullable=False)
     blurb = db.Column(db.String(300))
     date_created = db.Column(db.String(30))
-
 
     def __init__(self, title, body, slug, date_created, blurb):
         self.title = title
