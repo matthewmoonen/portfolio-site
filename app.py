@@ -191,8 +191,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-
-
 @app.route('/messages')
 @login_required
 def display_messages():
@@ -211,6 +209,30 @@ def display_messages():
     ).order_by(desc(messages.date_created)).all()
 
     return render_template('messages.html', messages=messages_list)
+
+
+
+@app.route('/spam')
+@login_required
+def display_spam():
+    messages_list = db.session.query(
+        messages._id,
+        messages.first_name,
+        messages.last_name,
+        messages.email,
+        messages.subject,
+        messages.message,
+        messages.date_created,
+        messages.ip_address
+    ).filter(
+        messages.spam.in_([1, 2]),
+        messages.is_forwarded == 0
+    ).order_by(
+        desc(messages.spam),
+        desc(messages.date_created)
+    ).all()
+
+    return render_template('spam.html', messages=messages_list)
 
 
 
