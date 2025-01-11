@@ -136,7 +136,7 @@ body {
 }
 
 .title-myname {
-  font-family: 'Roboto';
+  font-family: 'Rubik';
   font-weight: 500;
   margin-top: 0;
   padding-top: 0;
@@ -1181,4 +1181,10 @@ body {
 
 #phone, #message {
   display: none;
+}
+
+@media all and (max-width: 420px) {
+  .title-myname {
+    font-size: 60px;
+  }
 }
