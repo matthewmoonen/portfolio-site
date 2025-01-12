@@ -236,6 +236,21 @@ def display_spam():
 
 
 
+@app.route('/delete_spam/<int:message_id>', methods=['POST'])
+@login_required
+def mark_spam_deleted(message_id):
+    message_to_update = messages.query.get_or_404(message_id)
+    try:
+        message_to_update.is_forwarded = 2
+        db.session.commit()
+        flash('Message marked as deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error updating message: ' + str(e), 'danger')
+    return redirect(url_for('display_spam'))
+
+
+
 @app.route('/delete_message/<int:message_id>', methods=['POST'])
 @login_required
 def mark_as_deleted(message_id):
