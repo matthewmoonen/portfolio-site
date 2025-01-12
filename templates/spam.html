@@ -5,32 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spam Messages</title>
     <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+    
+        h1 {
+            color: #ffffff;
+            text-align: center;
+        }
+    
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1e1e1e;
         }
+    
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #333333;
             padding: 8px;
             text-align: left;
         }
+    
         th {
-            background-color: #f2f2f2;
+            background-color: #333333;
+            color: #ffffff;
         }
-        form {
-            margin: 0;
+    
+        tr:nth-child(even) {
+            background-color: #222222;
         }
+    
+        tr:hover {
+            background-color: #444444;
+        }
+    
         button {
-            background-color: red;
+            background-color: #bb2d3b;
             color: white;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+            border-radius: 4px;
         }
+    
         button:hover {
-            background-color: darkred;
+            background-color: #e63946;
         }
-    </style>
+    
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+    
+        li {
+            margin: 5px 0;
+            color: #ffcc00;
+        }
+    
+        a {
+            color: #bb86fc;
+            text-decoration: none;
+        }
+    
+        a:hover {
+            text-decoration: underline;
+        }
+    
+        </style>
 </head>
 <body>
     <h1>Spam Messages</h1>
