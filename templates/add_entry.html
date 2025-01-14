@@ -6,27 +6,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add entry</title>
     <style>
-        #body, #blurb, #title, #slug {
+        body {
+            background-color: #121212; 
+            color: #ffffff; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #17191A;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        input, textarea {
             width: 70vw;
+            background-color: #202428;
+            color: #ffffff; 
+            border: 1px solid #444444;
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #76c7c0;
+        }
+
+        button {
+            background-color: #76c7c0; 
+            color: #121212; 
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #64b2ab; 
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #md-div {
+            width: 71vw;
         }
     </style>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/simplemde.min1.css') }}">
 </head>
 <body>
-
     <form method="POST" action="{{ url_for('add_entry') }}">
-        <label for="title">Title</label><br>
-        <input type="text" id="title" name="title"><br>
-      
-        <label for="body">Body</label><br>
-        <textarea id="body" name="body"></textarea><br>
-        
-        <label for="blurb">Blurb</label><br>
-        <textarea id="blurb" name="blurb"></textarea><br>
-
-        <label for="slug">Slug</label><br>
-        <input type="text" id="slug" name="slug"><br>
-
-        <button type="submit" class="btn" id="btnSend">Submit</button>
-      </form>
+        <label for="title">Title</label>
+        <input required type="text" id="title" name="title">
+    
+        <label for="blurb">Blurb</label>
+        <textarea id="blurb" name="blurb" rows="1"></textarea>
+    
+        <label for="body">Body</label>
+        <div id="md-div">
+            <textarea id="body" name="body"></textarea>
+        </div>
+    
+        <label for="img-upload">Add Images</label>
+        <input type="file" id="img-upload" name="img-upload" multiple>
+        <button type="button" id="upload-btn">Upload Images</button>
+    
+        <ul id="uploaded-images"></ul>
+    
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" name="slug">
+    
+        <label for="tags">Tags (comma-separated)</label>
+        <input type="text" id="tags" name="tags">
+    
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script>
+        const uploadBtn = document.getElementById('upload-btn');
+        const imgUpload = document.getElementById('img-upload');
+        const uploadedImagesList = document.getElementById('uploaded-images');
+    
+        uploadBtn.addEventListener('click', () => {
+            const formData = new FormData();
+            for (let file of imgUpload.files) {
+                formData.append('images', file);
+            }
+    
+            fetch('/upload_images', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        imgUpload.value = ''; // Clear the input after upload
+                        appendUploadedImages(data.new_images);
+                    } else {
+                        alert(data.error);
+                    }
+                });
+        });
+    
+        function appendUploadedImages(newImages) {
+            newImages.forEach((image) => {
+                const li = document.createElement('li');
+                li.textContent = image.filename;
+    
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'x';
+                deleteBtn.type = 'button'; // Prevent form submission
+                deleteBtn.onclick = () => deleteImage(image.id);
+    
+                li.appendChild(deleteBtn);
+                uploadedImagesList.appendChild(li);
+            });
+        }
+    
+        function deleteImage(imageId) {
+            fetch(`/delete_image/${imageId}`, { method: 'POST' })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        updateUploadedImages(data.images);
+                    } else {
+                        alert(data.error);
+                    }
+                });
+        }
+    
+        function updateUploadedImages(images) {
+            uploadedImagesList.innerHTML = ''; // Clear the list
+            images.forEach((image) => {
+                const li = document.createElement('li');
+                li.textContent = image.filename;
+    
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'x';
+                deleteBtn.type = 'button'; // Prevent form submission
+                deleteBtn.onclick = () => deleteImage(image.id);
+    
+                li.appendChild(deleteBtn);
+                uploadedImagesList.appendChild(li);
+            });
+        }
+    
+        // Fetch and display existing images on page load
+        fetch('/get_uploaded_images')
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    updateUploadedImages(data.images);
+                }
+            });
+    </script>
+    
+    <script src="{{ url_for('static', filename='js/simplemde.min.js') }}"></script>
+    <script>
+        var simplemde = new SimpleMDE({ 
+            element: document.getElementById("body"), 
+            spellChecker: false,
+            
+        });
+    </script>
+    
 </body>
 </html>

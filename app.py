@@ -3,7 +3,7 @@ from german.german import german_app
 from forms import ContactForm, BlogSubmitForm
 from datetime import datetime
 import secrets
-from models import messages, BlogPost, Tag
+from models import messages, BlogPost, Tag, Image
 from extensions import db
 from functools import wraps
 from flask_session import Session
@@ -16,6 +16,10 @@ import logging
 from sqlalchemy import desc
 import re
 from markdown import markdown
+import random
+import string
+from sqlalchemy.orm.exc import NoResultFound
+
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG)
 
@@ -268,37 +272,37 @@ def mark_as_deleted(message_id):
     return redirect(url_for('display_messages'))
 
 
-# Handle upload
-""" TODO: See here to improve security and performance
-https://flask.palletsprojects.com/en/2.2.x/patterns/fileuploads/
-"""
-@app.route('/upload', methods=['GET', 'POST'])
-@login_required
-def upload_file():
-    session["mykey"] = "myvalue"
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('admin', name=filename))
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+# # Handle upload
+# """ TODO: See here to improve security and performance
+# https://flask.palletsprojects.com/en/2.2.x/patterns/fileuploads/
+# """
+# @app.route('/upload', methods=['GET', 'POST'])
+# @login_required
+# def upload_file():
+#     session["mykey"] = "myvalue"
+#     if request.method == 'POST':
+#         # check if the post request has the file part
+#         if 'file' not in request.files:
+#             flash('No file part')
+#             return redirect(request.url)
+#         file = request.files['file']
+#         # If the user does not select a file, the browser submits an empty file without a filename.
+#         if file.filename == '':
+#             flash('No selected file')
+#             return redirect(request.url)
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#             return redirect(url_for('admin', name=filename))
+#     return '''
+#     <!doctype html>
+#     <title>Upload new File</title>
+#     <h1>Upload new File</h1>
+#     <form method=post enctype=multipart/form-data>
+#       <input type=file name=file>
+#       <input type=submit value=Upload>
+#     </form>
+#     '''
 
 
 # Retrieve blog post via URL slug. Display 404 error if post not available.
@@ -327,7 +331,14 @@ def blog():
 
 
 
-
+def ensure_unique_slug(slug):
+    base_slug = slug.strip().replace(" ", "-")
+    existing_slug = BlogPost.query.filter_by(slug=base_slug).first()
+    if not existing_slug:
+        return base_slug
+    else:
+        characters = string.ascii_letters + string.digits
+        return f"{base_slug}-{''.join(random.choices(characters, k=11))}"
 
 def title_to_slug(blogpost_title):
     blogpost_title = blogpost_title.lower()
@@ -336,7 +347,7 @@ def title_to_slug(blogpost_title):
     blogpost_title = blogpost_title.strip('-')
     return blogpost_title
 
-# route for rendering the post blog form
+
 @app.route('/add_entry/', methods=['GET'])
 @login_required
 def render_add_entry():
@@ -355,7 +366,7 @@ def add_entry():
         slug = request.form['slug']
         if slug == "":
             slug = title_to_slug(title)
-            
+        slug = ensure_unique_slug(slug)
         tags_input = request.form['tags'] 
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
@@ -385,6 +396,51 @@ def add_entry():
 
 
 
+@app.route('/upload_images', methods=['POST'])
+@login_required
+def upload_images():
+    if 'images' not in request.files:
+        return jsonify({"success": False, "error": "No files uploaded"})
+
+    uploaded_files = request.files.getlist('images')
+    new_images = []
+
+    for file in uploaded_files:
+        if allowed_file(file.filename):
+            new_image = Image(filename=file.filename, data=file.read())
+            db.session.add(new_image)
+            db.session.flush()  # Generate ID without committing
+            new_images.append({"id": new_image.id, "filename": file.filename})
+        else:
+            return jsonify({"success": False, "error": "Invalid file type"})
+
+    db.session.commit()
+    return jsonify({"success": True, "new_images": new_images})
+
+
+@app.route('/get_uploaded_images', methods=['GET'])
+@login_required
+def get_uploaded_images():
+    images = [{"id": img.id, "filename": img.filename} for img in Image.query.all()]
+    return jsonify({"success": True, "images": images})
+
+
+
+
+@app.route('/delete_image/<int:image_id>', methods=['POST'])
+@login_required
+def delete_image(image_id):
+    image = Image.query.get(image_id)
+    if not image:
+        return jsonify({"success": False, "error": "Image not found"})
+
+    db.session.delete(image)
+    db.session.commit()
+
+    remaining_images = [{"id": img.id, "filename": img.filename} for img in Image.query.all()]
+    return jsonify({"success": True, "images": remaining_images})
+
+
 @app.route('/edit_entry/<int:_id>/', methods=['GET'])
 @login_required
 def render_edit_entry(_id):
@@ -409,11 +465,16 @@ def edit_entry(_id):
         body_markdown = request.form['body']
         blurb = request.form['blurb']
         slug = request.form['slug']
+        if slug == "":
+            slug = title_to_slug(title)
+        
         tags_input = request.form['tags']
 
         blogpost = db.session.get(BlogPost, _id)
         if not blogpost:
             abort(404)
+        if not blogpost.slug == slug:
+            slug = ensure_unique_slug(slug)
 
         blogpost.title = title
         blogpost.body_markdown = body_markdown
@@ -445,6 +506,43 @@ def edit_entry(_id):
             flash('Entry was successfully edited')
             return redirect(url_for('admin'))
 
+
+
+# @app.route('/ul')
+# def ul():
+
+#     images = Image.query.all()
+#     return render_template('upload.html', images=images)
+
+
+# @app.route('/upload', methods=['POST'])
+# def upload():
+#     if 'images' not in request.files:
+#         flash('No file part')
+#         return redirect(request.url)
+
+#     files = request.files.getlist('images')
+
+#     if not files:
+#         flash('No selected file')
+#         return redirect(request.url)
+
+#     for file in files:
+#         if file.filename:
+#             new_image = Image(filename=file.filename, data=file.read())
+#             db.session.add(new_image)
+
+#     db.session.commit()
+#     flash('Files successfully uploaded!')
+#     return redirect(url_for('ul'))
+
+# @app.route('/delete/<int:image_id>', methods=['POST'])
+# def delete_image(image_id):
+#     image = Image.query.get_or_404(image_id)
+#     db.session.delete(image)
+#     db.session.commit()
+#     flash(f'{image.filename} has been deleted.')
+#     return redirect(url_for('ul'))
 
 
 # Login route. Currently there is only one login user as admin.
