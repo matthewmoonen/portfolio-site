@@ -26,19 +26,43 @@ class messages(db.Model):
         self.spam = spam
 
 
+blogpost_tags = db.Table(
+    "blogpost_tags",
+    db.Column("blogpost_id", db.Integer, db.ForeignKey("blogposts.id"), primary_key=True),
+    db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True)
+)
+
 
 class BlogPost(db.Model):
     __tablename__ = "blogposts"
     _id = db.Column("id", db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    body = db.Column(db.String, nullable=False)
-    slug = db.Column(db.String, nullable=False)
+    body_markdown = db.Column(db.String, nullable=False)
+    body_html = db.Column(db.Text, nullable=False)
+    slug = db.Column(db.String, nullable=False, unique=True) 
     blurb = db.Column(db.String(300))
     date_created = db.Column(db.String(30))
+    tags = db.relationship(
+        "Tag",
+        secondary=blogpost_tags,
+        backref=db.backref("blogposts", lazy="dynamic")
+    )
 
-    def __init__(self, title, body, slug, date_created, blurb):
+    def __init__(self, title, body_markdown, body_html, slug, date_created, blurb):
         self.title = title
-        self.body = body
+        self.body_markdown = body_markdown
+        self.body_html = body_html
         self.slug = slug
         self.blurb = blurb
         self.date_created = date_created
+
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+    _id = db.Column("id", db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+
+    def __init__(self, name):
+        self.name = name
+

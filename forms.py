@@ -10,7 +10,8 @@ class ContactForm(FlaskForm):
 
 class BlogSubmitForm(FlaskForm):
     title = StringField('title')
-    body = StringField('body')
+    markdown_body = StringField('markdown_body')
+    html_body = StringField('html_body')
     blurb = StringField('blurb')
     slug = SubmitField('slug')
     submit = SubmitField('submit')

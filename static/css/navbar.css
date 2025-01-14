@@ -13,7 +13,9 @@
     -webkit-backdrop-filter: blur(1rem);
     border-bottom: solid;
     border-bottom-width: 1px;
-    border-bottom-color: hsla(0, 0%, 20%, 0.9);
+    /* border-bottom-color: hsla(0, 0%, 20%, 0.9); */
+    border-bottom-color: white;
+
     z-index: 1100;
 }
 
@@ -265,12 +267,13 @@
         filter: blur(0.015rem);
         -webkit-filter: blur(0);
     }
-    
+
     .navbar-links a:hover {
         opacity: 1;
         color: hsl(0, 0%, 100%);
         fill: hsl(0, 0%, 100%);
     }
+    
     .text-links a:hover {
         transform: scale(1.065);
     }

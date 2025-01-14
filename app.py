@@ -3,7 +3,7 @@ from german.german import german_app
 from forms import ContactForm, BlogSubmitForm
 from datetime import datetime
 import secrets
-from models import messages, BlogPost
+from models import messages, BlogPost, Tag
 from extensions import db
 from functools import wraps
 from flask_session import Session
@@ -14,6 +14,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import logging
 from sqlalchemy import desc
+import re
+from markdown import markdown
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG)
 
@@ -112,7 +114,13 @@ ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
     # If using this form, you need a separate Python script and chron job to forward the emails.
     
 def index():
-    recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(2).all()
+    recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(4).all()
+    for i, post in enumerate(recent_posts):
+        post.number = i
+        parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
+        post.formatted_date = parsed_date.strftime("%B %d, %Y")
+        post.image = post.image if hasattr(post, 'image') and post.image else "terminal.png"
+        
     form = ContactForm()
     if form.is_submitted():
         first_name = request.form['firstName']
@@ -132,7 +140,6 @@ def index():
 
         is_forwarded = 0
 
-
         """
         Spam = 0: Neither of the honeypot entries have been filled. Likely legit.
         Spam = 1: One of the honeypot entries has been filled. Almost certainly spam.
@@ -144,11 +151,6 @@ def index():
             spam = 2
         else:
             spam = 0
-
-
-        for post in recent_posts:
-            parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
-            post.formatted_date = parsed_date.strftime("%B %d, %Y")
 
         formdata = messages(first_name=first_name, last_name=last_name, email=email, subject=subject, message=message, date_created=date_created, ip_address=ip_address, is_forwarded=is_forwarded, spam=spam)
         try:
@@ -162,6 +164,7 @@ def index():
 
 
     return render_template("index.html", recent_posts=recent_posts)
+
 
 
 
@@ -239,7 +242,7 @@ def display_spam():
 @app.route('/delete_spam/<int:message_id>', methods=['POST'])
 @login_required
 def mark_spam_deleted(message_id):
-    message_to_update = messages.query.get_or_404(message_id)
+    message_to_update = db.session.get(messages, message_id)
     try:
         message_to_update.is_forwarded = 2
         db.session.commit()
@@ -254,7 +257,7 @@ def mark_spam_deleted(message_id):
 @app.route('/delete_message/<int:message_id>', methods=['POST'])
 @login_required
 def mark_as_deleted(message_id):
-    message_to_update = messages.query.get_or_404(message_id)
+    message_to_update = db.session.get(messages, message_id)
     try:
         message_to_update.is_forwarded = 2
         db.session.commit()
@@ -323,6 +326,16 @@ def blog():
     return render_template("blog.html", posts=posts)
 
 
+
+
+
+def title_to_slug(blogpost_title):
+    blogpost_title = blogpost_title.lower()
+    blogpost_title = re.sub(r'[^a-z0-9\s]', '', blogpost_title)
+    blogpost_title = re.sub(r'\s+', '-', blogpost_title)
+    blogpost_title = blogpost_title.strip('-')
+    return blogpost_title
+
 # route for rendering the post blog form
 @app.route('/add_entry/', methods=['GET'])
 @login_required
@@ -330,7 +343,7 @@ def render_add_entry():
     return render_template('add_entry.html')
 
 
-# route for handling post blog form submission
+
 @app.route('/add_entry/', methods=['POST'])
 @login_required
 def add_entry():
@@ -340,63 +353,98 @@ def add_entry():
         body = request.form['body']
         blurb = request.form['blurb']
         slug = request.form['slug']
+        if slug == "":
+            slug = title_to_slug(title)
+            
+        tags_input = request.form['tags'] 
         date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-    blogdata = BlogPost(title=title, body=body, slug=slug, blurb=blurb, date_created=date_created)
+        blogdata = BlogPost(title=title, body_markdown=body, body_html=markdown(body), slug=slug, blurb=blurb, date_created=date_created)
 
-    try:
-        db.session.add(blogdata)
-        db.session.commit()
-    except:
-        return "an error occurred"
-    else:
-        flash('New entry was successfully added')
-        return redirect(url_for('admin'))
+        if tags_input:
+            tags = {tag.strip().upper() for tag in tags_input.split(',')}
+            for tag_name in tags:
+                # Check if the tag already exists
+                existing_tag = Tag.query.filter_by(name=tag_name).first()
+                if existing_tag:
+                    blogdata.tags.append(existing_tag)
+                else:
+                    # Create a new tag and append it
+                    new_tag = Tag(name=tag_name)
+                    blogdata.tags.append(new_tag)
+
+        try:
+            db.session.add(blogdata)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return f"An error occurred: {str(e)}"
+        else:
+            flash('New entry was successfully added')
+            return redirect(url_for('admin'))
 
 
 
-# Route for rendering post edit form
 @app.route('/edit_entry/<int:_id>/', methods=['GET'])
 @login_required
 def render_edit_entry(_id):
     post = BlogPost.query.filter_by(_id=_id).first()
     if post is None:
         abort(404)
+
     form = BlogSubmitForm(obj=post)
-    # Get the slug value from the database and pass it to the form
-    slug = BlogPost.query.filter_by(_id=_id).first().slug
-    form.slug.data = slug
-    blurb = BlogPost.query.filter_by(_id=_id).first().blurb
-    form.blurb.data = blurb
+    form.markdown_body.data = post.body_markdown
+    form.slug.data = post.slug
+    form.blurb.data = post.blurb
+    
     return render_template('edit_entry.html', form=form, post=post, _id=_id)
 
 
-# Route for submitting post edit form
 @app.route('/edit_entry/<int:_id>', methods=['POST'])
 @login_required
 def edit_entry(_id):
     form = BlogSubmitForm()
     if form.is_submitted():
         title = request.form['title']
-        body = request.form['body']
+        body_markdown = request.form['body']
         blurb = request.form['blurb']
         slug = request.form['slug']
-        # Query the blog post from the database
-        blogpost = BlogPost.query.get(_id)
+        tags_input = request.form['tags']
+
+        blogpost = db.session.get(BlogPost, _id)
         if not blogpost:
             abort(404)
-        # Update the blog post data
+
         blogpost.title = title
-        blogpost.body = body
+        blogpost.body_markdown = body_markdown
+        blogpost.body_html = markdown(body_markdown)
         blogpost.blurb = blurb
         blogpost.slug = slug
+
+        blogpost.tags = []
+        if tags_input:
+            tags = {tag.strip().upper() for tag in tags_input.split(',')}
+
+            for tag_name in tags:
+                if tag_name == "":
+                    continue
+                else:
+                    existing_tag = Tag.query.filter_by(name=tag_name).first()
+                    if existing_tag:
+                        blogpost.tags.append(existing_tag)
+                    else:
+                        new_tag = Tag(name=tag_name)
+                        blogpost.tags.append(new_tag)
+
         try:
             db.session.commit()
-        except:
-            return "an error occurred"
+        except Exception as e:
+            db.session.rollback()
+            return f"An error occurred: {str(e)}"
         else:
             flash('Entry was successfully edited')
             return redirect(url_for('admin'))
+
 
 
 # Login route. Currently there is only one login user as admin.
@@ -441,6 +489,12 @@ def show_icons():
     return render_template("icons.html")
 
 
+@app.route("/blogcards")
+def show_cards():
+
+    return render_template("blogcards.html")
+
+
 # Navbar is part of the base html/css elements.
 @app.route("/navbar/")
 def navbar():
@@ -457,7 +511,8 @@ def navbar2():
 @login_required
 def delete_post(post_id):
 
-    post = BlogPost.query.get_or_404(post_id)
+    post = BlogPost.query.filter_by(_id=post_id).first()
+    
     try:
         db.session.delete(post)
         db.session.commit()
