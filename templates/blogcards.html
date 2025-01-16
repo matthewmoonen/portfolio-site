@@ -95,7 +95,11 @@
 <div id="blogcards-div">
     {% for post in recent_posts %}
     <article class="blogcard-article" id="blogcard-number{{ post.number }}">
-        <a href="{{ url_for('blog_post', slug=post.slug) }}"><div class="article-image" style="background-image: url('{{ url_for('static', filename='img/' + post.image) }}');"></div></a>
+        <a href="{{ url_for('blog_post', slug=post.slug) }}">
+            <div class="article-image" 
+                 style="background-image: url('{{ post.title_image_url if post.title_image_url else url_for('static', filename='img/terminal.png') }}');">
+            </div>
+        </a>        
         <div class="article-content">
             <div class="article-date">{{ post.formatted_date }}</div>
             <a href="{{ url_for('blog_post', slug=post.slug) }}" class="article-title">{{ post.title }}</a>

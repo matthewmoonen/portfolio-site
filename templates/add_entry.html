@@ -58,6 +58,42 @@
         #md-div {
             width: 71vw;
         }
+
+        .reference {
+        font-weight: bold;
+        color: #76c7c0; /* Highlighted color */
+        font-size: 0.9em; /* Slightly smaller than the filename */
+    }
+
+    .copy-btn {
+        background-color: #76c7c0;
+        color: #121212;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 0.8em;
+    }
+
+    .copy-btn:hover {
+        background-color: #64b2ab;
+    }
+
+    .filename {
+        display: inline-block;
+        width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .extension {
+        font-style: italic;
+        color: #aaa; /* Light gray color to make it less prominent */
+    }
+
+
     </style>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/simplemde.min1.css') }}">
@@ -89,12 +125,13 @@
     
         <button type="submit">Submit</button>
     </form>
-    
+
     <script>
         const uploadBtn = document.getElementById('upload-btn');
         const imgUpload = document.getElementById('img-upload');
         const uploadedImagesList = document.getElementById('uploaded-images');
     
+        // Handle image uploads
         uploadBtn.addEventListener('click', () => {
             const formData = new FormData();
             for (let file of imgUpload.files) {
@@ -105,69 +142,206 @@
                 method: 'POST',
                 body: formData,
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        imgUpload.value = ''; // Clear the input after upload
-                        appendUploadedImages(data.new_images);
-                    } else {
-                        alert(data.error);
-                    }
-                });
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    imgUpload.value = '';
+                    refreshImageList(); // Refresh the entire image list after upload
+                } else {
+                    alert(data.error);
+                }
+            });
         });
     
-        function appendUploadedImages(newImages) {
-            newImages.forEach((image) => {
-                const li = document.createElement('li');
-                li.textContent = image.filename;
-    
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'x';
-                deleteBtn.type = 'button'; // Prevent form submission
-                deleteBtn.onclick = () => deleteImage(image.id);
-    
-                li.appendChild(deleteBtn);
-                uploadedImagesList.appendChild(li);
-            });
-        }
-    
-        function deleteImage(imageId) {
-            fetch(`/delete_image/${imageId}`, { method: 'POST' })
+        // Refresh the entire image list
+        function refreshImageList() {
+            fetch('/get_uploaded_images')
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
                         updateUploadedImages(data.images);
+                    }
+                });
+        }
+
+        
+
+
+
+
+
+        function updateUploadedImages(images) {
+    uploadedImagesList.innerHTML = ''; // Clear existing images
+    images.forEach((image) => {
+        const li = document.createElement('li');
+
+        // Create a span for the reference (non-editable)
+        const refSpan = document.createElement('span');
+        refSpan.textContent = `[${image.id}]`; // Display the reference in brackets
+        refSpan.className = 'reference';
+        refSpan.style.marginRight = '10px';
+
+        // Add a button to copy the full image URL
+        const copyBtn = document.createElement('button');
+        copyBtn.textContent = 'Copy';
+        copyBtn.className = 'copy-btn';
+        copyBtn.type = 'button'; // Ensure it’s a regular button
+        copyBtn.style.marginRight = '10px';
+        copyBtn.onclick = () => {
+            const siteUrl = window.location.origin; // Get the current site's base URL
+            const imageUrl = `![](${siteUrl}/images/${image.id}.${image.extension})`; // Construct the image URL
+
+            navigator.clipboard.writeText(imageUrl).then(() => {
+                // Show confirmation message
+                const confirmation = document.createElement('span');
+                confirmation.textContent = 'Copied!';
+                confirmation.style.color = 'green';
+                confirmation.style.marginLeft = '5px';
+                confirmation.className = 'copy-confirmation';
+
+                // Add the confirmation message next to the button
+                li.insertBefore(confirmation, copyBtn.nextSibling);
+
+                // Remove the confirmation message after 2 seconds
+                setTimeout(() => {
+                    confirmation.remove();
+                }, 2000);
+            }).catch((err) => {
+                console.error('Failed to copy URL: ', err);
+            });
+        };
+
+        // Create a span for the filename (editable)
+        const filenameSpan = document.createElement('span');
+        filenameSpan.textContent = image.filename;
+        filenameSpan.className = 'filename'; // Apply the CSS class
+        filenameSpan.title = 'Click to edit filename';
+        filenameSpan.onclick = () => makeEditable(filenameSpan, image.id);
+
+        // Create a span for the file extension (non-editable)
+        const extensionSpan = document.createElement('span');
+        extensionSpan.textContent = `.${image.extension}`;
+        extensionSpan.className = 'extension';
+        extensionSpan.style.marginLeft = '5px';
+        extensionSpan.style.color = '#aaa';
+
+        // Add image preview
+        const imgElement = document.createElement('img');
+        imgElement.src = `/images/${image.id}.${image.extension}`;
+        imgElement.alt = `${image.filename}.${image.extension}`;
+        imgElement.style.maxWidth = '100px';
+        imgElement.onerror = () => console.error(`Failed to load image: /images/${image.id}.${image.extension}`);
+
+        // Add delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'x';
+        deleteBtn.type = 'button'; // Ensure it’s a regular button
+        deleteBtn.onclick = () => deleteImage(image.id);
+
+        // Append elements to list item
+        li.appendChild(refSpan);       // Add reference
+        li.appendChild(copyBtn);      // Add copy button
+        li.appendChild(filenameSpan); // Add filename
+        li.appendChild(extensionSpan); // Add extension
+        li.appendChild(imgElement);   // Add image preview
+        li.appendChild(deleteBtn);    // Add delete button
+
+        // Add the list item to the list
+        uploadedImagesList.appendChild(li);
+    });
+}
+
+
+
+function makeEditable(span, refId) {
+    const currentFilename = span.textContent;
+
+    // Replace span with an input field
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentFilename;
+    input.style.width = '300px'; // Match the filename width
+    input.style.marginRight = '10px';
+
+    // Replace span with input in the DOM
+    span.replaceWith(input);
+
+    // Focus the input and select the text
+    input.focus();
+    input.select();
+
+    // Save on blur or Enter key
+    const saveFilename = () => {
+        const newFilename = input.value.trim();
+        if (newFilename && newFilename !== currentFilename) {
+            fetch(`/update_image_filename/${refId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: newFilename }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        input.replaceWith(span);
+                        span.textContent = newFilename; // Update to new filename
+                    } else {
+                        // Revert to the original filename on duplicate detection
+                        input.replaceWith(span);
+                        span.textContent = data.original_filename;
+                    }
+                });
+        } else {
+            input.replaceWith(span); // Revert if no change
+        }
+    };
+
+    input.addEventListener('blur', saveFilename);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            saveFilename();
+        } else if (e.key === 'Escape') {
+            input.replaceWith(span); // Revert on Escape
+        }
+    });
+}
+
+    
+        // Handle image deletion
+        function deleteImage(refId) {
+            fetch(`/delete_image/${refId}`, { method: 'POST' })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        refreshImageList(); // Refresh the list after deletion
                     } else {
                         alert(data.error);
                     }
                 });
         }
     
-        function updateUploadedImages(images) {
-            uploadedImagesList.innerHTML = ''; // Clear the list
-            images.forEach((image) => {
-                const li = document.createElement('li');
-                li.textContent = image.filename;
-    
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'x';
-                deleteBtn.type = 'button'; // Prevent form submission
-                deleteBtn.onclick = () => deleteImage(image.id);
-    
-                li.appendChild(deleteBtn);
-                uploadedImagesList.appendChild(li);
-            });
-        }
-    
-        // Fetch and display existing images on page load
-        fetch('/get_uploaded_images')
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    updateUploadedImages(data.images);
-                }
-            });
+        // Load images on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshImageList();
+        });
     </script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     <script src="{{ url_for('static', filename='js/simplemde.min.js') }}"></script>
     <script>

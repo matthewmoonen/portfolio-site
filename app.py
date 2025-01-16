@@ -1,9 +1,9 @@
-from flask import Flask, render_template, redirect, request, session, url_for, flash, jsonify
+from flask import Flask, render_template, redirect, request, session, url_for, flash, jsonify, abort, send_file
 from german.german import german_app
 from forms import ContactForm, BlogSubmitForm
 from datetime import datetime
 import secrets
-from models import messages, BlogPost, Tag, Image
+from models import messages, BlogPost, Tag, Image, ImageRef, ImageRefUsage
 from extensions import db
 from functools import wraps
 from flask_session import Session
@@ -14,12 +14,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import logging
 from sqlalchemy import desc
-import re
+from sqlalchemy import text as sqlalchemytext
 from markdown import markdown
 import random
 import string
+import hashlib
 from sqlalchemy.orm.exc import NoResultFound
-
+import io
+import re
 
 logging.basicConfig(filename='record.log', level=logging.DEBUG)
 
@@ -71,10 +73,14 @@ ALLOWED_EXTENSIONS = {'svg', 'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+
+
+
+
+
 # Configure SQL database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 
 # Configure session cookies
 app.config['SESSION_COOKIE_DOMAIN'] = '.matthewmoonen.com'
@@ -99,8 +105,79 @@ with app.app_context():
     db.create_all()
 
 
+
+
+def create_sqlite_triggers():
+
+    delete_orphan_images_trigger = sqlalchemytext("""
+    CREATE TRIGGER IF NOT EXISTS delete_orphaned_images
+    AFTER DELETE ON image_refs
+    BEGIN
+        DELETE FROM image
+        WHERE id = OLD.image_id
+        AND NOT EXISTS (SELECT 1 FROM image_refs WHERE image_id = OLD.image_id);
+    END;
+    """)
+
+    # Trigger to update ImageRef with blogpost_id
+    update_trigger_sql = sqlalchemytext("""
+    CREATE TRIGGER IF NOT EXISTS update_image_refs
+    AFTER INSERT ON image_ref_usage
+    BEGIN
+        UPDATE image_refs
+        SET blogpost_id = (SELECT MAX(id) FROM blogposts)
+        WHERE id = NEW.id;
+    END;
+    """)
+
+    # Trigger to delete unused image references
+    delete_trigger_sql = sqlalchemytext("""
+    CREATE TRIGGER IF NOT EXISTS delete_unused_images
+    AFTER INSERT ON image_ref_usage
+    BEGIN
+        DELETE FROM image_refs
+        WHERE blogpost_id IS NULL
+        AND id NOT IN (SELECT id FROM image_ref_usage);
+    END;
+    """)
+
+
+    # delete_blogpost_images = sqlalchemytext("""
+    # CREATE TRIGGER IF NOT EXISTS delete_blogpost_images
+    # AFTER DELETE ON blogposts
+    # BEGIN
+    #     DELETE FROM image_refs
+    #     WHERE blogpost_id = OLD.id;
+    # END;
+    # """)
+
+    with db.engine.connect() as connection:
+        connection.execute(delete_orphan_images_trigger)
+        connection.execute(update_trigger_sql)
+        connection.execute(delete_trigger_sql)
+        # connection.execute(delete_blogpost_images)
+
+
+
+def create_image_ref_usage_table():
+    
+
+    with db.engine.connect() as connection:
+        connection.execute(sqlalchemytext("""
+        CREATE TABLE IF NOT EXISTS image_ref_usage (
+            id TEXT PRIMARY KEY
+        );
+        """))
+
+
+with app.app_context():
+    create_image_ref_usage_table()
+    create_sqlite_triggers()
+
+
 # Store hashed password for admin panel in .env to prevent exposing to GitHub
 ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
+
 
 
 # Start of routes. Index is the landing page.
@@ -118,13 +195,15 @@ ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
     # If using this form, you need a separate Python script and chron job to forward the emails.
     
 def index():
-    recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(4).all()
+    recent_posts = db.session.query(BlogPost).order_by(BlogPost.id.desc()).limit(4).all()
     for i, post in enumerate(recent_posts):
         post.number = i
         parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
         post.formatted_date = parsed_date.strftime("%B %d, %Y")
-        post.image = post.image if hasattr(post, 'image') and post.image else "terminal.png"
-        
+
+        # Use default image path if title_image is None
+        post.title_image_url = "/static/img/terminal.png" if post.title_image is None else f"/image/{post.id}"
+
     form = ContactForm()
     if form.is_submitted():
         first_name = request.form['firstName']
@@ -183,7 +262,7 @@ def login_required(f):
     return wrap
 
 
-# Admin panel primarily for creating blog posts
+
 @app.route("/admin/")
 @login_required
 def admin():
@@ -202,7 +281,7 @@ def allowed_file(filename):
 @login_required
 def display_messages():
     messages_list = db.session.query(
-        messages._id,
+        messages.id,
         messages.first_name,
         messages.last_name,
         messages.email,
@@ -223,7 +302,7 @@ def display_messages():
 @login_required
 def display_spam():
     messages_list = db.session.query(
-        messages._id,
+        messages.id,
         messages.first_name,
         messages.last_name,
         messages.email,
@@ -305,22 +384,29 @@ def mark_as_deleted(message_id):
 #     '''
 
 
-# Retrieve blog post via URL slug. Display 404 error if post not available.
+
 @app.route('/blog/<slug>/')
 def blog_post(slug):
     post = db.session.query(BlogPost).filter_by(slug=slug).first()
     if post:
-        # Reformat date as MMMM dd, yy
+        
         parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
         formatted_date = parsed_date.strftime("%B %d, %Y")
-        return render_template("base/blog-template.html", post=post, slug=slug, formatted_date=formatted_date)
+
+        hero_image_url = (
+            f"/blog/{post.slug}/hero/hero-image.png"
+            if post.hero_image
+            else "/static/img/hero.jpg"
+        )
+
+        return render_template("base/blog-template.html", post=post, slug=slug, hero_image_url=hero_image_url, formatted_date=formatted_date)
     else:
         return f"404"
 
 
 @app.route("/mostrecent/")
 def most_recent():
-    recent_posts = db.session.query(BlogPost).order_by(BlogPost._id.desc()).limit(2).all()
+    recent_posts = db.session.query(BlogPost).order_by(BlogPost.id.desc()).limit(2).all()
     return render_template("most_recent.html", recent_posts=recent_posts)
 
 
@@ -348,51 +434,110 @@ def title_to_slug(blogpost_title):
     return blogpost_title
 
 
+
+def generate_random_string(length=11):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+
+def extract_image_references(text_body):
+    # List to store extracted references
+    references = []
+
+    # Regex for HTML <img> tags (extract `src` attribute)
+    html_img_regex = r'<img\s+[^>]*src="([^"]+)"'
+    html_matches = re.findall(html_img_regex, text_body)
+    for match in html_matches:
+        # Extract filename from the src URL
+        filename = match.split("/")[-1].split(".")[0]  # Extract filename without extension
+        references.append(filename)
+
+    # Regex for Markdown ![]() image references
+    markdown_img_regex = r'!\[.*?\]\(([^)]+)\)'
+    markdown_matches = re.findall(markdown_img_regex, text_body)
+    for match in markdown_matches:
+        # Extract filename from the URL
+        filename = match.split("/")[-1].split(".")[0]  # Extract filename without extension
+        references.append(filename)
+
+    return references
+
+
+
+
+
+
+
+
+
+
+
+
+def replace_reference(text, slug, reference):
+    
+    pattern = rf'(/images/){re.escape(reference)}(\.[a-zA-Z0-9]+)'
+
+    def fetch_filename(match):
+        ref_id = reference
+        image_ref = ImageRef.query.filter_by(id=ref_id).first()
+        if image_ref:
+            return f"/blog/{slug}/{image_ref.filename}.{image_ref.extension}"
+        else:
+            return match.group(0)
+
+    replaced_text = re.sub(pattern, fetch_filename, text)
+
+    return replaced_text
+
+
 @app.route('/add_entry/', methods=['GET'])
 @login_required
 def render_add_entry():
     return render_template('add_entry.html')
 
-
-
 @app.route('/add_entry/', methods=['POST'])
 @login_required
 def add_entry():
-    form = BlogSubmitForm()
-    if form.is_submitted():
-        title = request.form['title']
-        body = request.form['body']
-        blurb = request.form['blurb']
-        slug = request.form['slug']
-        if slug == "":
-            slug = title_to_slug(title)
-        slug = ensure_unique_slug(slug)
-        tags_input = request.form['tags'] 
-        date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
+    title = request.form['title']
+    body = request.form['body']
+    blurb = request.form['blurb']
+    slug = request.form['slug'] or title.lower().replace(' ', '-')
+    slug = re.sub(r'[^a-zA-Z0-9-]', '', slug)
+    date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-        blogdata = BlogPost(title=title, body_markdown=body, body_html=markdown(body), slug=slug, blurb=blurb, date_created=date_created)
+    references = extract_image_references(body)
+    ImageRefUsage.query.delete()
+    
+    for reference in references:
+        body = replace_reference(text=body, slug=slug, reference=reference)
+        db.session.add(ImageRefUsage(id=reference))
+    db.session.commit()
 
-        if tags_input:
-            tags = {tag.strip().upper() for tag in tags_input.split(',')}
-            for tag_name in tags:
-                # Check if the tag already exists
-                existing_tag = Tag.query.filter_by(name=tag_name).first()
-                if existing_tag:
-                    blogdata.tags.append(existing_tag)
-                else:
-                    # Create a new tag and append it
-                    new_tag = Tag(name=tag_name)
-                    blogdata.tags.append(new_tag)
+    blogdata = BlogPost(
+        title=title,
+        body_markdown=body,
+        body_html=markdown(body),
+        slug=slug,
+        blurb=blurb,
+        date_created=date_created
+    )
+    db.session.add(blogdata)
+    db.session.commit()
 
-        try:
-            db.session.add(blogdata)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return f"An error occurred: {str(e)}"
-        else:
-            flash('New entry was successfully added')
-            return redirect(url_for('admin'))
+    # Update `ImageRef` with blogpost_id
+    used_refs = ImageRefUsage.query.all()
+    used_ids = [ref.id for ref in used_refs]
+    ImageRef.query.filter(ImageRef.id.in_(used_ids)).update(
+        {"blogpost_id": blogdata.id}, synchronize_session=False
+    )
+
+    # Delete unused `ImageRef` entries
+    unused_refs = ImageRef.query.filter(ImageRef.blogpost_id.is_(None)).all()
+    for unused in unused_refs:
+        db.session.delete(unused)
+    db.session.commit()
+
+    flash("New entry was successfully added")
+    return redirect(url_for("admin"))
 
 
 
@@ -403,48 +548,205 @@ def upload_images():
         return jsonify({"success": False, "error": "No files uploaded"})
 
     uploaded_files = request.files.getlist('images')
-    new_images = []
+    new_refs = []
 
     for file in uploaded_files:
         if allowed_file(file.filename):
-            new_image = Image(filename=file.filename, data=file.read())
-            db.session.add(new_image)
-            db.session.flush()  # Generate ID without committing
-            new_images.append({"id": new_image.id, "filename": file.filename})
-        else:
-            return jsonify({"success": False, "error": "Invalid file type"})
+            file_data = file.read()
+
+            # Extract filename and extension
+            filename, file_extension = os.path.splitext(file.filename)
+            file_extension = file_extension.lower().lstrip('.')
+
+            # Check if the image already exists in the database
+            existing_image = Image.query.filter_by(data=file_data).first()
+
+            # If the image does not exist, add it to the Image table
+            if not existing_image:
+                new_image = Image(data=file_data, extension=file_extension)
+                db.session.add(new_image)
+                db.session.flush()  # Flush to get the new image ID
+                image_id = new_image.id
+            else:
+                image_id = existing_image.id
+
+            # Generate a new reference ID
+            ref_id = generate_random_string()
+
+            # Check for filename conflicts
+            existing_ref = ImageRef.query.filter_by(
+                filename=filename, extension=file_extension, blogpost_id=None
+            ).first()
+
+            if existing_ref:
+                # Adjust filename to include the new reference
+                filename = f"{filename}-{ref_id}"
+
+            # Add a reference to the image_refs table
+            new_ref = ImageRef(
+                id=ref_id,
+                blogpost_id=None,
+                filename=filename,
+                extension=file_extension,
+                image_id=image_id
+            )
+            db.session.add(new_ref)
+            new_refs.append({
+                "ref_id": ref_id,
+                "filename": f"{filename}.{file_extension}",
+                "image_id": image_id
+            })
 
     db.session.commit()
-    return jsonify({"success": True, "new_images": new_images})
+    return jsonify({"success": True, "new_refs": new_refs})
+
+
+
+
+
+
+@app.route('/delete_image/<string:ref_id>', methods=['POST'])
+@login_required
+def delete_image(ref_id):
+    # Query the ImageRef entry using the primary key
+    image_ref = ImageRef.query.get(ref_id)
+    if not image_ref:
+        return jsonify({"success": False, "error": "Image reference not found"})
+
+    # Delete the ImageRef entry
+    db.session.delete(image_ref)
+    db.session.commit()
+
+    # Fetch remaining references
+    remaining_refs = [
+        {"id": ref.id, "filename": f"{ref.filename}.{ref.extension}"}
+        for ref in ImageRef.query.all()
+    ]
+    return jsonify({"success": True, "remaining_refs": remaining_refs})
+
+
+@app.route('/images/<string:primary_key>', methods=['GET'])
+@app.route('/images/<string:primary_key>.<string:extension>', methods=['GET'])
+@app.route('/images/<string:primary_key>/<string:filename>.<string:extension>', methods=['GET'])
+def serve_image(primary_key, filename=None, extension=None):
+    # Query the ImageRef entry using the primary key
+    if extension:
+        image_ref = ImageRef.query.filter_by(id=primary_key, extension=extension).first()
+    else:
+        image_ref = ImageRef.query.filter_by(id=primary_key).first()
+
+    if not image_ref:
+        abort(404, description="Image reference not found")
+
+    # Ensure the filename matches if provided
+    if filename and image_ref.filename != filename:
+        abort(404, description="Filename mismatch")
+
+    # Query the corresponding Image entry
+    image = db.session.get(Image, image_ref.image_id)
+    
+    if not image:
+        abort(404, description="Image not found")
+
+    # Serve the image data
+    return send_file(
+        io.BytesIO(image.data),
+        mimetype=f"image/{image_ref.extension}",
+        as_attachment=False,
+        download_name=f"{image_ref.filename}.{image_ref.extension}"
+    )
+
+
+
+
+@app.route('/blog/<string:slug>/<string:filename>.<string:extension>', methods=['GET'])
+def serve_blog_image(slug, filename, extension):
+    # Query the BlogPost using the slug
+    blog_post = BlogPost.query.filter_by(slug=slug).first()
+    if not blog_post:
+        abort(404, description="Blog post not found")
+
+    # Query the ImageRef entry using the blogpost ID, filename, and extension
+    image_ref = ImageRef.query.filter_by(
+        blogpost_id=blog_post.id,
+        filename=filename,
+        extension=extension
+    ).first()
+
+    if not image_ref:
+        abort(404, description="Image reference not found")
+
+    image = db.session.get(Image, image_ref.image_id)
+    if not image:
+        abort(404, description="Image not found")
+
+    # Serve the image data
+    return send_file(
+        io.BytesIO(image.data),
+        mimetype=f"image/{image_ref.extension}",
+        as_attachment=False,
+        download_name=f"{image_ref.filename}.{image_ref.extension}"
+    )
+
+
+
+
+@app.route('/update_image_filename/<string:ref_id>', methods=['POST'])
+@login_required
+def update_image_filename(ref_id):
+    data = request.get_json()
+    new_filename = data.get('filename')
+
+    if not new_filename:
+        return jsonify({"success": False, "error": "Filename is required"})
+
+    # Query the ImageRef entry
+    image_ref = ImageRef.query.get(ref_id)
+    if not image_ref:
+        return jsonify({"success": False, "error": "Image reference not found"})
+
+    # Check for duplicate filename and extension with blogpost_id = NULL
+    duplicate_ref = ImageRef.query.filter_by(
+        filename=new_filename,
+        extension=image_ref.extension,
+        blogpost_id=None
+    ).first()
+
+    if duplicate_ref and duplicate_ref.id != ref_id:
+        return jsonify({
+            "success": False,
+            "error": "Duplicate filename detected.",
+            "original_filename": image_ref.filename
+        })
+
+    # Update the filename
+    image_ref.filename = new_filename
+    db.session.commit()
+
+    return jsonify({"success": True, "filename": new_filename})
+
 
 
 @app.route('/get_uploaded_images', methods=['GET'])
 @login_required
 def get_uploaded_images():
-    images = [{"id": img.id, "filename": img.filename} for img in Image.query.all()]
+    # Query ImageRef entries where blogpost_id is NULL
+    image_refs = ImageRef.query.filter_by(blogpost_id=None).all()
+    
+    # Create a list of dictionaries with the required fields
+    images = [
+        {"id": img_ref.id, "filename": img_ref.filename, "extension": img_ref.extension}
+        for img_ref in image_refs
+    ]
+    
     return jsonify({"success": True, "images": images})
 
 
 
-
-@app.route('/delete_image/<int:image_id>', methods=['POST'])
+@app.route('/edit_entry/<int:id>/', methods=['GET'])
 @login_required
-def delete_image(image_id):
-    image = Image.query.get(image_id)
-    if not image:
-        return jsonify({"success": False, "error": "Image not found"})
-
-    db.session.delete(image)
-    db.session.commit()
-
-    remaining_images = [{"id": img.id, "filename": img.filename} for img in Image.query.all()]
-    return jsonify({"success": True, "images": remaining_images})
-
-
-@app.route('/edit_entry/<int:_id>/', methods=['GET'])
-@login_required
-def render_edit_entry(_id):
-    post = BlogPost.query.filter_by(_id=_id).first()
+def render_edit_entry(id):
+    post = BlogPost.query.filter_by(id=id).first()
     if post is None:
         abort(404)
 
@@ -453,12 +755,12 @@ def render_edit_entry(_id):
     form.slug.data = post.slug
     form.blurb.data = post.blurb
     
-    return render_template('edit_entry.html', form=form, post=post, _id=_id)
+    return render_template('edit_entry.html', form=form, post=post, id=id)
 
 
-@app.route('/edit_entry/<int:_id>', methods=['POST'])
+@app.route('/edit_entry/<int:id>', methods=['POST'])
 @login_required
-def edit_entry(_id):
+def edit_entry(id):
     form = BlogSubmitForm()
     if form.is_submitted():
         title = request.form['title']
@@ -470,7 +772,7 @@ def edit_entry(_id):
         
         tags_input = request.form['tags']
 
-        blogpost = db.session.get(BlogPost, _id)
+        blogpost = db.session.get(BlogPost, id)
         if not blogpost:
             abort(404)
         if not blogpost.slug == slug:
@@ -604,21 +906,25 @@ def navbar2():
     return render_template("base/navbar2.html")
 
 
-# Handle admin deleting post from the admin page
 @app.route('/delete_post/<int:post_id>/', methods=['GET', 'POST'])
 @login_required
 def delete_post(post_id):
+    post = BlogPost.query.filter_by(id=post_id).first()
+    images = ImageRef.query.filter_by(blogpost_id=post_id)
+    if not post:
+        flash("Post not found")
+        return redirect(url_for('admin'))
 
-    post = BlogPost.query.filter_by(_id=post_id).first()
-    
     try:
+        for image in images:
+            db.session.delete(image)
         db.session.delete(post)
         db.session.commit()
         flash('The post was successfully deleted')
-    except:
-        flash("an error occurred")
-    else:
-        return redirect(url_for('admin'))
+    except Exception as e:
+        db.session.rollback()  # Rollback in case of error
+        flash(f"An error occurred: {str(e)}")
+    return redirect(url_for('admin'))  # Always return a response
 
 
 if __name__ == "__main__":
