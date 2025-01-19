@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session, url_for, flash, jsonify, abort, send_file
+from flask import Flask, render_template, redirect, request, session, url_for, flash, jsonify, abort, send_file, Response
 from german.german import german_app
 from forms import ContactForm, BlogSubmitForm
 from datetime import datetime
@@ -202,7 +202,7 @@ def index():
         post.formatted_date = parsed_date.strftime("%B %d, %Y")
 
         # Use default image path if title_image is None
-        post.title_image_url = "/static/img/terminal.png" if post.title_image is None else f"/image/{post.id}"
+        post.title_image_url = "/static/img/terminal.png" if post.title_image is None else f"/blog/{post.slug}/img/title.{post.title_image_extension}"
 
     form = ContactForm()
     if form.is_submitted():
@@ -394,8 +394,9 @@ def blog_post(slug):
         formatted_date = parsed_date.strftime("%B %d, %Y")
 
         hero_image_url = (
-            f"/blog/{post.slug}/hero/hero-image.png"
-            if post.hero_image
+            f"/blog/{post.slug}/img/hero.{post.hero_image_extension}"
+            if post.hero_image and post.hero_image_extension
+            else f"/blog/{post.slug}/img/hero.{post.hero_image_extension}" if post.hero_image and not post.hero_image_extension
             else "/static/img/hero.jpg"
         )
 
@@ -504,13 +505,24 @@ def add_entry():
     slug = re.sub(r'[^a-zA-Z0-9-]', '', slug)
     date_created = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
-    references = extract_image_references(body)
-    ImageRefUsage.query.delete()
-    
-    for reference in references:
-        body = replace_reference(text=body, slug=slug, reference=reference)
-        db.session.add(ImageRefUsage(id=reference))
-    db.session.commit()
+    # Handle image uploads
+    title_image = request.files.get('title_image')
+    hero_image = request.files.get('hero_image')
+
+    # Save the images as BLOBs if provided
+    title_image_data = title_image.read() if title_image else None
+    title_image_extension = (
+        os.path.splitext(title_image.filename)[1][1:].lower()
+        if title_image
+        else None
+    )
+
+    hero_image_data = hero_image.read() if hero_image else None
+    hero_image_extension = (
+        os.path.splitext(hero_image.filename)[1][1:].lower()
+        if hero_image
+        else None
+    )
 
     blogdata = BlogPost(
         title=title,
@@ -518,27 +530,17 @@ def add_entry():
         body_html=markdown(body),
         slug=slug,
         blurb=blurb,
-        date_created=date_created
+        date_created=date_created,
+        title_image=title_image_data,
+        hero_image=hero_image_data,
+        title_image_extension=title_image_extension,
+        hero_image_extension=hero_image_extension
     )
     db.session.add(blogdata)
     db.session.commit()
 
-    # Update `ImageRef` with blogpost_id
-    used_refs = ImageRefUsage.query.all()
-    used_ids = [ref.id for ref in used_refs]
-    ImageRef.query.filter(ImageRef.id.in_(used_ids)).update(
-        {"blogpost_id": blogdata.id}, synchronize_session=False
-    )
-
-    # Delete unused `ImageRef` entries
-    unused_refs = ImageRef.query.filter(ImageRef.blogpost_id.is_(None)).all()
-    for unused in unused_refs:
-        db.session.delete(unused)
-    db.session.commit()
-
     flash("New entry was successfully added")
     return redirect(url_for("admin"))
-
 
 
 @app.route('/upload_images', methods=['POST'])
@@ -603,6 +605,46 @@ def upload_images():
 
 
 
+@app.route('/rename_image', methods=['POST'])
+@login_required
+def rename_image():
+    data = request.get_json()
+    old_filename = data.get('oldFilename')
+    new_filename = data.get('newFilename')
+
+    if not old_filename or not new_filename:
+        return jsonify({'success': False, 'error': 'Invalid data'}), 400
+
+    # Locate the image in the database
+    image = ImageRef.query.filter_by(filename=old_filename).first()
+    if not image:
+        return jsonify({'success': False, 'error': 'Image not found'}), 404
+
+    # Extract the extension and blogpost_id
+    extension = image.extension
+    blogpost_id = image.blogpost_id
+
+    # Check for duplicates
+    duplicate = ImageRef.query.filter_by(
+        filename=new_filename,
+        extension=extension,
+        blogpost_id=blogpost_id
+    ).first()
+
+    if duplicate:
+        return jsonify({'success': False, 'error': 'Duplicate filename detected.'}), 409
+
+    # Update the filename
+    image.filename = new_filename
+    try:
+        db.session.commit()
+        return jsonify({'success': True, 'newFilename': new_filename})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+
 
 
 @app.route('/delete_image/<string:ref_id>', methods=['POST'])
@@ -623,6 +665,8 @@ def delete_image(ref_id):
         for ref in ImageRef.query.all()
     ]
     return jsonify({"success": True, "remaining_refs": remaining_refs})
+
+
 
 
 @app.route('/images/<string:primary_key>', methods=['GET'])
@@ -656,6 +700,22 @@ def serve_image(primary_key, filename=None, extension=None):
         download_name=f"{image_ref.filename}.{image_ref.extension}"
     )
 
+
+@app.route('/blog/<slug>/img/<image_type>.<extension>')
+def serve_blog_title_hero_image(slug, image_type, extension):
+    blogpost = BlogPost.query.filter_by(slug=slug).first_or_404()
+
+    if image_type == "title":
+        image_data = blogpost.title_image
+    elif image_type == "hero":
+        image_data = blogpost.hero_image
+    else:
+        return abort(404)
+
+    if not image_data:
+        return abort(404)
+
+    return Response(image_data, mimetype=f'image/{extension}')
 
 
 

@@ -48,8 +48,10 @@ class BlogPost(db.Model):
         secondary=blogpost_tags,
         backref=db.backref("blogposts", lazy="dynamic")
     )
+    title_image_extension = db.Column(db.String(10), nullable=True)
+    hero_image_extension = db.Column(db.String(10), nullable=True)
 
-    def __init__(self, title, body_markdown, body_html, slug, date_created, blurb, title_image=None, hero_image=None):
+    def __init__(self, title, body_markdown, body_html, slug, date_created, blurb, title_image=None, title_image_extension=None, hero_image=None, hero_image_extension=None):
         self.title = title
         self.body_markdown = body_markdown
         self.body_html = body_html
@@ -57,8 +59,9 @@ class BlogPost(db.Model):
         self.blurb = blurb
         self.date_created = date_created
         self.title_image = title_image
+        self.title_image_extension = title_image_extension
         self.hero_image = hero_image
-
+        self.hero_image_extension = hero_image_extension
 
 
 class Tag(db.Model):

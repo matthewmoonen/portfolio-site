@@ -8,10 +8,19 @@
     <style>
         body {
             margin: 0;
+            background-color: #212121;  
+            color: #c9c6c0;
+            font-family: 'Rubik', sans-serif;
+
+        }
+
+        body img {
+            max-width: 100%;
+            height: autor;
+            
         }
 
         .hero-image {
-            background-image: url("https://upload.wikimedia.org/wikipedia/commons/c/cc/A_snowy_day_-_geograph.org.uk_-_3303211.jpg");
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -49,10 +58,11 @@
         }
 
         .container {
-            width: 80%;
+            width: 90%;
             margin: auto;
             padding: 50px 0;
             text-align: justify;
+            /* background-color: #212121; */
         }
 
         @media (min-width: 801px) {
@@ -62,27 +72,41 @@
             
             .hero-image {
                 padding: 100px 0;
-                height: 40vh;
+                height: 30vh;
+            }
+            .container {
+                width: 80%;
+            }
+        }
+        @media (min-width: 1001px) {
+            .container {
+                width: 70%;
+            }
+        }
+        @media (min-width: 1201px) {
+            .container {
+                width: 60%;
             }
         }
 
     </style>
 </head>
 <body>
-    
+
+
     {% block content %}
     
     {% endblock %}
-    <div class="hero-image">
+    <div class="hero-image" style="background-image: url('{{ hero_image_url }}');">
         <div class="hero-text">
             <p class="date">{{ formatted_date }}</p>
             <h1>{{ post.title }}</h1>
         </div>
     </div>
-
+        
     <div class="container">
         <h1>{{ post.title }}</h1>
-        <div class="post-body">{{ post.body|safe }}</div>
+        <div class="post-body">{{ post.body_html|safe }}</div>
     </div>
 </body>
 </html>
