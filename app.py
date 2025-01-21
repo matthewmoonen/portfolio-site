@@ -141,6 +141,18 @@ def create_sqlite_triggers():
     END;
     """)
 
+    synchronise_slug = sqlalchemytext("""
+    CREATE TRIGGER IF NOT EXISTS synchronise_slug
+    AFTER INSERT ON published_posts
+    BEGIN
+        UPDATE blogposts
+        SET slug = NEW.slug
+        WHERE id = NEW.blogpost_id;
+    END;                              
+    """)
+
+
+
 
     # delete_blogpost_images = sqlalchemytext("""
     # CREATE TRIGGER IF NOT EXISTS delete_blogpost_images
@@ -155,13 +167,12 @@ def create_sqlite_triggers():
         connection.execute(delete_orphan_images_trigger)
         connection.execute(update_trigger_sql)
         connection.execute(delete_trigger_sql)
+        connection.execute(synchronise_slug)
         # connection.execute(delete_blogpost_images)
 
 
 
 def create_image_ref_usage_table():
-    
-
     with db.engine.connect() as connection:
         connection.execute(sqlalchemytext("""
         CREATE TABLE IF NOT EXISTS image_ref_usage (
@@ -202,7 +213,7 @@ def index():
         post.formatted_date = parsed_date.strftime("%B %d, %Y")
 
         # Use default image path if title_image is None
-        post.title_image_url = "/static/img/terminal.png" if post.title_image is None else f"/blog/{post.slug}/img/title.{post.title_image_extension}"
+        post.title_image_url = "/static/img/terminal.png" if post.title_image is None else f"/blog/{post.published_slug}/img/title.{post.title_image_extension}"
 
     form = ContactForm()
     if form.is_submitted():
@@ -387,16 +398,17 @@ def mark_as_deleted(message_id):
 
 @app.route('/blog/<slug>/')
 def blog_post(slug):
-    post = db.session.query(BlogPost).filter_by(slug=slug).first()
+    blog_id = PublishedPost.query.filter_by(slug=slug).first()
+    post = db.session.query(BlogPost).filter_by(id=blog_id.blogpost_id).first()
     if post:
         
         parsed_date = datetime.strptime(post.date_created, "%Y-%m-%d, %H:%M:%S")
         formatted_date = parsed_date.strftime("%B %d, %Y")
 
         hero_image_url = (
-            f"/blog/{post.slug}/img/hero.{post.hero_image_extension}"
+            f"/blog/{post.published_slug}/img/hero.{post.hero_image_extension}"
             if post.hero_image and post.hero_image_extension
-            else f"/blog/{post.slug}/img/hero.{post.hero_image_extension}" if post.hero_image and not post.hero_image_extension
+            else f"/blog/{post.published_slug}/img/hero.{post.hero_image_extension}" if post.hero_image and not post.hero_image_extension
             else "/static/img/hero.jpg"
         )
 
@@ -416,11 +428,11 @@ def blog():
     posts = db.session.query(BlogPost).all()
     return render_template("blog.html", posts=posts)
 
-
+from models import PublishedPost
 
 def ensure_unique_slug(slug):
     base_slug = slug.strip().replace(" ", "-")
-    existing_slug = BlogPost.query.filter_by(slug=base_slug).first()
+    existing_slug = PublishedPost.query.filter_by(slug=base_slug).first()
     if not existing_slug:
         return base_slug
     else:
@@ -524,10 +536,25 @@ def add_entry():
         else None
     )
 
+    references = extract_image_references(body)
+    ImageRefUsage.query.delete()
+    
+    body_markdown = body
+    for reference in references:
+        body_markdown = replace_reference(text=body_markdown, slug=slug, reference=reference)
+        db.session.add(ImageRefUsage(id=reference))
+    db.session.commit()
+
+    if slug == "":
+        slug = title_to_slug(title)
+    
+    slug = ensure_unique_slug(slug)
+
     blogdata = BlogPost(
         title=title,
-        body_markdown=body,
-        body_html=markdown(body),
+        markdown_raw=body,
+        body_markdown=body_markdown,
+        body_html=markdown(body_markdown),
         slug=slug,
         blurb=blurb,
         date_created=date_created,
@@ -536,7 +563,22 @@ def add_entry():
         title_image_extension=title_image_extension,
         hero_image_extension=hero_image_extension
     )
+
     db.session.add(blogdata)
+    db.session.commit()
+    blogdata.publish()
+
+    # Update `ImageRef` with blogpost_id
+    used_refs = ImageRefUsage.query.all()
+    used_ids = [ref.id for ref in used_refs]
+    ImageRef.query.filter(ImageRef.id.in_(used_ids)).update(
+        {"blogpost_id": blogdata.id}, synchronize_session=False
+    )
+
+    # Delete unused `ImageRef` entries
+    unused_refs = ImageRef.query.filter(ImageRef.blogpost_id.is_(None)).all()
+    for unused in unused_refs:
+        db.session.delete(unused)
     db.session.commit()
 
     flash("New entry was successfully added")
@@ -703,7 +745,7 @@ def serve_image(primary_key, filename=None, extension=None):
 
 @app.route('/blog/<slug>/img/<image_type>.<extension>')
 def serve_blog_title_hero_image(slug, image_type, extension):
-    blogpost = BlogPost.query.filter_by(slug=slug).first_or_404()
+    blogpost = BlogPost.query.filter_by(published_slug=slug).first_or_404()
 
     if image_type == "title":
         image_data = blogpost.title_image
@@ -721,12 +763,13 @@ def serve_blog_title_hero_image(slug, image_type, extension):
 
 @app.route('/blog/<string:slug>/<string:filename>.<string:extension>', methods=['GET'])
 def serve_blog_image(slug, filename, extension):
-    # Query the BlogPost using the slug
-    blog_post = BlogPost.query.filter_by(slug=slug).first()
+
+    blog_id = PublishedPost.query.filter_by(slug=slug).first()
+    blog_post = BlogPost.query.filter_by(id=blog_id.blogpost_id).first()
+
     if not blog_post:
         abort(404, description="Blog post not found")
 
-    # Query the ImageRef entry using the blogpost ID, filename, and extension
     image_ref = ImageRef.query.filter_by(
         blogpost_id=blog_post.id,
         filename=filename,
@@ -812,7 +855,7 @@ def render_edit_entry(id):
 
     form = BlogSubmitForm(obj=post)
     form.markdown_body.data = post.body_markdown
-    form.slug.data = post.slug
+    form.slug.data = post.published_slug
     form.blurb.data = post.blurb
     
     return render_template('edit_entry.html', form=form, post=post, id=id)

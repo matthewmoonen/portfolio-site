@@ -142,11 +142,25 @@
         <input type="text" id="tags" name="tags">
     
         <label for="title-image">Title Image</label>
-        <input type="file" id="title-image" name="title_image">
+        <div id="title-image-upload-container">
+            <label for="title-image-upload" id="title-image-upload-button">
+                Browse
+            </label>
+            <input type="file" id="title-image-upload" name="title_image" style="display: none;">
+            <div id="title-image-preview"></div>
+            <button type="button" id="title-image-delete" style="display: none;">Delete</button>
+        </div>
         
         <label for="hero-image">Hero Image</label>
-        <input type="file" id="hero-image" name="hero_image">
-
+        <div id="hero-image-upload-container">
+            <label for="hero-image-upload" id="hero-image-upload-button">
+                Browse
+            </label>
+            <input type="file" id="hero-image-upload" name="hero_image" style="display: none;">
+            <div id="hero-image-preview"></div>
+            <button type="button" id="hero-image-delete" style="display: none;">Delete</button>
+        </div>
+        
         <button type="submit">Submit</button>
     </form>
 
@@ -402,6 +416,39 @@ function updateUploadedImages(images) {
         uploadedImagesList.appendChild(li);
     });
 }
+
+
+
+function setupImageUpload(inputId, previewId, deleteBtnId) {
+    const inputElement = document.getElementById(inputId);
+    const previewElement = document.getElementById(previewId);
+    const deleteBtn = document.getElementById(deleteBtnId);
+
+    inputElement.addEventListener('change', () => {
+        if (inputElement.files.length > 0) {
+            const file = inputElement.files[0];
+            const imgElement = document.createElement('img');
+            imgElement.src = URL.createObjectURL(file);
+            imgElement.style.maxWidth = '150px';
+            imgElement.onload = () => URL.revokeObjectURL(imgElement.src);
+
+            previewElement.innerHTML = '';
+            previewElement.appendChild(imgElement);
+            deleteBtn.style.display = 'inline';
+        }
+    });
+
+    deleteBtn.addEventListener('click', () => {
+        inputElement.value = '';  // Clear file input
+        previewElement.innerHTML = '';  // Remove preview
+        deleteBtn.style.display = 'none';
+    });
+}
+
+setupImageUpload('title-image-upload', 'title-image-preview', 'title-image-delete');
+setupImageUpload('hero-image-upload', 'hero-image-preview', 'hero-image-delete');
+
+
 
         
         </script>

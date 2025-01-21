@@ -32,27 +32,45 @@ blogpost_tags = db.Table(
     db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True)
 )
 
+
+
+
+
 class BlogPost(db.Model):
     __tablename__ = "blogposts"
     id = db.Column("id", db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    body_markdown = db.Column(db.String, nullable=False)
-    body_html = db.Column(db.Text, nullable=False)
-    slug = db.Column(db.String, nullable=False, unique=True)
+    title = db.Column(db.String, nullable=True)
+    markdown_raw = db.Column(db.String, nullable=True)
+    body_markdown = db.Column(db.String, nullable=True)
+    body_html = db.Column(db.Text, nullable=True)
+    slug = db.Column(db.String, nullable=True) 
     blurb = db.Column(db.String(300))
     date_created = db.Column(db.String(30))
     title_image = db.Column(db.LargeBinary, nullable=True)
     hero_image = db.Column(db.LargeBinary, nullable=True)
+    title_image_extension = db.Column(db.String(10), nullable=True)
+    hero_image_extension = db.Column(db.String(10), nullable=True)
+    status = db.Column(db.String(10), nullable=False, default='draft')  # 'draft' or 'published'
+
     tags = db.relationship(
         "Tag",
         secondary=blogpost_tags,
         backref=db.backref("blogposts", lazy="dynamic")
     )
-    title_image_extension = db.Column(db.String(10), nullable=True)
-    hero_image_extension = db.Column(db.String(10), nullable=True)
 
-    def __init__(self, title, body_markdown, body_html, slug, date_created, blurb, title_image=None, title_image_extension=None, hero_image=None, hero_image_extension=None):
+    published_post = db.relationship("PublishedPost", uselist=False, backref="blogpost", lazy="joined")
+
+    __table_args__ = (
+        db.CheckConstraint(
+            "(status = 'draft') OR (title IS NOT NULL AND body_html IS NOT NULL)",
+            name="ck_published_non_null"
+        ),
+    )
+
+    def __init__(self, title=None, markdown_raw=None, body_markdown=None, body_html=None, slug=None, date_created=None, blurb=None, 
+                 title_image=None, title_image_extension=None, hero_image=None, hero_image_extension=None, status='draft'):
         self.title = title
+        self.markdown_raw = markdown_raw
         self.body_markdown = body_markdown
         self.body_html = body_html
         self.slug = slug
@@ -62,6 +80,36 @@ class BlogPost(db.Model):
         self.title_image_extension = title_image_extension
         self.hero_image = hero_image
         self.hero_image_extension = hero_image_extension
+        self.status = status
+
+    @property
+    def published_slug(self):
+        """Returns the slug from the published_posts table if available."""
+        return self.published_post.slug if self.published_post else None
+
+    @property
+    def is_published(self):
+        """Checks if the post is published based on the published_posts table."""
+        return self.published_post is not None
+
+    def publish(self):
+        """Creates a published post entry for the blog post."""
+        if not self.published_post:
+            new_published_post = PublishedPost(blogpost_id=self.id, slug=self.slug)
+            db.session.add(new_published_post)
+            db.session.commit()
+            self.status = 'published'
+            db.session.commit()
+
+
+
+
+
+
+class PublishedPost(db.Model):
+    __tablename__ = "published_posts"
+    slug = db.Column(db.String(150), primary_key=True)
+    blogpost_id = db.Column(db.Integer, db.ForeignKey("blogposts.id"))
 
 
 class Tag(db.Model):
@@ -105,7 +153,7 @@ class ImageRef(db.Model):
 
 class ImageRefUsage(db.Model):
     __tablename__ = "image_ref_usage"
-    id = db.Column(db.String(50), primary_key=True)  # Reference ID, same as ImageRef.id
+    id = db.Column(db.String(50), primary_key=True)
 
     def __init__(self, id):
         self.id = id
